@@ -16,7 +16,12 @@ define "turbulence4j" do
   project.version = VERSION_NUMBER
   project.group = GROUP
   manifest["Implementation-Vendor"] = COPYRIGHT
-  compile.with # Add classpath dependencies
-  test.compile.with # Add classpath dependencies
+  
+  compile.with  
+  
+  test.compile.with 'junit:junit:jar:4.8.2',
+  					'org.hamcrest:hamcrest-all:jar:1.1',
+  					transitive('org.mockito:mockito-core:jar:1.8.5')
+  
   package(:jar)
 end
