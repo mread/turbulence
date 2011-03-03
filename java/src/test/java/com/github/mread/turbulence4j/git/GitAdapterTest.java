@@ -10,7 +10,7 @@ import org.junit.Test;
 public class GitAdapterTest {
 
     @Test
-    // test breaks if we ever move off git :)
+    // test breaks if we ever move off git :) problem?
     public void shouldRecogniseAGitRepositoryWhenItSeesOne() {
         GitAdapter gitAdapter = new GitAdapter();
         assertThat(gitAdapter.isRepo(new File(".")), is(true));
