@@ -9,10 +9,10 @@ import org.junit.Test;
 
 public class GitAdapterTest {
 
-	@Test
-	// test breaks if we ever move off git :)
-	public void shouldRecogniseAGitRepositoryWhenItSeesOne() {
-		GitAdapter gitAdapter = new GitAdapter();
-		assertThat(gitAdapter.isRepo(new File(".")), is(true)); 
-	}
+    @Test
+    // test breaks if we ever move off git :)
+    public void shouldRecogniseAGitRepositoryWhenItSeesOne() {
+        GitAdapter gitAdapter = new GitAdapter();
+        assertThat(gitAdapter.isRepo(new File(".")), is(true));
+    }
 }
