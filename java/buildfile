@@ -27,5 +27,6 @@ define "turbulence4j" do
   
   package(:jar)
   
-  run.using :main => [ "com.github.mread.turbulence4j.CommandLine", "/tmp" ]
+  run.using :main => [ "com.github.mread.turbulence4j.CommandLine", "." ]
+    
 end
