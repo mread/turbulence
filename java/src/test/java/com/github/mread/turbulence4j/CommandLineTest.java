@@ -2,6 +2,7 @@ package com.github.mread.turbulence4j;
 
 import static com.github.mread.turbulence4j.CommandLine.OUTPUT_DIRECTORY;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
@@ -56,5 +57,21 @@ public class CommandLineTest {
         CommandLine commandLine = new CommandLine(mockGitAdapter, "/tmp");
         commandLine.execute();
 
+    }
+
+    @Test
+    public void measuresTotalComplexityOfAllJavaFilesInDirectory() {
+        CommandLine commandLine = new CommandLine(".");
+        commandLine.execute();
+
+        assertThat(commandLine.getTotalComplexity(), greaterThan(1));
+    }
+
+    @Test
+    public void outputsRawTotalComplexityToAFile() {
+        CommandLine commandLine = new CommandLine(".");
+        commandLine.execute();
+
+        assertThat(new File(expectedOutputDirectory, CommandLine.RAW_OUTPUT_TXT).exists(), is(true));
     }
 }

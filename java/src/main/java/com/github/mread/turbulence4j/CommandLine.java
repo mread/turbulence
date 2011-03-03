@@ -1,7 +1,11 @@
 package com.github.mread.turbulence4j;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import com.github.mread.calculators.ComplexityCalculator;
+import com.github.mread.javancss.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class CommandLine {
@@ -10,7 +14,11 @@ public class CommandLine {
 
     private final GitAdapter gitAdapter;
     private final File workingDirectory;
+    private final ComplexityCalculator complexityCalculator;
     private File outputDirectory;
+    private int totalComplexity;
+
+    public static final String RAW_OUTPUT_TXT = "raw-output.txt";
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -27,6 +35,7 @@ public class CommandLine {
     public CommandLine(GitAdapter gitAdapter, String workingDirectoryPath) {
         this.gitAdapter = gitAdapter;
         this.workingDirectory = new File(workingDirectoryPath);
+        this.complexityCalculator = new ComplexityCalculator(new JavaFileFinder(workingDirectory));
     }
 
     public void execute() {
@@ -34,6 +43,20 @@ public class CommandLine {
             throw new RuntimeException("Not a git repo: " + workingDirectory.getAbsolutePath());
         }
         makeOutputDirectory();
+        totalComplexity = complexityCalculator.calculate();
+        writeToRawOutput();
+    }
+
+    private void writeToRawOutput() {
+        try {
+            File rawOutput = new File(outputDirectory, RAW_OUTPUT_TXT);
+            rawOutput.createNewFile();
+            FileOutputStream fileOutputStream = new FileOutputStream(rawOutput);
+            fileOutputStream.write(("Total complexity: " + totalComplexity + "\n").getBytes());
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void makeOutputDirectory() {
@@ -47,6 +70,10 @@ public class CommandLine {
 
     boolean isGitRepository() {
         return gitAdapter.isRepo(workingDirectory);
+    }
+
+    public int getTotalComplexity() {
+        return totalComplexity;
     }
 
 }

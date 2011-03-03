@@ -6,3 +6,4 @@ pkg/*
 turbulence/*
 java/target/
 java/reports/
+java/t4j-output/

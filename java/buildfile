@@ -19,7 +19,8 @@ define "turbulence4j" do
   project.group = GROUP
   manifest["Implementation-Vendor"] = COPYRIGHT
   
-  compile.with 
+  compile.with 'jdepend:jdepend:jar:2.9.1',
+               transitive('org.codehaus.javancss:javancss:jar:32.53')
   
   test.compile.with 'junit:junit:jar:4.8.2',
   					'org.hamcrest:hamcrest-all:jar:1.1',
