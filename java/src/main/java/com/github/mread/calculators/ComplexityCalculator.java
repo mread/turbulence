@@ -5,7 +5,7 @@ import java.util.List;
 import javancss.FunctionMetric;
 import javancss.Javancss;
 
-import com.github.mread.javancss.JavaFileFinder;
+import com.github.mread.files.JavaFileFinder;
 
 public class ComplexityCalculator {
 

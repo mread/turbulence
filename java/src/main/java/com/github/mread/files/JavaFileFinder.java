@@ -1,4 +1,4 @@
-package com.github.mread.javancss;
+package com.github.mread.files;
 
 import java.io.File;
 import java.util.ArrayList;

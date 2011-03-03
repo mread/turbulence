@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.github.mread.calculators.ComplexityCalculator;
-import com.github.mread.javancss.JavaFileFinder;
+import com.github.mread.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class CommandLine {
