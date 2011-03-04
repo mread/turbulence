@@ -65,6 +65,8 @@ public class CommandLine {
             FileOutputStream fileOutputStream = new FileOutputStream(rawOutput);
             fileOutputStream.write(("Total complexity: " + totalComplexity + "\n").getBytes());
             fileOutputStream.write(("Total churn: " + totalChurn + "\n").getBytes());
+            fileOutputStream.write(("Complexity:\n" + join(complexityCalculator.getResults(), "\n") + "\n").getBytes());
+            fileOutputStream.write(("Churn:\n" + join(churnCalculator.getResults(), "\n") + "\n").getBytes());
             fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
