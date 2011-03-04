@@ -4,3 +4,6 @@ pkg/*
 .bundle
 .rvmrc
 turbulence/*
+java/target/
+java/reports/
+java/t4j-output/
