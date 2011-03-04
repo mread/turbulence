@@ -45,7 +45,7 @@ public class ChurnCalculatorTest {
 
     @Test
     public void canFilterOutNewLines() {
-        List<String> lines = churnCalculator.withoutNewlines(EXAMPLE_RAW_OUTPUT_WITH_NEWLINES);
+        List<String> lines = churnCalculator.withoutEmptylines(EXAMPLE_RAW_OUTPUT_WITH_NEWLINES);
         assertThat(lines.size(), equalTo(2));
         assertThat(lines.get(0), equalTo("10\t6\tlib/turbulence.java"));
         assertThat(lines.get(1), equalTo("17\t2\tlib/eddies.java"));
@@ -54,7 +54,7 @@ public class ChurnCalculatorTest {
     @Test
     public void totalsAddAndDeletes() {
         List<String> input = asList("10\t6\tlib/turbulence.java", "17\t2\tlib/eddies.java");
-        List<FileValue> output = churnCalculator.fileChurn(input);
+        List<FileValue> output = churnCalculator.churnByLogLine(input);
         assertThat(output.get(0), equalTo(new FileValue("lib/turbulence.java", 16)));
         assertThat(output.get(1), equalTo(new FileValue("lib/eddies.java", 19)));
     }

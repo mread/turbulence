@@ -41,14 +41,14 @@ public class ChurnCalculator {
 
     public int calculate() {
         BufferedReader log = gitAdapter.getLog(targetDirectory);
-        results = excludingUninterestingFiles(groupUp(fileChurn(withoutNewlines(log))));
+        results = excludingUninterestingFiles(groupUp(churnByLogLine(withoutEmptylines(log))));
         if (results.size() == 0) {
             return 0;
         }
         return sumFrom(results).getValue();
     }
 
-    List<String> withoutNewlines(BufferedReader reader) {
+    List<String> withoutEmptylines(BufferedReader reader) {
 
         List<String> result = new ArrayList<String>();
         String line = null;
@@ -64,7 +64,7 @@ public class ChurnCalculator {
         return result;
     }
 
-    List<FileValue> fileChurn(List<String> input) {
+    List<FileValue> churnByLogLine(List<String> input) {
         List<FileValue> result = new ArrayList<FileValue>();
         for (String line : input) {
             String[] split = line.split("\t");
