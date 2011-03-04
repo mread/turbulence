@@ -19,7 +19,7 @@ public class JavaNcssSpikeTest {
         System.out.println(javancss.printJavaNcss());
 
         // doesn't seem to measure/aggregate CC
-        List objectMetrics = javancss.getObjectMetrics();
+        List<?> objectMetrics = javancss.getObjectMetrics();
         for (Object object : objectMetrics) {
             ObjectMetric objectMetric = (ObjectMetric) object;
             System.out.println(objectMetric.name + ": " + objectMetric.ccn);

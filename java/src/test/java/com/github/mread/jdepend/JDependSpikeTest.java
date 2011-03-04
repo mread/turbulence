@@ -1,5 +1,7 @@
 package com.github.mread.jdepend;
 
+import static org.junit.Assert.fail;
+
 import java.util.Collection;
 
 import jdepend.framework.JDepend;
@@ -16,6 +18,10 @@ public class JDependSpikeTest {
         Collection<?> analysis = jDepend.analyze();
         for (Object object : analysis) {
             JavaPackage pack = (JavaPackage) object;
+            if (pack.containsCycle()) {
+                System.out.println("Found cycle: " + pack.getName());
+                fail("Found cycle");
+            }
             // turns out jdepend doesn't measure complexity - good spike :)
         }
     }

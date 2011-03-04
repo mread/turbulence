@@ -49,7 +49,7 @@ public class CommandLineTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void failsIfWorkingDirectoryIsNotInAGitRepository() {
+    public void failsWithInformationIfWorkingDirectoryIsNotInAGitRepository() {
 
         GitAdapter mockGitAdapter = mock(GitAdapter.class);
         when(mockGitAdapter.isRepo(any(File.class))).thenReturn(false);
@@ -60,11 +60,19 @@ public class CommandLineTest {
     }
 
     @Test
-    public void measuresTotalComplexityOfAllJavaFilesInDirectory() {
+    public void measuresTotalComplexityOfAllJavaFilesInCurrentDirectory() {
         CommandLine commandLine = new CommandLine(".");
         commandLine.execute();
 
         assertThat(commandLine.getTotalComplexity(), greaterThan(1));
+    }
+
+    @Test
+    public void measuresTotalChurnOfAllJavaFilesInCurrentDirectory() {
+        CommandLine commandLine = new CommandLine(".");
+        commandLine.execute();
+
+        assertThat(commandLine.getTotalChurn(), greaterThan(1));
     }
 
     @Test

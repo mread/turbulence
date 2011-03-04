@@ -16,7 +16,7 @@ public class ComplexityCalculatorTest {
         JavaFileFinder javaFileFinder = new JavaFileFinder(new File("src/test/java/com/github/mread/javancss/"));
         ComplexityCalculator complexityCalculator = new ComplexityCalculator(javaFileFinder);
         int score = complexityCalculator.calculate();
-        assertThat("total complexity less than 1 - unlikely", score, greaterThanOrEqualTo(1));
+        assertThat("total complexity less than 1 - unlikely really", score, greaterThanOrEqualTo(1));
     }
 
 }

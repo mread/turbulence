@@ -7,15 +7,22 @@ import java.io.InputStreamReader;
 
 public class GitAdapter {
 
+    private static final String GIT_STATUS = "git status";
+    private static final String GIT_LOG = "git log --all -M -C --numstat --format=%n --relative";
+
     public boolean isRepo(File directory) {
-        BufferedReader errorStream = errorStreamForGitStatus(directory);
-        return !containsText(errorStream, "Not a git repository");
+        BufferedReader errorReader = errorReaderForGitCommand(GIT_STATUS, directory);
+        return !readerContainsText(errorReader, "Not a git repository");
     }
 
-    private boolean containsText(BufferedReader input, String textToMatch) {
+    public BufferedReader getLog(File directory) {
+        return readerForGitCommand(GIT_LOG, directory);
+    }
+
+    private boolean readerContainsText(BufferedReader reader, String textToMatch) {
         String line = null;
         try {
-            while ((line = input.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 if (line.contains(textToMatch)) {
                     return true;
                 }
@@ -27,18 +34,28 @@ public class GitAdapter {
         return false;
     }
 
-    private BufferedReader errorStreamForGitStatus(File directory) {
+    private BufferedReader readerForGitCommand(String gitCommand, File directory) {
+        Process process = getProcessForGitCommand(gitCommand, directory);
+        return new BufferedReader(new InputStreamReader(process.getInputStream()));
+    }
+
+    private BufferedReader errorReaderForGitCommand(String gitCommand, File directory) {
+        Process process = getProcessForGitCommand(gitCommand, directory);
+        return new BufferedReader(new InputStreamReader(process.getErrorStream()));
+    }
+
+    private Process getProcessForGitCommand(String gitCommand, File directory) {
         Runtime runtime = Runtime.getRuntime();
         Process process = null;
         try {
-            process = runtime.exec("git status", null, directory);
+            process = runtime.exec(gitCommand, null, directory);
             process.waitFor();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return new BufferedReader(new InputStreamReader(process.getErrorStream()));
+        return process;
     }
 
 }
