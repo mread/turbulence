@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 public class GitAdapter {
 
     private static final String GIT_STATUS = "git status";
-    private static final String GIT_LOG = "git log --all -M -C --numstat --format=%n --relative";
+    private static final String GIT_LOG = "git log --all --numstat --format=%n --relative";
 
     public boolean isRepo(File directory) {
         BufferedReader errorReader = errorReaderForGitCommand(GIT_STATUS, directory);

@@ -1,5 +1,7 @@
 package com.github.mread.turbulence4j;
 
+import static ch.lambdaj.Lambda.join;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -50,7 +52,9 @@ public class CommandLine {
         }
         makeOutputDirectory();
         totalComplexity = complexityCalculator.calculate();
+        System.out.println("Complexity:\n" + join(complexityCalculator.getResults(), "\n"));
         totalChurn = churnCalculator.calculate();
+        System.out.println("Churn:\n" + join(churnCalculator.getResults(), "\n"));
         writeToRawOutput();
     }
 

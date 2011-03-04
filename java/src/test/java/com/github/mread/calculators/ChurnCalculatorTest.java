@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.calculators.ChurnCalculator.NameValue;
 import com.github.mread.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
@@ -55,36 +54,36 @@ public class ChurnCalculatorTest {
     @Test
     public void totalsAddAndDeletes() {
         List<String> input = asList("10\t6\tlib/turbulence.java", "17\t2\tlib/eddies.java");
-        List<NameValue> output = churnCalculator.fileChurn(input);
-        assertThat(output.get(0), equalTo(new NameValue("lib/turbulence.java", 16)));
-        assertThat(output.get(1), equalTo(new NameValue("lib/eddies.java", 19)));
+        List<FileValue> output = churnCalculator.fileChurn(input);
+        assertThat(output.get(0), equalTo(new FileValue("lib/turbulence.java", 16)));
+        assertThat(output.get(1), equalTo(new FileValue("lib/eddies.java", 19)));
     }
 
     @Test
     public void groupsUpByFileAndSumsChurnExcludingLast() {
-        List<NameValue> input = new ArrayList<NameValue>();
-        input.add(new NameValue("a.java", 5));
-        input.add(new NameValue("b.java", 3));
-        input.add(new NameValue("a.java", 4));
-        input.add(new NameValue("b.java", 8));
-        input.add(new NameValue("b.java", 5));
-        input.add(new NameValue("a.java", 2));
+        List<FileValue> input = new ArrayList<FileValue>();
+        input.add(new FileValue("a.java", 5));
+        input.add(new FileValue("b.java", 3));
+        input.add(new FileValue("a.java", 4));
+        input.add(new FileValue("b.java", 8));
+        input.add(new FileValue("b.java", 5));
+        input.add(new FileValue("a.java", 2));
 
-        List<NameValue> groupedOutput = churnCalculator.groupUp(input);
+        List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new NameValue("a.java", 9)));
-        assertThat(groupedOutput.get(1), equalTo(new NameValue("b.java", 11)));
+        assertThat(groupedOutput.get(0), equalTo(new FileValue("a.java", 9)));
+        assertThat(groupedOutput.get(1), equalTo(new FileValue("b.java", 11)));
 
     }
 
     @Test
     public void singleChangeShouldReturnZeroChurn() {
-        List<NameValue> input = new ArrayList<NameValue>();
-        input.add(new NameValue("a.java", 5));
+        List<FileValue> input = new ArrayList<FileValue>();
+        input.add(new FileValue("a.java", 5));
 
-        List<NameValue> groupedOutput = churnCalculator.groupUp(input);
+        List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new NameValue("a.java", 0)));
+        assertThat(groupedOutput.get(0), equalTo(new FileValue("a.java", 0)));
 
     }
 
@@ -92,12 +91,12 @@ public class ChurnCalculatorTest {
     public void exludesUninterestingFile() {
 
         when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(new File("./a/a.java")));
-        List<NameValue> input = asList(new NameValue("a/a.java", 1), new NameValue("b/b.txt", 1));
+        List<FileValue> input = asList(new FileValue("a/a.java", 1), new FileValue("b/b.txt", 1));
 
-        List<NameValue> output = churnCalculator.excludingUninterestingFiles(input);
+        List<FileValue> output = churnCalculator.excludingUninterestingFiles(input);
 
         assertThat(output.size(), equalTo(1));
-        assertThat(output, hasItem(new NameValue("a/a.java", 1)));
+        assertThat(output, hasItem(new FileValue("a/a.java", 1)));
 
     }
 
@@ -115,7 +114,7 @@ public class ChurnCalculatorTest {
 
         calculator.calculate();
 
-        assertThat(calculator.getResult().size(), equalTo(2));
-        assertThat(calculator.getResult(), not(hasItem(new NameValue("c.txt", 0))));
+        assertThat(calculator.getResults().size(), equalTo(2));
+        assertThat(calculator.getResults(), not(hasItem(new FileValue("c.txt", 0))));
     }
 }
