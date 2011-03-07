@@ -8,17 +8,12 @@ public class FileValue implements Comparable<FileValue> {
     final File file;
     int value;
 
-    public FileValue(String fileName, int value) {
-        this.file = new File(fileName);
-        this.value = value;
-    }
-
     public FileValue(File file, int value) {
         this.file = file;
         this.value = value;
     }
 
-    public String getFile() {
+    public String getFilePath() {
         try {
             return file.getCanonicalPath();
         } catch (IOException e) {
@@ -32,11 +27,7 @@ public class FileValue implements Comparable<FileValue> {
 
     @Override
     public String toString() {
-        try {
-            return file.getCanonicalPath() + ": " + value;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return getFilePath() + ": " + value;
     }
 
     @Override
@@ -60,13 +51,8 @@ public class FileValue implements Comparable<FileValue> {
         if (file == null) {
             if (other.file != null)
                 return false;
-        } else
-            try {
-                if (!file.getCanonicalPath().equals(other.file.getCanonicalPath()))
-                    return false;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        } else if (!getFilePath().equals(other.getFilePath()))
+            return false;
         if (value != other.value)
             return false;
         return true;

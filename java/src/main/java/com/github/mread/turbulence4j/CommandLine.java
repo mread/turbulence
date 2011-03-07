@@ -16,6 +16,7 @@ public class CommandLine {
     public static final String OUTPUT_DIRECTORY = "t4j-output/";
 
     private final GitAdapter gitAdapter;
+    private final OutputWriter outputWriter;
     private final File workingDirectory;
     private final ComplexityCalculator complexityCalculator;
     private final ChurnCalculator churnCalculator;
@@ -34,11 +35,12 @@ public class CommandLine {
     }
 
     public CommandLine(String workingDirectoryPath) {
-        this(new GitAdapter(), workingDirectoryPath);
+        this(new OutputWriter(), new GitAdapter(), workingDirectoryPath);
     }
 
     // manually wiring here - would expect Guice one day
-    public CommandLine(GitAdapter gitAdapter, String workingDirectoryPath) {
+    public CommandLine(OutputWriter outputWriter, GitAdapter gitAdapter, String workingDirectoryPath) {
+        this.outputWriter = outputWriter;
         this.gitAdapter = gitAdapter;
         this.workingDirectory = new File(workingDirectoryPath);
         JavaFileFinder javaFileFinder = new JavaFileFinder(workingDirectory);
