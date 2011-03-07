@@ -17,6 +17,7 @@ import com.github.mread.turbulence4j.git.BaseGitCommand.Callback;
 public class GitLogCommandTest {
 
     @Test
+    @SuppressWarnings("unchecked")
     public void canFilterOutNewLines() {
         GitLogCommand gitLog = mock(GitLogCommand.class);
         when(gitLog.runGit()).thenReturn(gitLog);

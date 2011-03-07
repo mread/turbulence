@@ -52,17 +52,17 @@ public class ChurnCalculatorTest {
     @Test
     public void groupsUpByFileAndSumsChurnExcludingLast() {
         List<FileValue> input = new ArrayList<FileValue>();
-        input.add(new FileValue(new File("a.java"), 5));
-        input.add(new FileValue(new File("b.java"), 3));
-        input.add(new FileValue(new File("a.java"), 4));
-        input.add(new FileValue(new File("b.java"), 8));
-        input.add(new FileValue(new File("b.java"), 5));
-        input.add(new FileValue(new File("a.java"), 2));
+        input.add(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 5));
+        input.add(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 3));
+        input.add(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 4));
+        input.add(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 8));
+        input.add(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 5));
+        input.add(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 2));
 
         List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new FileValue(new File("a.java"), 9)));
-        assertThat(groupedOutput.get(1), equalTo(new FileValue(new File("b.java"), 11)));
+        assertThat(groupedOutput.get(0), equalTo(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 9)));
+        assertThat(groupedOutput.get(1), equalTo(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 11)));
 
     }
 

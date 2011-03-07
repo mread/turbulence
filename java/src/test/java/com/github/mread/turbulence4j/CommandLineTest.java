@@ -1,20 +1,22 @@
 package com.github.mread.turbulence4j;
 
 import static com.github.mread.turbulence4j.CommandLine.OUTPUT_DIRECTORY;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import com.github.mread.calculators.FileValue;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class CommandLineTest {
@@ -27,17 +29,6 @@ public class CommandLineTest {
     public void setup() {
         expectedOutputDirectory = new File(TARGET_DIR, OUTPUT_DIRECTORY);
         expectedOutputDirectory.delete();
-    }
-
-    @Test
-    public void shouldCreateOutputInSpecifiedWorkingDirectory() throws IOException {
-
-        CommandLine commandLine = new CommandLine(TARGET_DIR);
-        commandLine.execute();
-
-        File outputDirectory = commandLine.getOutputDirectory();
-        assertThat(outputDirectory.exists(), is(true));
-        assertThat(outputDirectory.getCanonicalPath(), equalTo(expectedOutputDirectory.getCanonicalPath()));
     }
 
     @Test
@@ -83,10 +74,14 @@ public class CommandLineTest {
         CommandLine commandLine = new CommandLine(mockOutputWriter, mockGitAdapter, ".");
         commandLine.execute();
 
-        assertThat(new File(expectedOutputDirectory, CommandLine.RAW_OUTPUT_TXT).exists(), is(true));
+        verify(mockOutputWriter).write(any(File.class),
+                any(File.class),
+                anyListOf(FileValue.class),
+                anyListOf(FileValue.class));
     }
 
     @Test
+    @Ignore
     public void runAgainstSpecificTarget() {
         CommandLine commandLine = new CommandLine("/work/workspaces/Frame-git2/Services");
         commandLine.execute();
