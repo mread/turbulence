@@ -8,10 +8,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -26,8 +25,7 @@ import com.github.mread.turbulence4j.git.GitAdapter;
 @RunWith(MockitoJUnitRunner.class)
 public class ChurnCalculatorTest {
 
-    private static final BufferedReader EXAMPLE_RAW_OUTPUT_WITH_NEWLINES =
-            new BufferedReader(new StringReader("\n\n\n\n10\t6\tlib/turbulence.java\n\n\n\n17\t2\tlib/eddies.java\n"));
+    private static final File WORKING_DIRECTORY = new File("src/test/java/com/github/mread/javancss/");
 
     @Mock
     private GitAdapter mockGitAdapter;
@@ -38,65 +36,59 @@ public class ChurnCalculatorTest {
     @Before
     public void setup() {
         churnCalculator = new ChurnCalculator(
-                new File("src/test/java/com/github/mread/javancss/"),
+                WORKING_DIRECTORY,
                 mockJavaFileFinder,
                 mockGitAdapter);
-    }
-
-    @Test
-    public void canFilterOutNewLines() {
-        List<String> lines = churnCalculator.withoutEmptylines(EXAMPLE_RAW_OUTPUT_WITH_NEWLINES);
-        assertThat(lines.size(), equalTo(2));
-        assertThat(lines.get(0), equalTo("10\t6\tlib/turbulence.java"));
-        assertThat(lines.get(1), equalTo("17\t2\tlib/eddies.java"));
     }
 
     @Test
     public void totalsAddAndDeletes() {
         List<String> input = asList("10\t6\tlib/turbulence.java", "17\t2\tlib/eddies.java");
         List<FileValue> output = churnCalculator.churnByLogLine(input);
-        assertThat(output.get(0), equalTo(new FileValue("lib/turbulence.java", 16)));
-        assertThat(output.get(1), equalTo(new FileValue("lib/eddies.java", 19)));
+        assertThat(output.get(0), equalTo(new FileValue(new File(WORKING_DIRECTORY, "lib/turbulence.java"), 16)));
+        assertThat(output.get(1), equalTo(new FileValue(new File(WORKING_DIRECTORY, "lib/eddies.java"), 19)));
     }
 
     @Test
     public void groupsUpByFileAndSumsChurnExcludingLast() {
         List<FileValue> input = new ArrayList<FileValue>();
-        input.add(new FileValue("a.java", 5));
-        input.add(new FileValue("b.java", 3));
-        input.add(new FileValue("a.java", 4));
-        input.add(new FileValue("b.java", 8));
-        input.add(new FileValue("b.java", 5));
-        input.add(new FileValue("a.java", 2));
+        input.add(new FileValue(new File("a.java"), 5));
+        input.add(new FileValue(new File("b.java"), 3));
+        input.add(new FileValue(new File("a.java"), 4));
+        input.add(new FileValue(new File("b.java"), 8));
+        input.add(new FileValue(new File("b.java"), 5));
+        input.add(new FileValue(new File("a.java"), 2));
 
         List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new FileValue("a.java", 9)));
-        assertThat(groupedOutput.get(1), equalTo(new FileValue("b.java", 11)));
+        assertThat(groupedOutput.get(0), equalTo(new FileValue(new File("a.java"), 9)));
+        assertThat(groupedOutput.get(1), equalTo(new FileValue(new File("b.java"), 11)));
 
     }
 
     @Test
     public void singleChangeShouldReturnZeroChurn() {
         List<FileValue> input = new ArrayList<FileValue>();
-        input.add(new FileValue("a.java", 5));
+        input.add(new FileValue(new File("a.java"), 5));
 
         List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new FileValue("a.java", 0)));
+        assertThat(groupedOutput.get(0), equalTo(new FileValue(new File("a.java"), 0)));
 
     }
 
     @Test
-    public void exludesUninterestingFile() {
+    public void excludesUninterestingFile() {
 
-        when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(new File("./a/a.java")));
-        List<FileValue> input = asList(new FileValue("a/a.java", 1), new FileValue("b/b.txt", 1));
+        File A_JAVA = new File(WORKING_DIRECTORY, "./a/a.java");
+        File B_TXT = new File(WORKING_DIRECTORY, "b/b.txt");
+        when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(A_JAVA));
+        List<FileValue> input = asList(new FileValue(A_JAVA, 1), new FileValue(B_TXT, 1));
 
         List<FileValue> output = churnCalculator.excludingUninterestingFiles(input);
 
         assertThat(output.size(), equalTo(1));
-        assertThat(output, hasItem(new FileValue("a/a.java", 1)));
+        assertThat(output, hasItem(new FileValue(A_JAVA, 1)));
 
     }
 
@@ -104,17 +96,17 @@ public class ChurnCalculatorTest {
     public void returnsChurnOnlyForFilesRequested() {
 
         when(mockGitAdapter.getLog(any(File.class)))
-                .thenReturn(
-                        new BufferedReader(new StringReader(
-                                "1\t2\ta.java\n"
-                                        + "1\t2\tb.java\n"
-                                        + "1\t2\tc.txt\n")));
-        when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(new File("a.java"), new File("b.java")));
-        ChurnCalculator calculator = new ChurnCalculator(new File("."), mockJavaFileFinder, mockGitAdapter);
+                .thenReturn(Arrays.asList("1\t2\ta.java",
+                                        "1\t2\tb.java",
+                                        "1\t2\tc.txt"));
+        when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(
+                new File(WORKING_DIRECTORY, "a.java"),
+                new File(WORKING_DIRECTORY, "b.java")));
 
+        ChurnCalculator calculator = new ChurnCalculator(WORKING_DIRECTORY, mockJavaFileFinder, mockGitAdapter);
         calculator.calculate();
 
         assertThat(calculator.getResults().size(), equalTo(2));
-        assertThat(calculator.getResults(), not(hasItem(new FileValue("c.txt", 0))));
+        assertThat(calculator.getResults(), not(hasItem(new FileValue(new File("c.txt"), 0))));
     }
 }

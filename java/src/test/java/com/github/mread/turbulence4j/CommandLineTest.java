@@ -52,9 +52,10 @@ public class CommandLineTest {
     public void failsWithInformationIfWorkingDirectoryIsNotInAGitRepository() {
 
         GitAdapter mockGitAdapter = mock(GitAdapter.class);
+        OutputWriter mockOutputWriter = mock(OutputWriter.class);
         when(mockGitAdapter.isRepo(any(File.class))).thenReturn(false);
 
-        CommandLine commandLine = new CommandLine(mockGitAdapter, "/tmp");
+        CommandLine commandLine = new CommandLine(mockOutputWriter, mockGitAdapter, "/tmp");
         commandLine.execute();
 
     }
@@ -76,10 +77,19 @@ public class CommandLineTest {
     }
 
     @Test
-    public void outputsRawTotalComplexityToAFile() {
-        CommandLine commandLine = new CommandLine(".");
+    public void outputsBasicInfoToAFile() {
+        GitAdapter mockGitAdapter = new GitAdapter();
+        OutputWriter mockOutputWriter = mock(OutputWriter.class);
+        CommandLine commandLine = new CommandLine(mockOutputWriter, mockGitAdapter, ".");
         commandLine.execute();
 
         assertThat(new File(expectedOutputDirectory, CommandLine.RAW_OUTPUT_TXT).exists(), is(true));
+    }
+
+    @Test
+    public void runAgainstSpecificTarget() {
+        CommandLine commandLine = new CommandLine("/work/workspaces/Frame-git2/Services");
+        commandLine.execute();
+        assertThat(commandLine.getTotalChurn(), greaterThan(1));
     }
 }

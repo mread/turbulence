@@ -9,7 +9,6 @@ import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.sumFrom;
 import static org.hamcrest.Matchers.isIn;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,46 +39,26 @@ public class ChurnCalculator {
     }
 
     public int calculate() {
-        BufferedReader log = gitAdapter.getLog(targetDirectory);
-        results = excludingUninterestingFiles(groupUp(churnByLogLine(withoutEmptylines(log))));
+        List<String> log = gitAdapter.getLog(targetDirectory);
+        results = excludingUninterestingFiles(groupUp(churnByLogLine(log)));
         if (results.size() == 0) {
             return 0;
         }
         return sumFrom(results).getValue();
     }
 
-    List<String> withoutEmptylines(BufferedReader reader) {
-
-        List<String> result = new ArrayList<String>();
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                if (!line.isEmpty()) {
-                    result.add(line);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    List<FileValue> churnByLogLine(List<String> input) {
-        List<FileValue> result = new ArrayList<FileValue>();
-        for (String line : input) {
-            String[] split = line.split("\t");
-            result.add(new FileValue(split[2], addsPlusDeletes(split)));
-        }
-        return result;
+    List<FileValue> excludingUninterestingFiles(List<FileValue> groupUp) {
+        List<String> fileNames = convert(javaFileFinder.findAllJavaFiles(), intoNames());
+        return filter(having(on(FileValue.class).getFilePath(), isIn(fileNames)), groupUp);
     }
 
     public List<FileValue> groupUp(List<FileValue> input) {
         List<FileValue> results = new ArrayList<FileValue>();
 
-        Group<FileValue> groupedByName = group(input, by(on(FileValue.class).getFile()));
+        Group<FileValue> groupedByName = group(input, by(on(FileValue.class).getFilePath()));
         Set<String> names = groupedByName.keySet();
         for (String name : names) {
-            FileValue result = new FileValue(name, 0);
+            FileValue result = new FileValue(new File(name), 0);
             List<FileValue> values = groupedByName.find(name);
             for (int i = 0; i < values.size() - CHANGES_TO_EXCLUDE; i++) {
                 result.value += values.get(i).value;
@@ -89,9 +68,13 @@ public class ChurnCalculator {
         return results;
     }
 
-    List<FileValue> excludingUninterestingFiles(List<FileValue> groupUp) {
-        List<String> fileNames = convert(javaFileFinder.findAllJavaFiles(), intoNames());
-        return filter(having(on(FileValue.class).getFile(), isIn(fileNames)), groupUp);
+    List<FileValue> churnByLogLine(List<String> input) {
+        List<FileValue> result = new ArrayList<FileValue>();
+        for (String line : input) {
+            String[] split = line.split("\t");
+            result.add(new FileValue(new File(targetDirectory, split[2]), addsPlusDeletes(split)));
+        }
+        return result;
     }
 
     public List<FileValue> getResults() {
