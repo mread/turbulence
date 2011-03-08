@@ -51,8 +51,11 @@ public class MoveAggregator {
     private String oldName(String logLine) {
         int firstCurly = logLine.indexOf("{");
         int newPath = logLine.indexOf("=> ", firstCurly) + 3;
-        int lastCurly = logLine.indexOf("}", newPath);
 
+        if (firstCurly == -1) {
+            return logLine.substring(0, newPath - 4);
+        }
+        int lastCurly = logLine.indexOf("}", newPath);
         return logLine.substring(0, firstCurly)
                 + logLine.substring(firstCurly + 1, newPath - 4)
                 + logLine.substring(lastCurly + 1);
@@ -61,8 +64,10 @@ public class MoveAggregator {
     private String newName(String logLine) {
         int firstCurly = logLine.indexOf("{");
         int newPath = logLine.indexOf("=> ", firstCurly) + 3;
+        if (firstCurly == -1) {
+            return logLine.substring(newPath);
+        }
         int lastCurly = logLine.indexOf("}", newPath);
-
         return logLine.substring(0, firstCurly)
                 + logLine.substring(newPath, lastCurly)
                 + logLine.substring(lastCurly + 1);

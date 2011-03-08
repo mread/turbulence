@@ -22,7 +22,18 @@ public class MoveAggregatorTest {
     }
 
     @Test
-    public void singleMove() {
+    public void singleFileMove() {
+        List<String> simpleMoveExample = Arrays.asList(
+                "template/g.java",
+                "g.java => template/g.java",
+                "g.java"
+                );
+        MoveAggregator moveAggregator = new MoveAggregator(simpleMoveExample);
+        assertThat(moveAggregator.getUltimateName("g.java"), equalTo("template/g.java"));
+    }
+
+    @Test
+    public void singleDirectoryMove() {
         List<String> simpleMoveExample = Arrays.asList(
                 "b/a.java",
                 "{a => b}/a.java",
@@ -33,7 +44,7 @@ public class MoveAggregatorTest {
     }
 
     @Test
-    public void singleDeepMove() {
+    public void singleDeepDirectoryMove() {
         List<String> simpleMoveExample = Arrays.asList(
                 "x/b/a.java",
                 "x/{a => b}/a.java",
