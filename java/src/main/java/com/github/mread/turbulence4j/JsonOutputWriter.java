@@ -21,6 +21,8 @@ public class JsonOutputWriter implements CanWriteOutput {
     @Override
     public void write(Map<String, int[]> richData) throws IOException {
         File jsonOutput = new File(destinationDirectory, DATASERIES_JS);
+        destinationDirectory.mkdirs();
+        jsonOutput.createNewFile();
 
         JSONObject root = new JSONObject();
         JSONArray src = new JSONArray();
