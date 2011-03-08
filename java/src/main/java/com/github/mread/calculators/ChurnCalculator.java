@@ -72,23 +72,36 @@ public class ChurnCalculator {
     List<FileValue> churnByLogLine(List<String> input) {
         List<FileValue> result = new ArrayList<FileValue>();
         for (String line : input) {
+            System.out.println(line);
             String[] split = line.split("\t");
-            result.add(new FileValue(new File(targetDirectory, parseForMoves(split[2])), addsPlusDeletes(split)));
+            result.add(generateFileValue(split));
         }
         return result;
     }
 
-    String parseForMoves(String filePart) {
-        if (!filePart.contains(" => ")) {
-            return filePart;
+    private FileValue generateFileValue(String[] split) {
+        String filePart = split[2];
+        if (filePart.contains(" => ")) {
+            FileValue fileValue = new FileValue(new File(targetDirectory, getMoves(filePart)[1]),
+                    addsPlusDeletes(split));
+            fileValue.addAlternative(getMoves(filePart)[0]);
+            return fileValue;
         }
+        return new FileValue(new File(targetDirectory, filePart), addsPlusDeletes(split));
+    }
+
+    String[] getMoves(String filePart) {
         int firstCurly = filePart.indexOf("{");
         int newPath = filePart.indexOf("=> ", firstCurly) + 3;
         int lastCurly = filePart.indexOf("}", newPath);
 
-        return filePart.substring(0, firstCurly)
-                + filePart.substring(newPath, lastCurly)
-                + filePart.substring(lastCurly + 1);
+        return new String[] {
+                filePart.substring(0, firstCurly)
+                        + filePart.substring(firstCurly + 1, newPath - 4)
+                        + filePart.substring(lastCurly + 1),
+                filePart.substring(0, firstCurly)
+                        + filePart.substring(newPath, lastCurly)
+                        + filePart.substring(lastCurly + 1) };
     }
 
     public Map<String, Integer> getResults() {

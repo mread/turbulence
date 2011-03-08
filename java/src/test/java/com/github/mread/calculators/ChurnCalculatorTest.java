@@ -46,13 +46,13 @@ public class ChurnCalculatorTest {
         List<String> input = asList("10\t6\tgithub/mread/{turbulence4j => output}/OutputWriter.java");
         List<FileValue> output = churnCalculator.churnByLogLine(input);
         assertThat(output.get(0), equalTo(fileValueFor("github/mread/output/OutputWriter.java", 0)));
+        assertThat(output.get(0).hasAlternative("github/mread/turbulence4j/OutputWriter.java"), equalTo(true));
     }
 
-    @Test
     public void parsesMoves() {
-        assertThat(churnCalculator.parseForMoves("github/mread/output/OutputWriter.java"),
-                equalTo("github/mread/output/OutputWriter.java"));
-        assertThat(churnCalculator.parseForMoves("github/mread/{turbulence4j => output}/OutputWriter.java"),
+        assertThat(churnCalculator.getMoves("github/mread/{turbulence4j => output}/OutputWriter.java")[0],
+                equalTo("github/mread/turbulence4j/OutputWriter.java"));
+        assertThat(churnCalculator.getMoves("github/mread/{turbulence4j => output}/OutputWriter.java")[1],
                 equalTo("github/mread/output/OutputWriter.java"));
     }
 

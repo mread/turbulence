@@ -2,6 +2,8 @@ package com.github.mread.calculators;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -10,6 +12,7 @@ class FileValue implements Comparable<FileValue> {
 
     final File file;
     int value;
+    private final List<String> alternatives = new ArrayList<String>();
 
     public FileValue(File file, int value) {
         this.file = file;
@@ -57,4 +60,13 @@ class FileValue implements Comparable<FileValue> {
     public int compareTo(FileValue o) {
         return this.file.compareTo(o.file);
     }
+
+    public void addAlternative(String alternativePath) {
+        alternatives.add(alternativePath);
+    }
+
+    public boolean hasAlternative(String alternativePath) {
+        return alternatives.contains(alternativePath);
+    }
+
 }
