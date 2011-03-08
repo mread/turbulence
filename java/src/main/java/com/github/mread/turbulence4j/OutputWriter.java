@@ -1,5 +1,8 @@
 package com.github.mread.turbulence4j;
 
+import static ch.lambdaj.Lambda.index;
+import static ch.lambdaj.Lambda.on;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -85,26 +88,29 @@ public class OutputWriter {
     Map<String, int[]> transformData(String prefixToTrim, List<FileValue> churn,
             List<FileValue> complexity) {
 
+        Map<String, FileValue> indexedChurn = index(churn, on(FileValue.class).getFilePath());
+
         Map<String, int[]> results = new TreeMap<String, int[]>();
         for (FileValue complexityFileValue : complexity) {
-            for (FileValue churnFileValue : churn) {
-                String complexityFilePath = complexityFileValue.getFilePath();
-                String churnFilePath = churnFileValue.getFilePath();
-                if (churnFilePath.equals(complexityFilePath)) {
-                    String matchingFileNamePart = transformFilename(prefixToTrim, complexityFilePath);
-                    int[] values = results.get(matchingFileNamePart);
-                    if (values == null) {
-                        results.put(
-                                matchingFileNamePart,
-                                new int[] { churnFileValue.getValue(), complexityFileValue.getValue() });
-                    } else {
-                        results.put(
-                                matchingFileNamePart,
-                                new int[] {
-                                        values[0] + churnFileValue.getValue(),
-                                        values[1] + complexityFileValue.getValue() });
-                    }
-                }
+            String complexityFilePath = complexityFileValue.getFilePath();
+            FileValue churnFileValue = indexedChurn.get(complexityFilePath);
+            if (churnFileValue == null) {
+                // no churn at all - not even zero
+                continue;
+            }
+
+            String matchingFileNamePart = transformFilename(prefixToTrim, complexityFilePath);
+            int[] values = results.get(matchingFileNamePart);
+            if (values == null) {
+                results.put(
+                        matchingFileNamePart,
+                        new int[] { churnFileValue.getValue(), complexityFileValue.getValue() });
+            } else {
+                results.put(
+                        matchingFileNamePart,
+                        new int[] {
+                                values[0] + churnFileValue.getValue(),
+                                values[1] + complexityFileValue.getValue() });
             }
         }
         return results;
