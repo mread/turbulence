@@ -57,6 +57,6 @@ public class CommandLineTest {
 
     @Test
     public void runAgainstSpecificTarget() {
-        CommandLine.main(new String[] { "../" });
+        CommandLine.main(new String[] { "." });
     }
 }

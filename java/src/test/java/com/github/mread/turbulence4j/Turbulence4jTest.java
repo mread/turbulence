@@ -29,7 +29,7 @@ public class Turbulence4jTest {
 
     @Before
     public void setup() {
-        t4j = new Turbulence4j(mockOutputWriter, mockGitAdapter, new File("."));
+        t4j = new Turbulence4j(new File("."), mockOutputWriter, mockGitAdapter);
     }
 
     @Test

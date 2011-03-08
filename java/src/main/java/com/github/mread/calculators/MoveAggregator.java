@@ -36,6 +36,13 @@ public class MoveAggregator {
     }
 
     public String getUltimateName(String filename) {
+        return getRecursiveUltimateName(filename, 0);
+    }
+
+    private String getRecursiveUltimateName(String filename, int depth) {
+        if (depth > 500) {
+            throw new RuntimeException("Detected infinite loop for: " + filename);
+        }
         if (isAMoveLine(filename)) {
             filename = newName(filename);
         }
@@ -45,7 +52,7 @@ public class MoveAggregator {
         if (moves.get(filename) == null) {
             return filename;
         }
-        return getUltimateName(moves.get(filename));
+        return getRecursiveUltimateName(moves.get(filename), depth++);
     }
 
     private String oldName(String logLine) {

@@ -1,9 +1,9 @@
 package com.github.mread.calculators;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void noMove() {
-        List<String> noMoveExample = Arrays.asList(
+        List<String> noMoveExample = asList(
                 "a/a.java",
                 "a/a.java"
                 );
@@ -23,7 +23,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void singleFileMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "template/g.java",
                 "g.java => template/g.java",
                 "g.java"
@@ -33,8 +33,23 @@ public class MoveAggregatorTest {
     }
 
     @Test
+    public void moveThenRecreateIgnoresMove() {
+        List<String> simpleMoveExample = asList(
+                "turbulence4j/CommandLine.java",
+                "turbulence4j/Turbulence4j.java",
+                "turbulence4j/{CommandLine.java => Turbulence4j.java}",
+                "turbulence4j/CommandLine.java"
+                );
+        MoveAggregator moveAggregator = new MoveAggregator(simpleMoveExample);
+        assertThat(moveAggregator.getUltimateName("turbulence4j/Turbulence4j.java"),
+                equalTo("turbulence4j/Turbulence4j.java"));
+        assertThat(moveAggregator.getUltimateName("turbulence4j/CommandLine.java"),
+                equalTo("turbulence4j/CommandLine.java"));
+    }
+
+    @Test
     public void singleDirectoryMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "b/a.java",
                 "{a => b}/a.java",
                 "a/a.java"
@@ -45,7 +60,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void singleDeepDirectoryMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "x/b/a.java",
                 "x/{a => b}/a.java",
                 "x/a/a.java"
@@ -56,7 +71,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void canUseRawPathToGetUltimateName() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "b/a.java",
                 "{a => b}/a.java",
                 "a/a.java"
@@ -67,7 +82,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void doubleMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "{b => c}/a.java",
                 "b/a.java",
                 "{a => b}/a.java",
@@ -79,7 +94,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void ignoresLeadingDigits() {
-        List<String> noMoveExample = Arrays.asList(
+        List<String> noMoveExample = asList(
                 "3\t6\ta/a.java",
                 "5\t4\ta/a.java"
                 );

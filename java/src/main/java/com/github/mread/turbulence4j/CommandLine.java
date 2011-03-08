@@ -24,14 +24,20 @@ public class CommandLine {
     }
 
     public CommandLine(String workingDirectoryPath) {
-        this(new TemplateManager(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME)),
-                new Turbulence4j(new OutputWriter(
-                        new CanWriteOutput[] {
-                                new RawOutputWriter(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME)),
-                                new JsonOutputWriter(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME + "js/"))
-                        }),
-                        new GitAdapter(),
-                        new File(workingDirectoryPath)));
+        this(new File(workingDirectoryPath),
+                new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME));
+    }
+
+    private CommandLine(File workingDirectory, File outputDirectory) {
+        this(new TemplateManager(outputDirectory),
+                new Turbulence4j(
+                        workingDirectory,
+                        new OutputWriter(
+                                new CanWriteOutput[] {
+                                        new RawOutputWriter(outputDirectory),
+                                        new JsonOutputWriter(new File(outputDirectory, "js/"))
+                                }),
+                        new GitAdapter()));
     }
 
     CommandLine(TemplateManager templateManager, Turbulence4j turbulence4j) {
