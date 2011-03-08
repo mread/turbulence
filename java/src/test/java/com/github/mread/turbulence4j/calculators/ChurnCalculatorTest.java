@@ -42,9 +42,13 @@ public class ChurnCalculatorTest {
 
     @Test
     public void handlesFileMoves() {
-        List<String> input = asList("10\t6\tgithub/mread/{turbulence4j => output}/OutputWriter.java");
-        List<FileValue> output = churnCalculator.churnByLogLine(input);
-        assertThat(output.get(0), equalTo(fileValueFor("github/mread/output/OutputWriter.java", 16)));
+        List<String> input = asList("1\t3\tmread/turbulence4j/Turbulence4j.java",
+                "1\t0\tmread/turbulence4j/Turbulence4j.java",
+                "53\t68\tmread/turbulence4j/{CommandLine.java => Turbulence4j.java}",
+                "5\t0\tmread/turbulence4j/CommandLine.java",
+                "5\t0\tmread/turbulence4j/CommandLine.java");
+        List<FileValue> output = churnCalculator.groupUp(churnCalculator.churnByLogLine(input));
+        assertThat(output.get(0), equalTo(fileValueFor("mread/turbulence4j/Turbulence4j.java", 131)));
     }
 
     @Test

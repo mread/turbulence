@@ -18,7 +18,7 @@ public class Turbulence4j {
     private int totalComplexity;
     private int totalChurn;
 
-    public Turbulence4j(OutputWriter outputWriter, GitAdapter gitAdapter, File workingDirectory) {
+    public Turbulence4j(File workingDirectory, OutputWriter outputWriter, GitAdapter gitAdapter) {
         this.outputWriter = outputWriter;
         this.gitAdapter = gitAdapter;
         this.workingDirectory = workingDirectory;
