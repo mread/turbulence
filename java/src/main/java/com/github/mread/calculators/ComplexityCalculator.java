@@ -21,10 +21,10 @@ public class ComplexityCalculator {
     }
 
     public int calculate() {
-        List<File> files = javaFileFinder.findAllJavaFiles();
+        List<String> files = javaFileFinder.findAllJavaFiles();
         int totalComplexity = 0;
-        for (File file : files) {
-            Javancss javancss = new Javancss(file);
+        for (String file : files) {
+            Javancss javancss = new Javancss(new File(javaFileFinder.getBaseDir(), file));
             List<?> functionMetrics = javancss.getFunctionMetrics();
             FileValue result = new FileValue(file, 0);
             for (Object object : functionMetrics) {
@@ -40,7 +40,7 @@ public class ComplexityCalculator {
     public Map<String, Integer> getResults() {
         Map<String, Integer> mappedResults = new HashMap<String, Integer>();
         for (FileValue fileValue : results) {
-            mappedResults.put(fileValue.getFilePath(), fileValue.getValue());
+            mappedResults.put(fileValue.getFilename(), fileValue.getValue());
         }
         return mappedResults;
     }

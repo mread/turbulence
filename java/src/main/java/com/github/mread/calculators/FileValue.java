@@ -1,7 +1,5 @@
 package com.github.mread.calculators;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,21 +8,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 class FileValue implements Comparable<FileValue> {
 
-    final File file;
+    final String filename;
     int value;
     private final List<String> alternatives = new ArrayList<String>();
 
-    public FileValue(File file, int value) {
-        this.file = file;
+    public FileValue(String filename, int value) {
+        this.filename = filename;
         this.value = value;
     }
 
-    public String getFilePath() {
-        try {
-            return file.getCanonicalPath();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public String getFilename() {
+        return filename;
     }
 
     public int getValue() {
@@ -33,12 +27,12 @@ class FileValue implements Comparable<FileValue> {
 
     @Override
     public String toString() {
-        return getFilePath() + ": " + value;
+        return filename + ": " + value;
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(file).append(value).toHashCode();
+        return new HashCodeBuilder().append(filename).append(value).toHashCode();
     }
 
     @Override
@@ -52,13 +46,15 @@ class FileValue implements Comparable<FileValue> {
 
         FileValue other = (FileValue) obj;
 
-        return new EqualsBuilder().append(getFilePath(), other.getFilePath()).isEquals();
-
+        return new EqualsBuilder()
+                .append(filename, other.filename)
+                .append(value, other.value)
+                .isEquals();
     }
 
     @Override
     public int compareTo(FileValue o) {
-        return this.file.compareTo(o.file);
+        return this.filename.compareTo(o.filename);
     }
 
     public void addAlternative(String alternativePath) {

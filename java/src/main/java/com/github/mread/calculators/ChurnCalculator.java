@@ -1,7 +1,6 @@
 package com.github.mread.calculators;
 
 import static ch.lambdaj.Lambda.by;
-import static ch.lambdaj.Lambda.convert;
 import static ch.lambdaj.Lambda.filter;
 import static ch.lambdaj.Lambda.group;
 import static ch.lambdaj.Lambda.having;
@@ -10,14 +9,12 @@ import static ch.lambdaj.Lambda.sumFrom;
 import static org.hamcrest.Matchers.isIn;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ch.lambdaj.function.convert.Converter;
 import ch.lambdaj.group.Group;
 
 import com.github.mread.files.JavaFileFinder;
@@ -49,17 +46,17 @@ public class ChurnCalculator {
     }
 
     List<FileValue> excludingUninterestingFiles(List<FileValue> groupUp) {
-        List<String> fileNames = convert(javaFileFinder.findAllJavaFiles(), intoNames());
-        return filter(having(on(FileValue.class).getFilePath(), isIn(fileNames)), groupUp);
+        List<String> fileNames = javaFileFinder.findAllJavaFiles();
+        return filter(having(on(FileValue.class).getFilename(), isIn(fileNames)), groupUp);
     }
 
     public List<FileValue> groupUp(List<FileValue> input) {
         List<FileValue> results = new ArrayList<FileValue>();
 
-        Group<FileValue> groupedByName = group(input, by(on(FileValue.class).getFilePath()));
+        Group<FileValue> groupedByName = group(input, by(on(FileValue.class).getFilename()));
         Set<String> names = groupedByName.keySet();
         for (String name : names) {
-            FileValue result = new FileValue(new File(name), 0);
+            FileValue result = new FileValue(name, 0);
             List<FileValue> values = groupedByName.find(name);
             for (int i = 0; i < values.size() - CHANGES_TO_EXCLUDE; i++) {
                 result.value += values.get(i).value;
@@ -72,7 +69,6 @@ public class ChurnCalculator {
     List<FileValue> churnByLogLine(List<String> input) {
         List<FileValue> result = new ArrayList<FileValue>();
         for (String line : input) {
-            System.out.println(line);
             String[] split = line.split("\t");
             result.add(generateFileValue(split));
         }
@@ -82,12 +78,11 @@ public class ChurnCalculator {
     private FileValue generateFileValue(String[] split) {
         String filePart = split[2];
         if (filePart.contains(" => ")) {
-            FileValue fileValue = new FileValue(new File(targetDirectory, getMoves(filePart)[1]),
-                    addsPlusDeletes(split));
+            FileValue fileValue = new FileValue(getMoves(filePart)[1], addsPlusDeletes(split));
             fileValue.addAlternative(getMoves(filePart)[0]);
             return fileValue;
         }
-        return new FileValue(new File(targetDirectory, filePart), addsPlusDeletes(split));
+        return new FileValue(filePart, addsPlusDeletes(split));
     }
 
     String[] getMoves(String filePart) {
@@ -107,22 +102,9 @@ public class ChurnCalculator {
     public Map<String, Integer> getResults() {
         Map<String, Integer> mappedResults = new HashMap<String, Integer>();
         for (FileValue fileValue : results) {
-            mappedResults.put(fileValue.getFilePath(), fileValue.getValue());
+            mappedResults.put(fileValue.getFilename(), fileValue.getValue());
         }
         return mappedResults;
-    }
-
-    private Converter<File, String> intoNames() {
-        return new Converter<File, String>() {
-            @Override
-            public String convert(File from) {
-                try {
-                    return from.getCanonicalPath();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        };
     }
 
     private int addsPlusDeletes(String[] split) {

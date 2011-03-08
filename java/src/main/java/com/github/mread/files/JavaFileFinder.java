@@ -1,5 +1,8 @@
 package com.github.mread.files;
 
+import static org.apache.commons.io.FilenameUtils.concat;
+import static org.apache.commons.io.FilenameUtils.separatorsToUnix;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +16,7 @@ public class JavaFileFinder {
         this.baseDir = baseDir;
     }
 
-    public List<File> findAllJavaFiles() {
+    public List<String> findAllJavaFiles() {
         if (!baseDir.isDirectory()) {
             return Collections.emptyList();
         }
@@ -21,16 +24,27 @@ public class JavaFileFinder {
         return findJavaFiles(baseDir);
     }
 
-    private List<File> findJavaFiles(File dir) {
-        List<File> result = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                result.addAll(findJavaFiles(file));
+    private List<String> findJavaFiles(File dir) {
+        return recurse(dir, "");
+    }
+
+    private List<String> recurse(File dir, String prefix) {
+        List<String> result = new ArrayList<String>();
+        for (String filename : dir.list()) {
+            if (filename.endsWith(".java")) {
+                result.add(separatorsToUnix(concat(prefix, filename)));
+                continue;
             }
-            if (file.getName().endsWith(".java")) {
-                result.add(file);
+            File possibleDirectory = new File(dir, filename);
+            if (possibleDirectory.isDirectory()) {
+                result.addAll(recurse(possibleDirectory,
+                        separatorsToUnix(concat(prefix, filename))));
             }
         }
         return result;
+    }
+
+    public File getBaseDir() {
+        return baseDir;
     }
 }

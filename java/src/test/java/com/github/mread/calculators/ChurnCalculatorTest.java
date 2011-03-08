@@ -45,7 +45,7 @@ public class ChurnCalculatorTest {
     public void handlesFileMoves() {
         List<String> input = asList("10\t6\tgithub/mread/{turbulence4j => output}/OutputWriter.java");
         List<FileValue> output = churnCalculator.churnByLogLine(input);
-        assertThat(output.get(0), equalTo(fileValueFor("github/mread/output/OutputWriter.java", 0)));
+        assertThat(output.get(0), equalTo(fileValueFor("github/mread/output/OutputWriter.java", 16)));
         assertThat(output.get(0).hasAlternative("github/mread/turbulence4j/OutputWriter.java"), equalTo(true));
     }
 
@@ -84,19 +84,19 @@ public class ChurnCalculatorTest {
     @Test
     public void singleChangeShouldReturnZeroChurn() {
         List<FileValue> input = new ArrayList<FileValue>();
-        input.add(new FileValue(new File("a.java"), 5));
+        input.add(new FileValue("a.java", 5));
 
         List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new FileValue(new File("a.java"), 0)));
+        assertThat(groupedOutput.get(0), equalTo(new FileValue("a.java", 0)));
 
     }
 
     @Test
     public void excludesUninterestingFile() {
 
-        File A_JAVA = new File(WORKING_DIRECTORY, "./a/a.java");
-        File B_TXT = new File(WORKING_DIRECTORY, "b/b.txt");
+        String A_JAVA = "a/a.java";
+        String B_TXT = "b/b.txt";
         when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(A_JAVA));
         List<FileValue> input = asList(new FileValue(A_JAVA, 1), new FileValue(B_TXT, 1));
 
@@ -114,18 +114,16 @@ public class ChurnCalculatorTest {
                 .thenReturn(Arrays.asList("1\t2\ta.java",
                                         "1\t2\tb.java",
                                         "1\t2\tc.txt"));
-        when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList(
-                new File(WORKING_DIRECTORY, "a.java"),
-                new File(WORKING_DIRECTORY, "b.java")));
+        when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList("a.java", "b.java"));
 
         ChurnCalculator calculator = new ChurnCalculator(WORKING_DIRECTORY, mockJavaFileFinder, mockGitAdapter);
         calculator.calculate();
 
         assertThat(calculator.getResults().size(), equalTo(2));
-        assertThat(calculator.getResults().keySet(), not(hasItem(fileValueFor("c.txt", 0).getFilePath())));
+        assertThat(calculator.getResults().keySet(), not(hasItem(fileValueFor("c.txt", 0).getFilename())));
     }
 
     private FileValue fileValueFor(String child, int value) {
-        return new FileValue(new File(WORKING_DIRECTORY, child), value);
+        return new FileValue(child, value);
     }
 }
