@@ -19,9 +19,10 @@ public class MoveAggregator {
     private void processLogLine(String logLine) {
         logLine = ignoreTabs(logLine);
         if (isAMoveLine(logLine)) {
-            String oldName = oldName(logLine);
-            String newName = newName(logLine);
-            moves.put(oldName, newName);
+            if (moves.containsKey(oldName(logLine))) {
+                moves.put(oldName(logLine), newName(logLine));
+            }
+            moves.put(newName(logLine), null);
         } else {
             moves.put(logLine, null);
         }
@@ -37,6 +38,9 @@ public class MoveAggregator {
     public String getUltimateName(String filename) {
         if (isAMoveLine(filename)) {
             filename = newName(filename);
+        }
+        if (!moves.containsKey(filename)) {
+            throw new RuntimeException("Failed to record: " + filename);
         }
         if (moves.get(filename) == null) {
             return filename;
