@@ -33,9 +33,9 @@ public class JsonOutputWriter implements CanWriteOutput {
                 row.put("filename", file);
                 row.put("x", richData.get(file)[0]);
                 row.put("y", richData.get(file)[1]);
-                if (file.startsWith("src\\main")) {
+                if (file.contains("src\\main")) {
                     src.put(row);
-                } else if (file.startsWith("src\\test")) {
+                } else if (file.contains("src\\test")) {
                     test.put(row);
                 } else {
                     other.put(row);
