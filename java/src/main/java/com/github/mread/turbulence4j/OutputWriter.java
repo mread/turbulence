@@ -12,68 +12,82 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.github.mread.calculators.FileValue;
-import com.google.gwt.dev.json.JsonArray;
-import com.google.gwt.dev.json.JsonObject;
 
 public class OutputWriter {
 
     static final String RAW_OUTPUT_TXT = "raw-output.txt";
     static final String DATASERIES_JS = "data.js";
+    private final File outputDirectory;
+    private final File javascriptOutputDirectory;
+
+    public OutputWriter(File outputDirectory) {
+        this.outputDirectory = outputDirectory;
+        this.javascriptOutputDirectory = new File(outputDirectory, "js/");
+    }
 
     public void write(File prefixToTrim,
-            File outputDirectory,
             List<FileValue> churn,
             List<FileValue> complexity) {
 
         outputDirectory.mkdirs();
+        javascriptOutputDirectory.mkdirs();
+
         Map<String, int[]> richData = transformData(
                 getCanonicalPath(prefixToTrim),
                 churn,
                 complexity);
         try {
-            writeRaw(outputDirectory, richData);
-            writeJson(outputDirectory, richData);
+            writeRaw(richData);
+            writeJson(richData);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void writeJson(File outputDirectory, Map<String, int[]> richData) throws IOException {
-        File jsonOutput = new File(outputDirectory, DATASERIES_JS);
+    private void writeJson(Map<String, int[]> richData) throws IOException {
+        File jsonOutput = new File(javascriptOutputDirectory, DATASERIES_JS);
 
-        JsonObject json = JsonObject.create();
-        JsonArray src = JsonArray.create();
-        JsonArray test = JsonArray.create();
-        JsonArray other = JsonArray.create();
+        JSONObject json = new JSONObject();
+        JSONArray src = new JSONArray();
+        JSONArray test = new JSONArray();
+        JSONArray other = new JSONArray();
 
-        for (String file : richData.keySet()) {
-            JsonObject row = JsonObject.create();
-            row.put("filename", file);
-            row.put("x", richData.get(file)[0]);
-            row.put("y", richData.get(file)[1]);
-            if (file.startsWith("src\\main")) {
-                src.add(row);
-            } else if (file.startsWith("src\\test")) {
-                test.add(row);
-            } else {
-                other.add(row);
+        try {
+            for (String file : richData.keySet()) {
+                JSONObject row = new JSONObject();
+                row.put("filename", file);
+                row.put("x", richData.get(file)[0]);
+                row.put("y", richData.get(file)[1]);
+                if (file.startsWith("src\\main")) {
+                    src.put(row);
+                } else if (file.startsWith("src\\test")) {
+                    test.put(row);
+                } else {
+                    other.put(row);
+                }
             }
-        }
-        json.put("src/main/java", src);
-        json.put("src/test/java", test);
-        if (other.getLength() > 0) {
-            json.put("other", other);
-        }
+            json.put("src/main/java", src);
+            json.put("src/test/java", test);
+            if (other.length() > 0) {
+                json.put("other", other);
+            }
 
-        FileWriter writer = new FileWriter(jsonOutput);
-        writer.append("var directorySeries = ");
-        json.write(writer);
-        writer.close();
+            FileWriter writer = new FileWriter(jsonOutput);
+            writer.append("var directorySeries = ");
+            json.write(writer);
+            writer.close();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void writeRaw(File outputDirectory, Map<String, int[]> richData) throws IOException, FileNotFoundException {
+    private void writeRaw(Map<String, int[]> richData) throws IOException, FileNotFoundException {
         File rawOutput = new File(outputDirectory, RAW_OUTPUT_TXT);
         rawOutput.createNewFile();
         FileOutputStream fileOutputStream = new FileOutputStream(rawOutput);
