@@ -5,6 +5,7 @@ import java.io.File;
 import com.github.mread.calculators.ChurnCalculator;
 import com.github.mread.calculators.ComplexityCalculator;
 import com.github.mread.files.JavaFileFinder;
+import com.github.mread.output.OutputWriter;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class Turbulence4j {

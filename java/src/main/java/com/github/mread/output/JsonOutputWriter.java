@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j;
+package com.github.mread.output;
 
 import java.io.File;
 import java.io.FileWriter;

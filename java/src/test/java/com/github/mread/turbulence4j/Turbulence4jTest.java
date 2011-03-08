@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.github.mread.output.OutputWriter;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 @RunWith(MockitoJUnitRunner.class)
