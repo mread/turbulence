@@ -29,6 +29,6 @@ public class ComplexityCalculatorTest {
         ComplexityCalculator complexityCalculator = new ComplexityCalculator(javaFileFinder);
         complexityCalculator.calculate();
         Map<String, Integer> results = complexityCalculator.getResults();
-        assertThat(results.size(), equalTo(2));
+        assertThat(results.size(), equalTo(3));
     }
 }
