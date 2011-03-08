@@ -9,3 +9,9 @@ turbulence/*
 java/target/
 java/reports/
 java/t4j-output/
+java/bin/
+java/.settings/
+java/.classpath
+java/.project
+java/war/WEB-INF/
+java/war/t4j/

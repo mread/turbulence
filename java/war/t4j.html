@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Turbulence4J</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/data.js"></script>
+    <script type="text/javascript" language="javascript" src="js/highcharts.js"></script>
+    <script>
+
+$(document).ready(function() {
+   var chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'container',
+         defaultSeriesType: 'scatter',
+         zoomType: 'xy'
+      },
+      title: {
+         text: 'Churn vs Complexity'
+      },
+      xAxis: {
+         title: {
+            enabled: true,
+            text: 'Churn'
+         },
+         startOnTick: false,
+         endOnTick: false,
+         labels: {enabled:false},
+         lineWidth: 0,
+         tickWidth: 0
+      },
+      yAxis: {
+         title: {
+            text: 'Complexity'
+          },
+         startOnTick: false,
+         endOnTick: false,
+         labels: {enabled:false}
+      },
+      tooltip: {
+        formatter: function() {
+          var item = this.point;
+          return item.filename + "<br/>" + "churn: " + item.x + "<br/>" + "complexity: " + item.y;
+        }
+      },
+
+      plotOptions: {
+         scatter: {
+            marker: {
+               radius: 5,
+               states: {
+                  hover: {
+                     enabled: true,
+                     lineColor: 'rgb(100,100,100)'
+                  }
+               }
+            },
+            states: {
+               hover: {
+                  marker: {
+                     enabled: false
+                  }
+               }
+            }
+         }
+      }
+   });
+
+   $.each(directorySeries, function(directory) {
+     chart.addSeries({
+      name: directory,
+      type: 'scatter',
+      visible: true,
+      data: directorySeries[directory]
+     });
+   });
+});
+
+    </script>    
+  </head>
+
+  <body>
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+	<div id="container" style="width: 100%; height: 400px"></div>
+  </body>
+</html>

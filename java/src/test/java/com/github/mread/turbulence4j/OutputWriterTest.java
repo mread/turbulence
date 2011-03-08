@@ -45,18 +45,18 @@ public class OutputWriterTest {
 
         Map<String, int[]> richData = outputWriter.transformData("", churn, complexity);
 
-        assertThat(richData.get(A_JAVA.getParentFile().getCanonicalPath() + File.separator),
+        assertThat(richData.get(A_JAVA.getCanonicalPath()),
                 equalTo(new int[] { 53, 3 }));
-        assertThat(richData.get(B_JAVA.getParentFile().getCanonicalPath() + File.separator),
+        assertThat(richData.get(B_JAVA.getCanonicalPath()),
                 equalTo(new int[] { 25, 5 }));
     }
 
     @Test
     public void matchingIndex() {
         OutputWriter outputWriter = new OutputWriter();
-        assertThat(outputWriter.transformFilename("", "\\home\\a.java"), equalTo("\\home\\"));
-        assertThat(outputWriter.transformFilename("nonsense", "\\home\\a.java"), equalTo("\\home\\"));
-        assertThat(outputWriter.transformFilename("\\home", "\\home\\a.java"), equalTo("\\"));
-        assertThat(outputWriter.transformFilename("\\home\\", "\\home\\a.java"), equalTo(""));
+        assertThat(outputWriter.transformFilename("", "\\home\\a.java"), equalTo("\\home\\a.java"));
+        assertThat(outputWriter.transformFilename("nonsense", "\\home\\a.java"), equalTo("\\home\\a.java"));
+        assertThat(outputWriter.transformFilename("\\home", "\\home\\a.java"), equalTo("\\a.java"));
+        assertThat(outputWriter.transformFilename("\\home\\", "\\home\\a.java"), equalTo("a.java"));
     }
 }

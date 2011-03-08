@@ -9,7 +9,7 @@ GROUP = "com.github.mread"
 COPYRIGHT = ""
 
 # Specify Maven 2.0 remote repositories here, like this:
-repositories.remote << "http://www.ibiblio.org/maven2/"
+repositories.remote << "http://repo1.maven.org/maven2/"
 
 desc "Turbulence4J"
 
@@ -21,7 +21,9 @@ define "turbulence4j" do
   
   compile.with 'jdepend:jdepend:jar:2.9.1',
                transitive('org.codehaus.javancss:javancss:jar:32.53'),
-               transitive('com.googlecode.lambdaj:lambdaj:jar:2.3.1')
+               transitive('com.googlecode.lambdaj:lambdaj:jar:2.3.1'),
+               'com.google.gwt.google-apis:gwt-visualization:jar:1.0.2',
+               'com.google.gwt:gwt-user:jar:2.2.0'
   
   test.compile.with 'junit:junit:jar:4.8.2',
   					'org.hamcrest:hamcrest-all:jar:1.1',

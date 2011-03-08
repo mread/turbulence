@@ -1,17 +1,22 @@
 package com.github.mread.turbulence4j;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.github.mread.calculators.FileValue;
+import com.google.gwt.dev.json.JsonArray;
+import com.google.gwt.dev.json.JsonObject;
 
 public class OutputWriter {
 
-    public static final String RAW_OUTPUT_TXT = "raw-output.txt";
+    static final String RAW_OUTPUT_TXT = "raw-output.txt";
+    static final String DATASERIES_JS = "data.js";
 
     public void write(File prefixToTrim,
             File outputDirectory,
@@ -24,19 +29,57 @@ public class OutputWriter {
                 churn,
                 complexity);
         try {
-            File rawOutput = new File(outputDirectory, RAW_OUTPUT_TXT);
-            rawOutput.createNewFile();
-            FileOutputStream fileOutputStream = new FileOutputStream(rawOutput);
-            for (String file : richData.keySet()) {
-                fileOutputStream.write((file + "\t").getBytes());
-                fileOutputStream.write((richData.get(file)[0] + "\t").getBytes());
-                fileOutputStream.write((richData.get(file)[1] + "\n").getBytes());
-            }
-            fileOutputStream.close();
+            writeRaw(outputDirectory, richData);
+            writeJson(outputDirectory, richData);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private void writeJson(File outputDirectory, Map<String, int[]> richData) throws IOException {
+        File jsonOutput = new File(outputDirectory, DATASERIES_JS);
+
+        JsonObject json = JsonObject.create();
+        JsonArray src = JsonArray.create();
+        JsonArray test = JsonArray.create();
+        JsonArray other = JsonArray.create();
+
+        for (String file : richData.keySet()) {
+            JsonObject row = JsonObject.create();
+            row.put("filename", file);
+            row.put("x", richData.get(file)[0]);
+            row.put("y", richData.get(file)[1]);
+            if (file.startsWith("src\\main")) {
+                src.add(row);
+            } else if (file.startsWith("src\\test")) {
+                test.add(row);
+            } else {
+                other.add(row);
+            }
+        }
+        json.put("src/main/java", src);
+        json.put("src/test/java", test);
+        if (other.getLength() > 0) {
+            json.put("other", other);
+        }
+
+        FileWriter writer = new FileWriter(jsonOutput);
+        writer.append("var directorySeries = ");
+        json.write(writer);
+        writer.close();
+    }
+
+    private void writeRaw(File outputDirectory, Map<String, int[]> richData) throws IOException, FileNotFoundException {
+        File rawOutput = new File(outputDirectory, RAW_OUTPUT_TXT);
+        rawOutput.createNewFile();
+        FileOutputStream fileOutputStream = new FileOutputStream(rawOutput);
+        for (String file : richData.keySet()) {
+            fileOutputStream.write((file + "\t").getBytes());
+            fileOutputStream.write((richData.get(file)[0] + "\t").getBytes());
+            fileOutputStream.write((richData.get(file)[1] + "\n").getBytes());
+        }
+        fileOutputStream.close();
     }
 
     Map<String, int[]> transformData(String prefixToTrim, List<FileValue> churn,
@@ -69,12 +112,12 @@ public class OutputWriter {
 
     String transformFilename(String prefixToTrim, String filePath) {
         if (prefixToTrim.isEmpty()) {
-            return filePath.substring(0, filePath.lastIndexOf(File.separatorChar) + 1);
+            return filePath;
         }
         if (filePath.indexOf(prefixToTrim) != 0) {
-            return filePath.substring(0, filePath.lastIndexOf(File.separatorChar) + 1);
+            return filePath;
         }
-        return filePath.substring(prefixToTrim.length(), filePath.lastIndexOf(File.separatorChar) + 1);
+        return filePath.substring(prefixToTrim.length());
     }
 
     private String getCanonicalPath(File prefixToTrim) {
