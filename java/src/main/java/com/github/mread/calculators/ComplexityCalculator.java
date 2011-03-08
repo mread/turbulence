@@ -2,8 +2,9 @@ package com.github.mread.calculators;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javancss.FunctionMetric;
 import javancss.Javancss;
@@ -13,7 +14,7 @@ import com.github.mread.files.JavaFileFinder;
 public class ComplexityCalculator {
 
     private final JavaFileFinder javaFileFinder;
-    private List<FileValue> results = new ArrayList<FileValue>();
+    private final List<FileValue> results = new ArrayList<FileValue>();
 
     public ComplexityCalculator(JavaFileFinder javaFileFinder) {
         this.javaFileFinder = javaFileFinder;
@@ -36,9 +37,12 @@ public class ComplexityCalculator {
         return totalComplexity;
     }
 
-    public List<FileValue> getResults() {
-        Collections.sort(results);
-        return results;
+    public Map<String, Integer> getResults() {
+        Map<String, Integer> mappedResults = new HashMap<String, Integer>();
+        for (FileValue fileValue : results) {
+            mappedResults.put(fileValue.getFilePath(), fileValue.getValue());
+        }
+        return mappedResults;
     }
 
 }

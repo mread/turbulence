@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
-import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class ComplexityCalculatorTest {
         JavaFileFinder javaFileFinder = new JavaFileFinder(WORKING_DIRECTORY);
         ComplexityCalculator complexityCalculator = new ComplexityCalculator(javaFileFinder);
         complexityCalculator.calculate();
-        List<FileValue> results = complexityCalculator.getResults();
+        Map<String, Integer> results = complexityCalculator.getResults();
         assertThat(results.size(), equalTo(2));
     }
 }

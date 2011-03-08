@@ -21,7 +21,11 @@ public class CommandLine {
 
     public CommandLine(String workingDirectoryPath) {
         this(new TemplateManager(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME)),
-                new Turbulence4j(new OutputWriter(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME)),
+                new Turbulence4j(new OutputWriter(
+                        new CanWriteOutput[] {
+                                new RawOutputWriter(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME)),
+                                new JsonOutputWriter(new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME + "js/"))
+                        }),
                         new GitAdapter(),
                         new File(workingDirectoryPath)));
     }

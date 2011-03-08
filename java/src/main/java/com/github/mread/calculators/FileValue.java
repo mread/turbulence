@@ -3,7 +3,7 @@ package com.github.mread.calculators;
 import java.io.File;
 import java.io.IOException;
 
-public class FileValue implements Comparable<FileValue> {
+class FileValue implements Comparable<FileValue> {
 
     final File file;
     int value;

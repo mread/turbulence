@@ -1,7 +1,7 @@
 package com.github.mread.turbulence4j;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Matchers.anyMap;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.calculators.FileValue;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,13 +32,12 @@ public class Turbulence4jTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void outputsBasicInfoToADirctory() {
         when(mockGitAdapter.isRepo(any(File.class))).thenReturn(true);
         t4j.execute();
 
-        verify(mockOutputWriter).write(any(File.class),
-                anyListOf(FileValue.class),
-                anyListOf(FileValue.class));
+        verify(mockOutputWriter).write(any(File.class), anyMap(), anyMap());
     }
 
     @Test(expected = RuntimeException.class)

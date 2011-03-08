@@ -12,8 +12,9 @@ import static org.hamcrest.Matchers.isIn;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ch.lambdaj.function.convert.Converter;
@@ -77,9 +78,12 @@ public class ChurnCalculator {
         return result;
     }
 
-    public List<FileValue> getResults() {
-        Collections.sort(results);
-        return results;
+    public Map<String, Integer> getResults() {
+        Map<String, Integer> mappedResults = new HashMap<String, Integer>();
+        for (FileValue fileValue : results) {
+            mappedResults.put(fileValue.getFilePath(), fileValue.getValue());
+        }
+        return mappedResults;
     }
 
     private Converter<File, String> intoNames() {

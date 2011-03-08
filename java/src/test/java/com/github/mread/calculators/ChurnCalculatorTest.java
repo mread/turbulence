@@ -107,6 +107,7 @@ public class ChurnCalculatorTest {
         calculator.calculate();
 
         assertThat(calculator.getResults().size(), equalTo(2));
-        assertThat(calculator.getResults(), not(hasItem(new FileValue(new File("c.txt"), 0))));
+        assertThat(calculator.getResults().keySet(), not(hasItem(
+                new FileValue(new File("c.txt"), 0).getFilePath())));
     }
 }
