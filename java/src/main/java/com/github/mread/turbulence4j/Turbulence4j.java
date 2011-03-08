@@ -34,9 +34,7 @@ public class Turbulence4j {
         }
         totalComplexity = complexityCalculator.calculate();
         totalChurn = churnCalculator.calculate();
-        outputWriter.write(workingDirectory,
-                churnCalculator.getResults(),
-                complexityCalculator.getResults());
+        outputWriter.write(churnCalculator.getResults(), complexityCalculator.getResults());
 
     }
 

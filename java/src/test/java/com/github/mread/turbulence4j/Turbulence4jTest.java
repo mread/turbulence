@@ -38,7 +38,7 @@ public class Turbulence4jTest {
         when(mockGitAdapter.isRepo(any(File.class))).thenReturn(true);
         t4j.execute();
 
-        verify(mockOutputWriter).write(any(File.class), anyMap(), anyMap());
+        verify(mockOutputWriter).write(anyMap(), anyMap());
     }
 
     @Test(expected = RuntimeException.class)

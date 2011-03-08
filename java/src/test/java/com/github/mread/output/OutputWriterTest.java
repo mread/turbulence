@@ -11,11 +11,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.mread.output.CanWriteOutput;
-import com.github.mread.output.JsonOutputWriter;
-import com.github.mread.output.OutputWriter;
-import com.github.mread.output.RawOutputWriter;
-
 public class OutputWriterTest {
 
     private static final String A_JAVA = "a/a.java";
@@ -47,7 +42,7 @@ public class OutputWriterTest {
     @Test
     public void writesOutput() throws IOException {
 
-        outputWriter.write(new File("."), exampleChurn, exampleComplexity);
+        outputWriter.write(exampleChurn, exampleComplexity);
 
         assertThat(new File(destinationDirectory, RawOutputWriter.RAW_OUTPUT_TXT).exists(),
                 equalTo(true));
@@ -58,17 +53,10 @@ public class OutputWriterTest {
     @Test
     public void transformsRawCalculatorInputIntoMap() throws IOException {
 
-        Map<String, int[]> richData = outputWriter.transformData("", exampleChurn, exampleComplexity);
+        Map<String, int[]> richData = outputWriter.transformData(exampleChurn, exampleComplexity);
 
         assertThat(richData.get(A_JAVA), equalTo(new int[] { 53, 3 }));
         assertThat(richData.get(B_JAVA), equalTo(new int[] { 25, 5 }));
     }
 
-    @Test
-    public void matchingFilePrefix() {
-        assertThat(outputWriter.transformFilename("", "\\home\\a.java"), equalTo("\\home\\a.java"));
-        assertThat(outputWriter.transformFilename("nonsense", "\\home\\a.java"), equalTo("\\home\\a.java"));
-        assertThat(outputWriter.transformFilename("\\home", "\\home\\a.java"), equalTo("\\a.java"));
-        assertThat(outputWriter.transformFilename("\\home\\", "\\home\\a.java"), equalTo("a.java"));
-    }
 }
