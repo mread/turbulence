@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,8 +23,19 @@ public class MoveAggregatorTest {
     }
 
     @Test
-    public void singleMove() {
-        List<String> simpleMoveExample = asList(
+    public void singleFileMove() {
+        List<String> simpleMoveExample = Arrays.asList(
+                "template/g.java",
+                "g.java => template/g.java",
+                "g.java"
+                );
+        MoveAggregator moveAggregator = new MoveAggregator(simpleMoveExample);
+        assertThat(moveAggregator.getUltimateName("g.java"), equalTo("template/g.java"));
+    }
+
+    @Test
+    public void singleDirectoryMove() {
+        List<String> simpleMoveExample = Arrays.asList(
                 "b/a.java",
                 "{a => b}/a.java",
                 "a/a.java"
@@ -33,8 +45,8 @@ public class MoveAggregatorTest {
     }
 
     @Test
-    public void singleDeepMove() {
-        List<String> simpleMoveExample = asList(
+    public void singleDeepDirectoryMove() {
+        List<String> simpleMoveExample = Arrays.asList(
                 "x/b/a.java",
                 "x/{a => b}/a.java",
                 "x/a/a.java"
