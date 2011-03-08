@@ -42,27 +42,42 @@ public class ChurnCalculatorTest {
     }
 
     @Test
+    public void handlesFileMoves() {
+        List<String> input = asList("10\t6\tgithub/mread/{turbulence4j => output}/OutputWriter.java");
+        List<FileValue> output = churnCalculator.churnByLogLine(input);
+        assertThat(output.get(0), equalTo(fileValueFor("github/mread/output/OutputWriter.java", 0)));
+    }
+
+    @Test
+    public void parsesMoves() {
+        assertThat(churnCalculator.parseForMoves("github/mread/output/OutputWriter.java"),
+                equalTo("github/mread/output/OutputWriter.java"));
+        assertThat(churnCalculator.parseForMoves("github/mread/{turbulence4j => output}/OutputWriter.java"),
+                equalTo("github/mread/output/OutputWriter.java"));
+    }
+
+    @Test
     public void totalsAddAndDeletes() {
         List<String> input = asList("10\t6\tlib/turbulence.java", "17\t2\tlib/eddies.java");
         List<FileValue> output = churnCalculator.churnByLogLine(input);
-        assertThat(output.get(0), equalTo(new FileValue(new File(WORKING_DIRECTORY, "lib/turbulence.java"), 16)));
-        assertThat(output.get(1), equalTo(new FileValue(new File(WORKING_DIRECTORY, "lib/eddies.java"), 19)));
+        assertThat(output.get(0), equalTo(fileValueFor("lib/turbulence.java", 16)));
+        assertThat(output.get(1), equalTo(fileValueFor("lib/eddies.java", 19)));
     }
 
     @Test
     public void groupsUpByFileAndSumsChurnExcludingLast() {
         List<FileValue> input = new ArrayList<FileValue>();
-        input.add(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 5));
-        input.add(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 3));
-        input.add(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 4));
-        input.add(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 8));
-        input.add(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 5));
-        input.add(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 2));
+        input.add(fileValueFor("a.java", 5));
+        input.add(fileValueFor("b.java", 3));
+        input.add(fileValueFor("a.java", 4));
+        input.add(fileValueFor("b.java", 8));
+        input.add(fileValueFor("b.java", 5));
+        input.add(fileValueFor("a.java", 2));
 
         List<FileValue> groupedOutput = churnCalculator.groupUp(input);
 
-        assertThat(groupedOutput.get(0), equalTo(new FileValue(new File(WORKING_DIRECTORY, "a.java"), 9)));
-        assertThat(groupedOutput.get(1), equalTo(new FileValue(new File(WORKING_DIRECTORY, "b.java"), 11)));
+        assertThat(groupedOutput.get(0), equalTo(fileValueFor("a.java", 9)));
+        assertThat(groupedOutput.get(1), equalTo(fileValueFor("b.java", 11)));
 
     }
 
@@ -107,7 +122,10 @@ public class ChurnCalculatorTest {
         calculator.calculate();
 
         assertThat(calculator.getResults().size(), equalTo(2));
-        assertThat(calculator.getResults().keySet(), not(hasItem(
-                new FileValue(new File("c.txt"), 0).getFilePath())));
+        assertThat(calculator.getResults().keySet(), not(hasItem(fileValueFor("c.txt", 0).getFilePath())));
+    }
+
+    private FileValue fileValueFor(String child, int value) {
+        return new FileValue(new File(WORKING_DIRECTORY, child), value);
     }
 }

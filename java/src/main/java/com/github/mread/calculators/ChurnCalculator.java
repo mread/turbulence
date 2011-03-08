@@ -73,9 +73,22 @@ public class ChurnCalculator {
         List<FileValue> result = new ArrayList<FileValue>();
         for (String line : input) {
             String[] split = line.split("\t");
-            result.add(new FileValue(new File(targetDirectory, split[2]), addsPlusDeletes(split)));
+            result.add(new FileValue(new File(targetDirectory, parseForMoves(split[2])), addsPlusDeletes(split)));
         }
         return result;
+    }
+
+    String parseForMoves(String filePart) {
+        if (!filePart.contains(" => ")) {
+            return filePart;
+        }
+        int firstCurly = filePart.indexOf("{");
+        int newPath = filePart.indexOf("=> ", firstCurly) + 3;
+        int lastCurly = filePart.indexOf("}", newPath);
+
+        return filePart.substring(0, firstCurly)
+                + filePart.substring(newPath, lastCurly)
+                + filePart.substring(lastCurly + 1);
     }
 
     public Map<String, Integer> getResults() {

@@ -34,6 +34,10 @@ public class GitLogCommandTest {
     }
 
     private static final BufferedReader EXAMPLE_RAW_OUTPUT_WITH_NEWLINES =
-            new BufferedReader(new StringReader("\n\n\n\n10\t6\tlib/turbulence.java\n\n\n\n17\t2\tlib/eddies.java\n"));
+            new BufferedReader(new StringReader(
+                    "\n\n\n\n" +
+                            "10\t6\tlib/turbulence.java\n" +
+                            "\n\n\n" +
+                            "17\t2\tlib/eddies.java\n"));
 
 }
