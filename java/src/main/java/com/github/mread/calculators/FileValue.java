@@ -3,6 +3,9 @@ package com.github.mread.calculators;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 class FileValue implements Comparable<FileValue> {
 
     final File file;
@@ -32,11 +35,7 @@ class FileValue implements Comparable<FileValue> {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((file == null) ? 0 : file.hashCode());
-        result = prime * result + value;
-        return result;
+        return new HashCodeBuilder().append(file).append(value).toHashCode();
     }
 
     @Override
@@ -47,15 +46,10 @@ class FileValue implements Comparable<FileValue> {
             return false;
         if (getClass() != obj.getClass())
             return false;
+
         FileValue other = (FileValue) obj;
-        if (file == null) {
-            if (other.file != null)
-                return false;
-        } else if (!getFilePath().equals(other.getFilePath()))
-            return false;
-        if (value != other.value)
-            return false;
-        return true;
+
+        return new EqualsBuilder().append(getFilePath(), other.getFilePath()).isEquals();
 
     }
 

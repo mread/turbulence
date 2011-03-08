@@ -23,7 +23,8 @@ define "turbulence4j" do
                transitive('org.codehaus.javancss:javancss:jar:32.53'),
                transitive('com.googlecode.lambdaj:lambdaj:jar:2.3.1'),
                'org.json:json:jar:20090211',
-               'commons-io:commons-io:jar:2.0.1'
+               'commons-io:commons-io:jar:2.0.1',
+               'commons-lang:commons-lang:jar:2.5'
   
   test.compile.with 'junit:junit:jar:4.8.2',
   					'org.hamcrest:hamcrest-all:jar:1.1',
