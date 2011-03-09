@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class JavaFileFinderTest {
 
-    private static final File BASE_DIR = new File("src/test/java/com/github/mread/files/");
+    private static final File BASE_DIR = new File("src/test/java/com/github/mread/turbulence4j/files/");
 
     @Test
     public void canFindAllJavaFiles() {

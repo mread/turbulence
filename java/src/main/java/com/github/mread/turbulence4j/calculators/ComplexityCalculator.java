@@ -9,15 +9,23 @@ import java.util.Map;
 import javancss.FunctionMetric;
 import javancss.Javancss;
 
+import com.github.mread.turbulence4j.analysisapi.Calculator;
+import com.github.mread.turbulence4j.analysisapi.CalculatorResult;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 
-public class ComplexityCalculator {
+public class ComplexityCalculator implements Calculator {
 
     private final JavaFileFinder javaFileFinder;
     private final List<FileValue> results = new ArrayList<FileValue>();
 
     public ComplexityCalculator(JavaFileFinder javaFileFinder) {
         this.javaFileFinder = javaFileFinder;
+    }
+
+    @Override
+    public CalculatorResult run() {
+        calculate();
+        return null;
     }
 
     public int calculate() {

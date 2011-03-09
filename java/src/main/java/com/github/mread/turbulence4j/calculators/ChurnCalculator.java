@@ -17,10 +17,12 @@ import java.util.Set;
 
 import ch.lambdaj.group.Group;
 
+import com.github.mread.turbulence4j.analysisapi.Calculator;
+import com.github.mread.turbulence4j.analysisapi.CalculatorResult;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
-public class ChurnCalculator {
+public class ChurnCalculator implements Calculator {
 
     private static final int CHANGES_TO_EXCLUDE = 1;
     private final GitAdapter gitAdapter;
@@ -34,6 +36,12 @@ public class ChurnCalculator {
         this.targetDirectory = targetDirectory;
         this.javaFileFinder = javaFileFinder;
         this.gitAdapter = gitAdapter;
+    }
+
+    @Override
+    public CalculatorResult run() {
+        calculate();
+        return null;
     }
 
     public int calculate() {

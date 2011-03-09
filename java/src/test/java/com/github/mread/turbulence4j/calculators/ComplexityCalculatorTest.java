@@ -13,7 +13,7 @@ import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 public class ComplexityCalculatorTest {
 
-    private static final File WORKING_DIRECTORY = new File("src/test/java/com/github/mread/calculators/");
+    private static final File WORKING_DIRECTORY = new File("src/test/java/com/github/mread/turbulence4j/calculators/");
 
     @Test
     public void canMeasureTotalComplexityForAPackageDirectory() {
