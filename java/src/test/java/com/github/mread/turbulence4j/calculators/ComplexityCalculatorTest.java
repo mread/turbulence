@@ -1,4 +1,4 @@
-package com.github.mread.calculators;
+package com.github.mread.turbulence4j.calculators;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -9,7 +9,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.mread.files.JavaFileFinder;
+import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 public class ComplexityCalculatorTest {
 

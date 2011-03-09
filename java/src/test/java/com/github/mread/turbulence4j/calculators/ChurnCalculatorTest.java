@@ -1,4 +1,4 @@
-package com.github.mread.calculators;
+package com.github.mread.turbulence4j.calculators;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
@@ -19,7 +19,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.files.JavaFileFinder;
+import com.github.mread.turbulence4j.calculators.ChurnCalculator;
+import com.github.mread.turbulence4j.calculators.FileValue;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 @RunWith(MockitoJUnitRunner.class)

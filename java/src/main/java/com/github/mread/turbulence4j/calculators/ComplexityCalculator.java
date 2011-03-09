@@ -1,4 +1,4 @@
-package com.github.mread.calculators;
+package com.github.mread.turbulence4j.calculators;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.Map;
 import javancss.FunctionMetric;
 import javancss.Javancss;
 
-import com.github.mread.files.JavaFileFinder;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 public class ComplexityCalculator {
 

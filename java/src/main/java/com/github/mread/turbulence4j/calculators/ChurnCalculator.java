@@ -1,4 +1,4 @@
-package com.github.mread.calculators;
+package com.github.mread.turbulence4j.calculators;
 
 import static ch.lambdaj.Lambda.by;
 import static ch.lambdaj.Lambda.filter;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 import ch.lambdaj.group.Group;
 
-import com.github.mread.files.JavaFileFinder;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class ChurnCalculator {

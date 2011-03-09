@@ -1,4 +1,4 @@
-package com.github.mread.javancss;
+package com.github.mread.turbulence4j.javancss;
 
 import java.io.File;
 import java.util.List;
@@ -9,7 +9,7 @@ import javancss.ObjectMetric;
 
 import org.junit.Test;
 
-import com.github.mread.files.JavaFileFinder;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 public class JavaNcssSpikeTest {
 

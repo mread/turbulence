@@ -1,4 +1,4 @@
-package com.github.mread.calculators;
+package com.github.mread.turbulence4j.calculators;
 
 import java.util.HashMap;
 import java.util.List;

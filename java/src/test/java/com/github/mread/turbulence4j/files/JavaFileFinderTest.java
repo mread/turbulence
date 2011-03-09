@@ -1,4 +1,4 @@
-package com.github.mread.files;
+package com.github.mread.turbulence4j.files;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 public class JavaFileFinderTest {
 

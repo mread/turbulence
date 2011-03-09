@@ -1,4 +1,4 @@
-package com.github.mread.output;
+package com.github.mread.turbulence4j.output;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.mread.output.RawOutputWriter;
+import com.github.mread.turbulence4j.output.RawOutputWriter;
 
 public class RawOutputWriterTest {
 

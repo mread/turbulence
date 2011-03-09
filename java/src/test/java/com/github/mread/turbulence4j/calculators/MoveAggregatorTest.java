@@ -1,4 +1,4 @@
-package com.github.mread.calculators;
+package com.github.mread.turbulence4j.calculators;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.github.mread.turbulence4j.calculators.MoveAggregator;
 
 public class MoveAggregatorTest {
 

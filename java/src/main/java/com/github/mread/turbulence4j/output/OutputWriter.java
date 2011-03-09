@@ -1,4 +1,4 @@
-package com.github.mread.output;
+package com.github.mread.turbulence4j.output;
 
 import java.io.IOException;
 import java.util.Map;

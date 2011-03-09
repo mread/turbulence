@@ -1,4 +1,4 @@
-package com.github.mread.jdepend;
+package com.github.mread.turbulence4j.jdepend;
 
 import static org.junit.Assert.fail;
 
