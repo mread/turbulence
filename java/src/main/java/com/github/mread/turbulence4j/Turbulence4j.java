@@ -2,11 +2,11 @@ package com.github.mread.turbulence4j;
 
 import java.io.File;
 
-import com.github.mread.calculators.ChurnCalculator;
-import com.github.mread.calculators.ComplexityCalculator;
-import com.github.mread.files.JavaFileFinder;
-import com.github.mread.output.OutputWriter;
+import com.github.mread.turbulence4j.calculators.ChurnCalculator;
+import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
+import com.github.mread.turbulence4j.output.OutputWriter;
 
 public class Turbulence4j {
 

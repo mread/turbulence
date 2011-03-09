@@ -2,11 +2,11 @@ package com.github.mread.turbulence4j;
 
 import java.io.File;
 
-import com.github.mread.output.CanWriteOutput;
-import com.github.mread.output.JsonOutputWriter;
-import com.github.mread.output.OutputWriter;
-import com.github.mread.output.RawOutputWriter;
 import com.github.mread.turbulence4j.git.GitAdapter;
+import com.github.mread.turbulence4j.output.CanWriteOutput;
+import com.github.mread.turbulence4j.output.JsonOutputWriter;
+import com.github.mread.turbulence4j.output.OutputWriter;
+import com.github.mread.turbulence4j.output.RawOutputWriter;
 
 public class CommandLine {
 
