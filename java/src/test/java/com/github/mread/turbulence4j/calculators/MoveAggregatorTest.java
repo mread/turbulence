@@ -1,21 +1,19 @@
 package com.github.mread.turbulence4j.calculators;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
 
-import com.github.mread.turbulence4j.calculators.MoveAggregator;
-
 public class MoveAggregatorTest {
 
     @Test
     public void noMove() {
-        List<String> noMoveExample = Arrays.asList(
+        List<String> noMoveExample = asList(
                 "a/a.java",
                 "a/a.java"
                 );
@@ -25,7 +23,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void singleMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "b/a.java",
                 "{a => b}/a.java",
                 "a/a.java"
@@ -36,7 +34,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void singleDeepMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "x/b/a.java",
                 "x/{a => b}/a.java",
                 "x/a/a.java"
@@ -47,7 +45,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void canUseRawPathToGetUltimateName() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "b/a.java",
                 "{a => b}/a.java",
                 "a/a.java"
@@ -58,7 +56,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void doubleMove() {
-        List<String> simpleMoveExample = Arrays.asList(
+        List<String> simpleMoveExample = asList(
                 "{b => c}/a.java",
                 "b/a.java",
                 "{a => b}/a.java",
@@ -70,7 +68,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void ignoresLeadingDigits() {
-        List<String> noMoveExample = Arrays.asList(
+        List<String> noMoveExample = asList(
                 "3\t6\ta/a.java",
                 "5\t4\ta/a.java"
                 );

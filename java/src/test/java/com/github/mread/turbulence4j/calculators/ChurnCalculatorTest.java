@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -19,8 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.turbulence4j.calculators.ChurnCalculator;
-import com.github.mread.turbulence4j.calculators.FileValue;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
@@ -105,9 +102,10 @@ public class ChurnCalculatorTest {
     public void returnsChurnOnlyForFilesRequested() {
 
         when(mockGitAdapter.getLog(any(File.class)))
-                .thenReturn(Arrays.asList("1\t2\ta.java",
-                                        "1\t2\tb.java",
-                                        "1\t2\tc.txt"));
+                .thenReturn(asList(
+                        "1\t2\ta.java",
+                        "1\t2\tb.java",
+                        "1\t2\tc.txt"));
         when(mockJavaFileFinder.findAllJavaFiles()).thenReturn(asList("a.java", "b.java"));
 
         ChurnCalculator calculator = new ChurnCalculator(WORKING_DIRECTORY, mockJavaFileFinder, mockGitAdapter);

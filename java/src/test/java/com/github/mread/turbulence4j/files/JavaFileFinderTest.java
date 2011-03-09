@@ -10,8 +10,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.mread.turbulence4j.files.JavaFileFinder;
-
 public class JavaFileFinderTest {
 
     private static final File BASE_DIR = new File("src/test/java/com/github/mread/files/");

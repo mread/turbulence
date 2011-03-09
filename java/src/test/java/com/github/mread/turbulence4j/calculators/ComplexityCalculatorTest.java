@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 public class ComplexityCalculatorTest {

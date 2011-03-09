@@ -11,8 +11,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.mread.turbulence4j.output.JsonOutputWriter;
-
 public class JsonOutputWriterTest {
 
     private static final String A_JAVA = "a/a.java";
