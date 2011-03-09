@@ -1,5 +1,6 @@
 package com.github.mread.turbulence4j.calculators;
 
+import static com.github.mread.turbulence4j.calculators.MoveAggregator.oldName;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -19,6 +20,18 @@ public class MoveAggregatorTest {
                 );
         MoveAggregator moveAggregator = new MoveAggregator(noMoveExample);
         assertThat(moveAggregator.getUltimateName("a/a.java"), equalTo("a/a.java"));
+    }
+
+    @Test
+    public void simpleFileRename() {
+        List<String> simpleFileRenameExample = asList(
+                "mread/turbulence4j/Turbulence4j.java",
+                "mread/turbulence4j/{CommandLine.java => Turbulence4j.java}",
+                "mread/turbulence4j/CommandLine.java"
+                );
+        MoveAggregator moveAggregator = new MoveAggregator(simpleFileRenameExample);
+        assertThat(moveAggregator.getUltimateName("mread/turbulence4j/CommandLine.java"),
+                equalTo("mread/turbulence4j/Turbulence4j.java"));
     }
 
     @Test
@@ -106,5 +119,11 @@ public class MoveAggregatorTest {
     public void throwsExceptionIfWeTryToGetAnUnrecognisdName() {
         MoveAggregator moveAggregator = new MoveAggregator(Collections.<String> emptyList());
         moveAggregator.getUltimateName("file/we/never/saw.java");
+    }
+
+    @Test
+    public void canDecypherOldName() {
+        assertThat(oldName("github/mread/{ => turbulence4j}/calculators/ChurnCalculator.java"),
+                equalTo("github/mread/calculators/ChurnCalculator.java"));
     }
 }

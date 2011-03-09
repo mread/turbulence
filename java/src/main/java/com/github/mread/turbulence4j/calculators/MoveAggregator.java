@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class MoveAggregator {
 
     private static final String MOVE_INDICATOR = " => ";
@@ -55,20 +57,21 @@ public class MoveAggregator {
         return getRecursiveUltimateName(moves.get(filename), depth++);
     }
 
-    private String oldName(String logLine) {
+    static String oldName(String logLine) {
         int firstCurly = logLine.indexOf("{");
-        int newPath = logLine.indexOf("=> ", firstCurly) + 3;
+        int indicator = logLine.indexOf(" => ", firstCurly);
 
         if (firstCurly == -1) {
-            return logLine.substring(0, newPath - 4);
+            return logLine.substring(0, indicator);
         }
-        int lastCurly = logLine.indexOf("}", newPath);
-        return logLine.substring(0, firstCurly)
-                + logLine.substring(firstCurly + 1, newPath - 4)
+        int lastCurly = logLine.indexOf("}", indicator);
+        String result = logLine.substring(0, firstCurly)
+                + logLine.substring(firstCurly + 1, indicator)
                 + logLine.substring(lastCurly + 1);
+        return FilenameUtils.normalize(result, true);
     }
 
-    private String newName(String logLine) {
+    static String newName(String logLine) {
         int firstCurly = logLine.indexOf("{");
         int newPath = logLine.indexOf("=> ", firstCurly) + 3;
         if (firstCurly == -1) {
