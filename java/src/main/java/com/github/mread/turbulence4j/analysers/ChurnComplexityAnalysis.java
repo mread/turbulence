@@ -10,6 +10,7 @@ import com.github.mread.turbulence4j.calculators.ChurnCalculator;
 import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
+import com.github.mread.turbulence4j.output.OutputWriter;
 
 public class ChurnComplexityAnalysis extends BaseAnalysis {
 
@@ -18,8 +19,8 @@ public class ChurnComplexityAnalysis extends BaseAnalysis {
                 new Calculator[] {
                         new ChurnCalculator(targetDirectory, javaFileFinder, gitAdapter),
                         new ComplexityCalculator(javaFileFinder)
-                },
-                new Transformer[] {},
+            },
+                new Transformer[] { new OutputWriter(null) },
                 new Output[] {});
     }
 

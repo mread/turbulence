@@ -8,13 +8,15 @@ public abstract class BaseAnalysis implements Analysis {
     private final Calculator[] calculators;
     private final Transformer[] transformers;
     private final Output[] outputs;
-    private Map<Calculator, CalculatorResult> calculatorResults;
+    private CalculatorResults calculatorResults;
+    private Map<Transformer, TransformerResult> transformerResults;
 
     public BaseAnalysis(Calculator[] calculators, Transformer[] transformers, Output[] outputs) {
         this.calculators = calculators;
         this.transformers = transformers;
         this.outputs = outputs;
         initialiseCalculatorResults();
+        initialiseTransformerResults();
     }
 
     @Override
@@ -39,9 +41,13 @@ public abstract class BaseAnalysis implements Analysis {
     }
 
     private void initialiseCalculatorResults() {
-        calculatorResults = new HashMap<Calculator, CalculatorResult>();
-        for (Calculator calculator : calculators) {
-            calculatorResults.put(calculator, CalculatorResult.NEVER_RUN);
+        calculatorResults = new CalculatorResults(calculators);
+    }
+
+    private void initialiseTransformerResults() {
+        transformerResults = new HashMap<Transformer, TransformerResult>();
+        for (Transformer transformer : transformers) {
+            transformerResults.put(transformer, TransformerResult.NEVER_RUN);
         }
     }
 
@@ -50,11 +56,11 @@ public abstract class BaseAnalysis implements Analysis {
     }
 
     private void runTransformer(Transformer transformer) {
-        transformer.run();
+        transformerResults.put(transformer, transformer.run(calculatorResults));
     }
 
     private void runOutput(Output output) {
-        output.run();
+        output.run(transformerResults);
     }
 
 }

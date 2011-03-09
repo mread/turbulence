@@ -4,12 +4,21 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class OutputWriter {
+import com.github.mread.turbulence4j.analysisapi.CalculatorResults;
+import com.github.mread.turbulence4j.analysisapi.Transformer;
+import com.github.mread.turbulence4j.analysisapi.TransformerResult;
+
+public class OutputWriter implements Transformer {
 
     private final CanWriteOutput[] writers;
 
     public OutputWriter(CanWriteOutput[] writers) {
         this.writers = writers;
+    }
+
+    @Override
+    public TransformerResult run(CalculatorResults calculatorResults) {
+        return null;
     }
 
     public void write(Map<String, Integer> churn, Map<String, Integer> complexity) {
