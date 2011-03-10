@@ -3,9 +3,9 @@
 require 'buildr/java/emma'
 
 # Version number for this release
-VERSION_NUMBER = "1.0.0"
+VERSION_NUMBER = "0.0.1-SNAPSHOT"
 # Group identifier for your projects
-GROUP = "com.github.mread"
+GROUP = "com.github.mread.turbulence4j"
 COPYRIGHT = ""
 
 # Specify Maven 2.0 remote repositories here, like this:
@@ -24,7 +24,7 @@ define "turbulence4j" do
                transitive('com.googlecode.lambdaj:lambdaj:jar:2.3.1'),
                'org.json:json:jar:20090211',
                'commons-io:commons-io:jar:2.0.1',
-               'commons-lang:commons-lang:jar:2.5'
+               'commons-lang:commons-lang:jar:2.6'
   
   test.compile.with 'junit:junit:jar:4.8.2',
   					'org.hamcrest:hamcrest-all:jar:1.1',
