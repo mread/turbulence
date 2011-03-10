@@ -5,20 +5,27 @@ import java.util.Map;
 
 public class CalculatorResults {
 
-    private final Map<Calculator, CalculatorResult> results = new HashMap<Calculator, CalculatorResult>();
+    @SuppressWarnings("rawtypes")
+    private final Map<Class, CalculatorResult> results = new HashMap<Class, CalculatorResult>();
 
-    public CalculatorResults(Calculator[] calculators) {
-        for (Calculator calculator : calculators) {
-            results.put(calculator, CalculatorResult.NEVER_RUN);
+    public CalculatorResults(Calculator<?>[] calculators) {
+        for (Calculator<?> calculator : calculators) {
+            results.put(calculator.getClass(), CalculatorResult.NEVER_RUN);
         }
     }
 
-    public <T> CalculatorResult get(Calculator calculator) {
-        return results.get(calculator);
+    @SuppressWarnings("unchecked")
+    public <T> CalculatorResult<T> get(Class<? extends Calculator<T>> calculatorClass) {
+        CalculatorResult<T> calculatorResult = results.get(calculatorClass);
+        if (calculatorResult == null) {
+            throw new RuntimeException("Calculator not configured for this analysis: "
+                    + calculatorClass.getSimpleName());
+        }
+        return calculatorResult;
     }
 
-    public void put(Calculator calculator, CalculatorResult calculatorResult) {
-        results.put(calculator, calculatorResult);
+    public <T> void put(Class<? extends Calculator<T>> calculatorClass, CalculatorResult<T> calculatorResult) {
+        results.put(calculatorClass, calculatorResult);
     }
 
 }

@@ -1,14 +1,16 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-public interface CalculatorResult {
+public interface CalculatorResult<T> {
 
-    static CalculatorResult NEVER_RUN = new CalculatorResult() {
+    static class NeverRun implements CalculatorResult<String> {
         @Override
-        public Object getResult() {
-            return null;
+        public String getResult() {
+            return "this calc has never been run";
         }
-    };
+    }
 
-    Object getResult();
+    static CalculatorResult<String> NEVER_RUN = new NeverRun();
+
+    T getResult();
 
 }

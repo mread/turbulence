@@ -4,6 +4,4 @@ public interface Analysis {
 
     void run();
 
-    CalculatorResult getCalculatorResults(Calculator calculator);
-
 }

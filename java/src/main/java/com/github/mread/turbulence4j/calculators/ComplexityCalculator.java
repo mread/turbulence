@@ -13,7 +13,7 @@ import com.github.mread.turbulence4j.analysisapi.Calculator;
 import com.github.mread.turbulence4j.analysisapi.CalculatorResult;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 
-public class ComplexityCalculator implements Calculator {
+public class ComplexityCalculator implements Calculator<Map<String, Integer>> {
 
     private final JavaFileFinder javaFileFinder;
     private final List<FileValue> results = new ArrayList<FileValue>();
@@ -23,9 +23,9 @@ public class ComplexityCalculator implements Calculator {
     }
 
     @Override
-    public CalculatorResult run() {
+    public ComplexityCalculatorResult run() {
         calculate();
-        return null;
+        return new ComplexityCalculatorResult(getResults());
     }
 
     public int calculate() {
@@ -51,6 +51,21 @@ public class ComplexityCalculator implements Calculator {
             mappedResults.put(fileValue.getFilename(), fileValue.getValue());
         }
         return mappedResults;
+    }
+
+    public class ComplexityCalculatorResult implements CalculatorResult<Map<String, Integer>> {
+
+        private final Map<String, Integer> results;
+
+        public ComplexityCalculatorResult(Map<String, Integer> results) {
+            this.results = results;
+        }
+
+        @Override
+        public Map<String, Integer> getResult() {
+            return results;
+        }
+
     }
 
 }

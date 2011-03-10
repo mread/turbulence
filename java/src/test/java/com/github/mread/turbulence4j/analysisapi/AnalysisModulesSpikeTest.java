@@ -1,13 +1,10 @@
 package com.github.mread.turbulence4j.analysisapi;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasKey;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
-
-import java.util.Map;
 
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -17,25 +14,31 @@ import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.turbulence4j.analysis.closed.ClosedForReconfigurationAnalysis;
-
 @RunWith(MockitoJUnitRunner.class)
 public class AnalysisModulesSpikeTest {
 
     @Mock
-    private Calculator mockCalculator1;
+    private Calculator<?> mockCalculator1;
     @Mock
-    private Calculator mockCalculator2;
+    private Calculator<?> mockCalculator2;
     @Mock
-    private Transformer mockTransformer1;
+    private Transformer<?> mockTransformer1;
     @Mock
-    private Transformer mockTransformer2;
+    private Transformer<?> mockTransformer2;
     @Mock
     private Output mockOutput1;
     @Mock
     private Output mockOutput2;
 
     private Analysis mockedAnalysis;
+
+    @Before
+    public void setup() {
+        mockedAnalysis = new FakeAnalysis(
+                new Calculator[] { mockCalculator1, mockCalculator2 },
+                new Transformer[] { mockTransformer1, mockTransformer2 },
+                new Output[] { mockOutput1, mockOutput2 });
+    }
 
     @Test
     public void anAnalysisCanBeClosedForReconfiguration() {
@@ -59,83 +62,138 @@ public class AnalysisModulesSpikeTest {
     @Test
     public void itRunsEachOutput() {
         mockedAnalysis.run();
-        verify(mockOutput1).run(anyTransformerResults());
-        verify(mockOutput2).run(anyTransformerResults());
+        verify(mockOutput1).run(any(TransformerResults.class));
+        verify(mockOutput2).run(any(TransformerResults.class));
     }
 
     @Test
     public void transformersGetTheCalculatorResults() {
-        mockedAnalysis.run();
-        verify(mockTransformer1).run(argThat(hasCalculatorResultsFor(mockCalculator1)));
-        verify(mockTransformer1).run(argThat(hasCalculatorResultsFor(mockCalculator2)));
-        verify(mockTransformer2).run(argThat(hasCalculatorResultsFor(mockCalculator1)));
-        verify(mockTransformer2).run(argThat(hasCalculatorResultsFor(mockCalculator2)));
+        Analysis analysis = new FakeAnalysis(
+                new Calculator[] { new IntifierCalculator(5), new StringifierCalculator("abc") },
+                new Transformer[] { mockTransformer1, mockTransformer2 },
+                new Output[] { mockOutput1, mockOutput2 });
+
+        analysis.run();
+        verify(mockTransformer1).run(argThat(hasCalculatorResultsFor(IntifierCalculator.class)));
+        verify(mockTransformer1).run(argThat(hasCalculatorResultsFor(StringifierCalculator.class)));
+        verify(mockTransformer2).run(argThat(hasCalculatorResultsFor(IntifierCalculator.class)));
+        verify(mockTransformer2).run(argThat(hasCalculatorResultsFor(StringifierCalculator.class)));
     }
 
     @Test
     public void outputsGetTheTransformerResults() {
-        mockedAnalysis.run();
-        verify(mockOutput1).run(argThat(hasTransformerResultFor(mockTransformer1)));
-        verify(mockOutput1).run(argThat(hasTransformerResultFor(mockTransformer2)));
-        verify(mockOutput2).run(argThat(hasTransformerResultFor(mockTransformer1)));
-        verify(mockOutput2).run(argThat(hasTransformerResultFor(mockTransformer2)));
+        Analysis analysis = new FakeAnalysis(
+                new Calculator[] { new IntifierCalculator(3), new StringifierCalculator("xyz") },
+                new Transformer[] { new LongifierTransformer("xyz", 3, 0L) },
+                new Output[] { mockOutput1, mockOutput2 });
+
+        analysis.run();
+        verify(mockOutput1).run(argThat(hasTransformerResultFor(LongifierTransformer.class)));
+        verify(mockOutput2).run(argThat(hasTransformerResultFor(LongifierTransformer.class)));
     }
 
     @Test
-    public void aCalculatorThatProducesAStringCanBeTransformedByAStringParsingTransformer() {
+    public void aTransformerThatWantsToGetStringsFromAStringCalculatorAndIntsFromAnIntCalculator() {
 
-        final Calculator stringOutputtingCalculator = new Calculator() {
-            @Override
-            public CalculatorResult run() {
-                return new CalculatorResult() {
-                    @Override
-                    public Object getResult() {
-                        return "abc";
-                    }
-                };
-            }
-        };
-        Transformer stringParsingTransformer = new Transformer() {
-            @Override
-            public TransformerResult run(CalculatorResults calculatorResults) {
-                CalculatorResult calculatorResult = calculatorResults.get(stringOutputtingCalculator);
-                String result = (String) calculatorResult.getResult();
-                assertThat(result, equalTo("abc"));
-                return null;
-            }
-        };
+        Calculator<String> stringifier = new StringifierCalculator("abc");
+        Calculator<Integer> intifier = new IntifierCalculator(35);
+        Transformer<Long> transformer = new LongifierTransformer("abc", 35, 51);
 
-        FakeAnalysis analysisOfStrings = new FakeAnalysis(new Calculator[] { stringOutputtingCalculator },
-                new Transformer[] { stringParsingTransformer },
+        FakeAnalysis analysisOfStrings = new FakeAnalysis(
+                new Calculator[] { stringifier, intifier },
+                new Transformer[] { transformer },
                 Output.NONE);
 
         analysisOfStrings.run();
     }
 
-    @Before
-    public void setup() {
-        mockedAnalysis = new FakeAnalysis(
-                new Calculator[] { mockCalculator1, mockCalculator2 },
-                new Transformer[] { mockTransformer1, mockTransformer2 },
-                new Output[] { mockOutput1, mockOutput2 });
+    private static final class IntifierCalculator implements Calculator<Integer> {
+        private final int result;
+
+        public IntifierCalculator(int result) {
+            this.result = result;
+        }
+
+        @Override
+        public CalculatorResult<Integer> run() {
+            return new CalculatorResult<Integer>() {
+                @Override
+                public Integer getResult() {
+                    return result;
+                }
+            };
+        }
     }
 
-    private Matcher<CalculatorResults> hasCalculatorResultsFor(final Calculator calculator) {
+    private static final class StringifierCalculator implements Calculator<String> {
+        private final String result;
+
+        public StringifierCalculator(String result) {
+            this.result = result;
+        }
+
+        @Override
+        public CalculatorResult<String> run() {
+            return new CalculatorResult<String>() {
+                @Override
+                public String getResult() {
+                    return result;
+                }
+            };
+        }
+    }
+
+    private static final class LongifierTransformer implements Transformer<Long> {
+        private final String expectedString;
+        private final int expectedInt;
+        private final long result;
+
+        public LongifierTransformer(String expectedString, int expectedInt, long result) {
+            this.expectedString = expectedString;
+            this.expectedInt = expectedInt;
+            this.result = result;
+        }
+
+        @Override
+        public TransformerResult<Long> run(CalculatorResults calculatorResults) {
+            CalculatorResult<String> stringifierResult = calculatorResults.get(StringifierCalculator.class);
+            String string = stringifierResult.getResult();
+            assertThat(string, equalTo(expectedString));
+            CalculatorResult<Integer> intifierResult = calculatorResults.get(IntifierCalculator.class);
+            int integer = intifierResult.getResult();
+            assertThat(integer, equalTo(expectedInt));
+            return new TransformerResult<Long>() {
+                @Override
+                public Long getResult() {
+                    return result;
+                }
+            };
+        }
+    }
+
+    private <T> Matcher<CalculatorResults> hasCalculatorResultsFor(
+            final Class<? extends Calculator<T>> calculatorClass) {
+
         return new ArgumentMatcher<CalculatorResults>() {
             @Override
             public boolean matches(Object argument) {
-                CalculatorResults arg = (CalculatorResults) argument;
-                return arg.get(calculator) != CalculatorResult.NEVER_RUN;
+                CalculatorResults calcResults = (CalculatorResults) argument;
+                CalculatorResult<T> calculatorResult = calcResults.get(calculatorClass);
+                return calculatorResult != CalculatorResult.NEVER_RUN;
             }
         };
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<Transformer, TransformerResult> anyTransformerResults() {
-        return any(Map.class);
-    }
+    private <T> Matcher<TransformerResults> hasTransformerResultFor(
+            final Class<? extends Transformer<T>> transformerClass) {
 
-    private Matcher<Map<Transformer, TransformerResult>> hasTransformerResultFor(Transformer transformer) {
-        return hasKey(transformer);
+        return new ArgumentMatcher<TransformerResults>() {
+            @Override
+            public boolean matches(Object argument) {
+                TransformerResults transformerResults = (TransformerResults) argument;
+                TransformerResult<T> transformerResult = transformerResults.get(transformerClass);
+                return transformerResult != TransformerResult.NEVER_RUN;
+            }
+        };
     }
 }

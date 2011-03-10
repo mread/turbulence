@@ -22,7 +22,7 @@ import com.github.mread.turbulence4j.analysisapi.CalculatorResult;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
-public class ChurnCalculator implements Calculator {
+public class ChurnCalculator implements Calculator<Map<String, Integer>> {
 
     private static final int CHANGES_TO_EXCLUDE = 1;
     private final GitAdapter gitAdapter;
@@ -39,9 +39,9 @@ public class ChurnCalculator implements Calculator {
     }
 
     @Override
-    public CalculatorResult run() {
+    public ChurnCalculatorResult run() {
         calculate();
-        return null;
+        return new ChurnCalculatorResult(getResults());
     }
 
     public int calculate() {
@@ -101,6 +101,21 @@ public class ChurnCalculator implements Calculator {
         } catch (NumberFormatException nfe) {
             return 0;
         }
+    }
+
+    public class ChurnCalculatorResult implements CalculatorResult<Map<String, Integer>> {
+
+        private final Map<String, Integer> results;
+
+        public ChurnCalculatorResult(Map<String, Integer> results) {
+            this.results = results;
+        }
+
+        @Override
+        public Map<String, Integer> getResult() {
+            return results;
+        }
+
     }
 
 }

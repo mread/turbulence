@@ -3,10 +3,6 @@ package com.github.mread.turbulence4j;
 import java.io.File;
 
 import com.github.mread.turbulence4j.git.GitAdapter;
-import com.github.mread.turbulence4j.output.CanWriteOutput;
-import com.github.mread.turbulence4j.output.JsonOutputWriter;
-import com.github.mread.turbulence4j.output.OutputWriter;
-import com.github.mread.turbulence4j.output.RawOutputWriter;
 
 public class CommandLine {
 
@@ -30,14 +26,7 @@ public class CommandLine {
 
     private CommandLine(File workingDirectory, File outputDirectory) {
         this(new TemplateManager(outputDirectory),
-                new Turbulence4j(
-                        workingDirectory,
-                        new OutputWriter(
-                                new CanWriteOutput[] {
-                                        new RawOutputWriter(outputDirectory),
-                                        new JsonOutputWriter(new File(outputDirectory, "js/"))
-                                }),
-                        new GitAdapter()));
+                new Turbulence4j(workingDirectory, outputDirectory, new GitAdapter()));
     }
 
     CommandLine(TemplateManager templateManager, Turbulence4j turbulence4j) {

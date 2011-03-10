@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.analysis.closed;
+package com.github.mread.turbulence4j.analysisapi;
 
 import com.github.mread.turbulence4j.analysisapi.BaseAnalysis;
 import com.github.mread.turbulence4j.analysisapi.Calculator;
