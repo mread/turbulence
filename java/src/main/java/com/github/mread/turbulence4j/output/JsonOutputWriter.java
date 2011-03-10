@@ -43,11 +43,12 @@ public class JsonOutputWriter implements CanWriteOutput {
                     other.put(row);
                 }
             }
-            root.put("src/main/java", src);
-            root.put("src/test/java", test);
+            // seems to render JSON in reverse order of puts
             if (other.length() > 0) {
                 root.put("other", other);
             }
+            root.put("src/test/java", test);
+            root.put("src/main/java", src);
 
             FileWriter writer = new FileWriter(jsonOutput);
             writer.append("var directorySeries = ");
