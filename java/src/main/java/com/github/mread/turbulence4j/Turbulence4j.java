@@ -18,7 +18,7 @@ public class Turbulence4j {
                 gitAdapter,
                 new ChurnComplexityAnalysis(
                         workingDirectory,
-                        new JavaFileFinder(workingDirectory),
+                        new JavaFileFinder(workingDirectory, "target"),
                         gitAdapter,
                         outputDirectory));
     }

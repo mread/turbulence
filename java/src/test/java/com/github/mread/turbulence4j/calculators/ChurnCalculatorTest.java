@@ -48,6 +48,7 @@ public class ChurnCalculatorTest {
                 "5\t0\tmread/turbulence4j/CommandLine.java",
                 "5\t0\tmread/turbulence4j/CommandLine.java");
         List<FileValue> output = churnCalculator.groupUp(churnCalculator.churnByLogLine(input));
+        assertThat(output.size(), equalTo(1));
         assertThat(output.get(0), equalTo(fileValueFor("mread/turbulence4j/Turbulence4j.java", 131)));
     }
 
@@ -60,6 +61,7 @@ public class ChurnCalculatorTest {
     }
 
     @Test
+    // note that last is the first commit as this is in reverse date order
     public void groupsUpByFileAndSumsChurnExcludingLast() {
         List<FileValue> input = new ArrayList<FileValue>();
         input.add(fileValueFor("a.java", 5));
