@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.github.mread.turbulence4j.analysisapi.Output;
 import com.github.mread.turbulence4j.analysisapi.TransformerResults;
-import com.github.mread.turbulence4j.transformers.FileResultsMergeTransformer;
+import com.github.mread.turbulence4j.transformers.MergeMapsTransformer;
 
 public class RawOutputWriter implements Output {
 
@@ -20,7 +20,7 @@ public class RawOutputWriter implements Output {
 
     @Override
     public void run(TransformerResults transformerResults) {
-        Map<String, int[]> result = transformerResults.get(FileResultsMergeTransformer.class).getResult();
+        Map<String, int[]> result = transformerResults.get(MergeMapsTransformer.class).getResult();
         try {
             write(result);
         } catch (IOException e) {

@@ -12,7 +12,7 @@ import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 import com.github.mread.turbulence4j.outputs.JsonOutputWriter;
 import com.github.mread.turbulence4j.outputs.RawOutputWriter;
-import com.github.mread.turbulence4j.transformers.FileResultsMergeTransformer;
+import com.github.mread.turbulence4j.transformers.MergeMapsTransformer;
 
 public class ChurnComplexityAnalysis extends BaseAnalysis {
 
@@ -25,7 +25,7 @@ public class ChurnComplexityAnalysis extends BaseAnalysis {
                 new Calculator[] {
                         new ChurnCalculator(targetDirectory, javaFileFinder, gitAdapter),
                         new ComplexityCalculator(javaFileFinder) },
-                new Transformer[] { new FileResultsMergeTransformer() },
+                new Transformer[] { new MergeMapsTransformer() },
                 new Output[] {
                         new JsonOutputWriter(new File(destinationDirectory, "js/")),
                         new RawOutputWriter(destinationDirectory) });

@@ -1,7 +1,5 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.verify;
@@ -105,70 +103,6 @@ public class AnalysisModulesSpikeTest {
                 Output.NONE);
 
         analysisOfStrings.run();
-    }
-
-    private static final class IntifierCalculator implements Calculator<Integer> {
-        private final int result;
-
-        public IntifierCalculator(int result) {
-            this.result = result;
-        }
-
-        @Override
-        public CalculatorResult<Integer> run() {
-            return new CalculatorResult<Integer>() {
-                @Override
-                public Integer getResult() {
-                    return result;
-                }
-            };
-        }
-    }
-
-    private static final class StringifierCalculator implements Calculator<String> {
-        private final String result;
-
-        public StringifierCalculator(String result) {
-            this.result = result;
-        }
-
-        @Override
-        public CalculatorResult<String> run() {
-            return new CalculatorResult<String>() {
-                @Override
-                public String getResult() {
-                    return result;
-                }
-            };
-        }
-    }
-
-    private static final class LongifierTransformer implements Transformer<Long> {
-        private final String expectedString;
-        private final int expectedInt;
-        private final long result;
-
-        public LongifierTransformer(String expectedString, int expectedInt, long result) {
-            this.expectedString = expectedString;
-            this.expectedInt = expectedInt;
-            this.result = result;
-        }
-
-        @Override
-        public TransformerResult<Long> run(CalculatorResults calculatorResults) {
-            CalculatorResult<String> stringifierResult = calculatorResults.get(StringifierCalculator.class);
-            String string = stringifierResult.getResult();
-            assertThat(string, equalTo(expectedString));
-            CalculatorResult<Integer> intifierResult = calculatorResults.get(IntifierCalculator.class);
-            int integer = intifierResult.getResult();
-            assertThat(integer, equalTo(expectedInt));
-            return new TransformerResult<Long>() {
-                @Override
-                public Long getResult() {
-                    return result;
-                }
-            };
-        }
     }
 
     private <T> Matcher<CalculatorResults> hasCalculatorResultsFor(

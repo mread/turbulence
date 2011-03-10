@@ -9,7 +9,7 @@ import com.github.mread.turbulence4j.analysisapi.TransformerResult;
 import com.github.mread.turbulence4j.calculators.ChurnCalculator;
 import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
 
-public class FileResultsMergeTransformer implements Transformer<Map<String, int[]>> {
+public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
 
     @Override
     public FileResultsMergeTransformerResult run(CalculatorResults calculatorResults) {
@@ -24,6 +24,7 @@ public class FileResultsMergeTransformer implements Transformer<Map<String, int[
         for (String complexityEntryFileName : complexity.keySet()) {
             if (!churn.containsKey(complexityEntryFileName)) {
                 // no churn at all - not even zero - probably not in git yet
+                System.err.println("No churn result for: " + complexityEntryFileName);
                 continue;
             }
             int churnValue = churn.get(complexityEntryFileName);
