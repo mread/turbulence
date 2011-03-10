@@ -9,7 +9,7 @@ import java.util.List;
 public class GitLogCommand extends BaseGitCommand<List<String>> {
 
     public GitLogCommand(File workingDirectory) {
-        super(workingDirectory, "log --all -M -C --numstat --format=%n --relative");
+        super(workingDirectory, "log --all --ignore-all-space -M -C --numstat --format=%n --relative");
     }
 
     @Override
