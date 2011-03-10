@@ -57,6 +57,7 @@ public class JsonOutputWriter implements Output {
                 }
             }
             // seems to render JSON in reverse order of puts
+            // so put them in reverse of how we want to see them
             if (other.length() > 0) {
                 root.put("other", other);
             }

@@ -16,14 +16,14 @@ public class JsonOutputWriterTest {
     private static final String A_JAVA = "a/a.java";
     private static final String B_JAVA = "b/b.java";
 
-    private final Map<String, int[]> exampleData = new HashMap<String, int[]>();
+    private Map<String, int[]> exampleData = new HashMap<String, int[]>();
     private File destinationDirectory;
 
     @Before
     public void setup() {
         exampleData.put(A_JAVA, new int[] { 3, 5 });
         exampleData.put(B_JAVA, new int[] { 30, 53 });
-        destinationDirectory = new File("target/raw-output-writer-test/");
+        destinationDirectory = new File("target/json-output-writer-test/");
         destinationDirectory.delete();
     }
 
