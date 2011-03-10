@@ -1,11 +1,15 @@
-package com.github.mread.turbulence4j.output;
+package com.github.mread.turbulence4j.outputs;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-public class RawOutputWriter implements CanWriteOutput {
+import com.github.mread.turbulence4j.analysisapi.Output;
+import com.github.mread.turbulence4j.analysisapi.TransformerResults;
+import com.github.mread.turbulence4j.transformers.FileResultsMergeTransformer;
+
+public class RawOutputWriter implements Output {
 
     static final String RAW_OUTPUT_TXT = "raw-output.txt";
     private final File destinationDirectory;
@@ -14,7 +18,17 @@ public class RawOutputWriter implements CanWriteOutput {
         this.destinationDirectory = destinationDirectory;
     }
 
-    public void write(Map<String, int[]> richData) throws IOException {
+    @Override
+    public void run(TransformerResults transformerResults) {
+        Map<String, int[]> result = transformerResults.get(FileResultsMergeTransformer.class).getResult();
+        try {
+            write(result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void write(Map<String, int[]> richData) throws IOException {
         File rawOutput = new File(destinationDirectory, RAW_OUTPUT_TXT);
         destinationDirectory.mkdirs();
         rawOutput.createNewFile();
@@ -26,4 +40,5 @@ public class RawOutputWriter implements CanWriteOutput {
         }
         fileOutputStream.close();
     }
+
 }

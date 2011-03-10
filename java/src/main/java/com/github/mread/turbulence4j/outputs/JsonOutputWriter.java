@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.output;
+package com.github.mread.turbulence4j.outputs;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,7 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JsonOutputWriter implements CanWriteOutput {
+import com.github.mread.turbulence4j.analysisapi.Output;
+import com.github.mread.turbulence4j.analysisapi.TransformerResults;
+import com.github.mread.turbulence4j.transformers.FileResultsMergeTransformer;
+
+public class JsonOutputWriter implements Output {
 
     static final String DATASERIES_JS = "data.js";
     private final File destinationDirectory;
@@ -19,7 +23,16 @@ public class JsonOutputWriter implements CanWriteOutput {
     }
 
     @Override
-    public void write(Map<String, int[]> richData) throws IOException {
+    public void run(TransformerResults transformerResults) {
+        Map<String, int[]> result = transformerResults.get(FileResultsMergeTransformer.class).getResult();
+        try {
+            write(result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    void write(Map<String, int[]> richData) throws IOException {
         File jsonOutput = new File(destinationDirectory, DATASERIES_JS);
         destinationDirectory.mkdirs();
         jsonOutput.createNewFile();
@@ -58,4 +71,5 @@ public class JsonOutputWriter implements CanWriteOutput {
             throw new RuntimeException(e);
         }
     }
+
 }
