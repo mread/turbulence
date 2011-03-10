@@ -38,7 +38,6 @@ public class CommandLineTest {
         commandLine.execute();
 
         verify(mockTemplateManager).execute();
-
     }
 
     @Test
@@ -47,7 +46,6 @@ public class CommandLineTest {
         commandLine.execute();
 
         verify(mockTurbulence4j).execute();
-
     }
 
     @Test
