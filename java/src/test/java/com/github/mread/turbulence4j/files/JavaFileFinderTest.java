@@ -65,6 +65,6 @@ public class JavaFileFinderTest {
         List<String> files = finder.findAllJavaFiles();
 
         assertThat(files, not(hasItem("target/1.java")));
-        assertThat(files, hasItem("a/target/1.java"));
+        assertThat(files, hasItem("a/target/2.java"));
     }
 }
