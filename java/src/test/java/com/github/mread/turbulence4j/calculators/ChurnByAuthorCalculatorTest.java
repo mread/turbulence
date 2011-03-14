@@ -46,7 +46,8 @@ public class ChurnByAuthorCalculatorTest {
     public void noFilesMeansNoScores() {
         when(mockFileFinder.findAllJavaFiles()).thenReturn(Collections.<String> emptyList());
         when(mockGitAdapter.getLogWithAuthor(WORKING_DIRECTORY)).thenReturn(Collections.<String> emptyList());
-        Map<AuthorFilenameKey, Integer> result = calculator.run().getResult();
+        calculator.calculate();
+        Map<AuthorFilenameKey, Integer> result = calculator.getResults();
         assertThat(result.size(), equalTo(0));
     }
 
@@ -62,7 +63,8 @@ public class ChurnByAuthorCalculatorTest {
                 "fred\t2\t2\ta/1.java"
                 ));
 
-        Map<AuthorFilenameKey, Integer> result = calculator.run().getResult();
+        calculator.calculate();
+        Map<AuthorFilenameKey, Integer> result = calculator.getResults();
 
         assertThat(result.get(keyOf("joe", "a/1.java")), equalTo(2));
         assertThat(result.get(keyOf("fred", "a/1.java")), equalTo(4));

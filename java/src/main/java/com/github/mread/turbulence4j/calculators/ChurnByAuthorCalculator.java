@@ -12,7 +12,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.github.mread.turbulence4j.analysisapi.Calculator;
-import com.github.mread.turbulence4j.analysisapi.CalculatorResult;
 import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator.AuthorFilenameKey;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
@@ -22,6 +21,7 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
     private final File workingDirectory;
     private final JavaFileFinder fileFinder;
     private final GitAdapter gitAdapter;
+    private Map<AuthorFilenameKey, Integer> results;
 
     public ChurnByAuthorCalculator(File workingDirectory, JavaFileFinder fileFinder, GitAdapter gitAdapter) {
         this.workingDirectory = workingDirectory;
@@ -30,11 +30,15 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
     }
 
     @Override
-    public ChurnByAuthorCalculatorResult run() {
+    public void calculate() {
         List<String> logWithAuthor = gitAdapter.getLogWithAuthor(workingDirectory);
         List<String[]> parsed = parseLines(logWithAuthor);
-        Map<AuthorFilenameKey, Integer> results = groupUp(parsed);
-        return new ChurnByAuthorCalculatorResult(results);
+        results = groupUp(parsed);
+    }
+
+    @Override
+    public Map<AuthorFilenameKey, Integer> getResults() {
+        return results;
     }
 
     List<String[]> parseLines(List<String> logLines) {
@@ -68,21 +72,6 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
 
     static AuthorFilenameKey keyOf(String author, String filename) {
         return new AuthorFilenameKey(author, filename);
-    }
-
-    public static class ChurnByAuthorCalculatorResult implements CalculatorResult<Map<AuthorFilenameKey, Integer>> {
-
-        private final Map<AuthorFilenameKey, Integer> results;
-
-        public ChurnByAuthorCalculatorResult(Map<AuthorFilenameKey, Integer> results) {
-            this.results = results;
-        }
-
-        @Override
-        public Map<AuthorFilenameKey, Integer> getResult() {
-            return results;
-        }
-
     }
 
     public static class AuthorFilenameKey {
