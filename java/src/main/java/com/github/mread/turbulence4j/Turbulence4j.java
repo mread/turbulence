@@ -3,37 +3,49 @@ package com.github.mread.turbulence4j;
 import java.io.File;
 
 import com.github.mread.turbulence4j.analysers.ChurnComplexityAnalysis;
-import com.github.mread.turbulence4j.analysisapi.Analysis;
+import com.github.mread.turbulence4j.analysisapi.AnalysisEngine;
+import com.github.mread.turbulence4j.analysisapi.AnalysisRepository;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class Turbulence4j {
 
-    private final GitAdapter gitAdapter;
     private final File workingDirectory;
-    private final Analysis analysis;
+    private final File outputDirectory;
+    private final GitAdapter gitAdapter;
+    private AnalysisEngine analysisEngine;
 
     public Turbulence4j(File workingDirectory, File outputDirectory, GitAdapter gitAdapter) {
-        this(workingDirectory,
-                gitAdapter,
-                new ChurnComplexityAnalysis(
-                        workingDirectory,
-                        new JavaFileFinder(workingDirectory, "target"),
-                        gitAdapter,
-                        outputDirectory));
+        this(workingDirectory, outputDirectory, gitAdapter, null);
     }
 
-    public Turbulence4j(File workingDirectory, GitAdapter gitAdapter, Analysis analysis) {
+    Turbulence4j(File workingDirectory, File outputDirectory, GitAdapter gitAdapter,
+            AnalysisEngine analysisEngine) {
         this.workingDirectory = workingDirectory;
+        this.outputDirectory = outputDirectory;
         this.gitAdapter = gitAdapter;
-        this.analysis = analysis;
+        this.analysisEngine = analysisEngine;
     }
 
     public void execute() {
         if (!isGitRepository()) {
             throw new RuntimeException("Not a git repo: " + workingDirectory.getAbsolutePath());
         }
-        analysis.run();
+        if (analysisEngine == null) {
+            initialiseAnalysisEngine();
+        }
+        analysisEngine.runAll();
+    }
+
+    private void initialiseAnalysisEngine() {
+        AnalysisRepository analysisRepository = new AnalysisRepository();
+        ChurnComplexityAnalysis churnComplexityAnalysis = new ChurnComplexityAnalysis(
+                workingDirectory,
+                new JavaFileFinder(workingDirectory, "target"),
+                gitAdapter,
+                outputDirectory);
+        analysisRepository.register(churnComplexityAnalysis);
+        analysisEngine = new AnalysisEngine(analysisRepository);
     }
 
     boolean isGitRepository() {

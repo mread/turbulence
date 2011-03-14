@@ -11,8 +11,8 @@ public abstract class BaseGitCommand<T> implements GitCommand<T> {
         T execute(BufferedReader reader);
     }
 
-    //    private static final String GIT_PATH = "/work/apps/git/bin/git ";
-    private static final String GIT_PATH = "git ";
+    private static final String GIT_PATH = "/work/apps/git/bin/git ";
+    //    private static final String GIT_PATH = "git ";
 
     private final String gitCommandLine;
     private final File workingDirectory;

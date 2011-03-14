@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.analysisapi3;
+package com.github.mread.turbulence4j.analysisapi;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,13 +8,8 @@ public class AnalysisRepository {
     private Set<Analysis> analyses = new HashSet<Analysis>();
 
     public void register(Analysis analysis) {
-
-        analysis.configureCalculators();
-        analysis.configureTransformers();
-        analysis.configureOutputs();
-
+        analysis.configure();
         analyses.add(analysis);
-
     }
 
     public boolean isRegistered(Analysis analysis) {

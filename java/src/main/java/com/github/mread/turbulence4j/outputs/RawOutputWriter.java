@@ -6,23 +6,24 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.analysisapi.Output;
-import com.github.mread.turbulence4j.analysisapi.TransformerResults;
-import com.github.mread.turbulence4j.transformers.MergeMapsTransformer;
+import com.github.mread.turbulence4j.analysisapi.Transformer;
 
 public class RawOutputWriter implements Output {
 
     static final String RAW_OUTPUT_TXT = "raw-output.txt";
-    private final File destinationDirectory;
 
-    public RawOutputWriter(File destinationDirectory) {
+    private final File destinationDirectory;
+    private final Transformer<Map<String, int[]>> transformer;
+
+    public RawOutputWriter(File destinationDirectory, Transformer<Map<String, int[]>> transformer) {
         this.destinationDirectory = destinationDirectory;
+        this.transformer = transformer;
     }
 
     @Override
-    public void run(TransformerResults transformerResults) {
-        Map<String, int[]> result = transformerResults.get(MergeMapsTransformer.class).getResult();
+    public void output() {
         try {
-            write(result);
+            write(transformer.getResults());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

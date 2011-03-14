@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.analysisapi3;
+package com.github.mread.turbulence4j.analysisapi;
 
 import java.util.Set;
 

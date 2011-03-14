@@ -1,9 +1,9 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-public interface Transformer<T> {
+public interface Transformer<R> {
 
-    Transformer<?>[] NONE = new Transformer<?>[] {};
+    void transform();
 
-    TransformerResult<T> run(CalculatorResults calculatorResults);
+    R getResults();
 
 }

@@ -32,7 +32,9 @@ public class MergeMapsTransformerTest {
     @Test
     public void transformsRawCalculatorInputIntoMap() throws IOException {
 
-        Map<String, int[]> richData = new MergeMapsTransformer().transformData(map1, map2);
+        MergeMapsTransformer transformer = new MergeMapsTransformer(null, null);
+        transformer.transformData(map1, map2);
+        Map<String, int[]> richData = transformer.getResults();
 
         assertThat(richData.get(A_JAVA), equalTo(new int[] { 53, 3 }));
         assertThat(richData.get(B_JAVA), equalTo(new int[] { 25, 5 }));

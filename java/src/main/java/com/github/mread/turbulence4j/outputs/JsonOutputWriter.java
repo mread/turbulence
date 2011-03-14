@@ -10,23 +10,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.github.mread.turbulence4j.analysisapi.Output;
-import com.github.mread.turbulence4j.analysisapi.TransformerResults;
-import com.github.mread.turbulence4j.transformers.MergeMapsTransformer;
+import com.github.mread.turbulence4j.analysisapi.Transformer;
 
 public class JsonOutputWriter implements Output {
 
     static final String DATASERIES_JS = "data.js";
     private final File destinationDirectory;
+    private final Transformer<Map<String, int[]>> transformer;
 
-    public JsonOutputWriter(File destinationDirectory) {
+    public JsonOutputWriter(File destinationDirectory, Transformer<Map<String, int[]>> transformer) {
         this.destinationDirectory = destinationDirectory;
+        this.transformer = transformer;
     }
 
     @Override
-    public void run(TransformerResults transformerResults) {
-        Map<String, int[]> result = transformerResults.get(MergeMapsTransformer.class).getResult();
+    public void output() {
         try {
-            write(result);
+            write(transformer.getResults());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

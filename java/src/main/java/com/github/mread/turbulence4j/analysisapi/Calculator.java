@@ -1,9 +1,9 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-public interface Calculator<T> {
+public interface Calculator<R> {
 
-    Calculator<?>[] NONE = new Calculator<?>[] {};
+    void calculate();
 
-    CalculatorResult<T> run();
+    R getResults();
 
 }

@@ -20,8 +20,7 @@ public class CommandLine {
     }
 
     public CommandLine(String workingDirectoryPath) {
-        this(new File(workingDirectoryPath),
-                new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME));
+        this(new File(workingDirectoryPath), new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME));
     }
 
     private CommandLine(File workingDirectory, File outputDirectory) {

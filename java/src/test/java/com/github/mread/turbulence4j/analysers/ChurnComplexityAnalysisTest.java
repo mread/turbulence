@@ -34,6 +34,7 @@ public class ChurnComplexityAnalysisTest {
                 mockGitAdapter,
                 destinationDirectory);
 
+        analysis.configure();
         analysis.run();
 
         verify(mockJavaFileFinder, atLeastOnce()).findAllJavaFiles();

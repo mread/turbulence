@@ -30,7 +30,7 @@ public class RawOutputWriterTest {
     @Test
     public void writesOutput() throws IOException {
 
-        RawOutputWriter outputWriter = new RawOutputWriter(destinationDirectory);
+        RawOutputWriter outputWriter = new RawOutputWriter(destinationDirectory, null);
         outputWriter.write(exampleData);
         assertThat(new File(destinationDirectory, RawOutputWriter.RAW_OUTPUT_TXT).exists(), equalTo(true));
     }

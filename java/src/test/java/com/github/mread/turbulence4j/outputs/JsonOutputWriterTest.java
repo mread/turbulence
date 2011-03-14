@@ -29,7 +29,7 @@ public class JsonOutputWriterTest {
 
     @Test
     public void writesOutput() throws IOException {
-        JsonOutputWriter outputWriter = new JsonOutputWriter(destinationDirectory);
+        JsonOutputWriter outputWriter = new JsonOutputWriter(destinationDirectory, null);
         outputWriter.write(exampleData);
         assertThat(new File(destinationDirectory, JsonOutputWriter.DATASERIES_JS).exists(), equalTo(true));
     }

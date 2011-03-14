@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.turbulence4j.analysisapi.Analysis;
+import com.github.mread.turbulence4j.analysisapi.AnalysisEngine;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -21,20 +21,20 @@ public class Turbulence4jTest {
     @Mock
     private GitAdapter mockGitAdapter;
     @Mock
-    private Analysis mockAnalysis;
+    private AnalysisEngine mockAnalysisEngine;
 
     private Turbulence4j t4j;
 
     @Before
     public void setup() {
-        t4j = new Turbulence4j(new File("."), mockGitAdapter, mockAnalysis);
+        t4j = new Turbulence4j(new File("."), new File("target/"), mockGitAdapter, mockAnalysisEngine);
     }
 
     @Test
     public void callsAnalysis() {
         when(mockGitAdapter.isRepo(any(File.class))).thenReturn(true);
         t4j.execute();
-        verify(mockAnalysis).run();
+        verify(mockAnalysisEngine).runAll();
     }
 
     @Test(expected = RuntimeException.class)

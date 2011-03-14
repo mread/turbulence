@@ -5,7 +5,6 @@ import static ch.lambdaj.Lambda.filter;
 import static ch.lambdaj.Lambda.group;
 import static ch.lambdaj.Lambda.having;
 import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sumFrom;
 import static org.hamcrest.Matchers.isIn;
 
 import java.io.File;
@@ -18,7 +17,6 @@ import java.util.Set;
 import ch.lambdaj.group.Group;
 
 import com.github.mread.turbulence4j.analysisapi.Calculator;
-import com.github.mread.turbulence4j.analysisapi.CalculatorResult;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
@@ -39,18 +37,18 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
     }
 
     @Override
-    public ChurnCalculatorResult run() {
-        calculate();
-        return new ChurnCalculatorResult(getResults());
-    }
-
-    public int calculate() {
+    public void calculate() {
         List<String> log = gitAdapter.getLog(targetDirectory);
         results = excludingUninterestingFiles(groupUp(churnByLogLine(log)));
-        if (results.size() == 0) {
-            return 0;
+    }
+
+    @Override
+    public Map<String, Integer> getResults() {
+        Map<String, Integer> mappedResults = new HashMap<String, Integer>();
+        for (FileValue fileValue : results) {
+            mappedResults.put(fileValue.getFilename(), fileValue.getValue());
         }
-        return sumFrom(results).getValue();
+        return mappedResults;
     }
 
     List<FileValue> excludingUninterestingFiles(List<FileValue> groupUp) {
@@ -85,14 +83,6 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
         return result;
     }
 
-    public Map<String, Integer> getResults() {
-        Map<String, Integer> mappedResults = new HashMap<String, Integer>();
-        for (FileValue fileValue : results) {
-            mappedResults.put(fileValue.getFilename(), fileValue.getValue());
-        }
-        return mappedResults;
-    }
-
     private int addsPlusDeletes(String[] split) {
         try {
             int adds = Integer.parseInt(split[0]);
@@ -101,21 +91,6 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
         } catch (NumberFormatException nfe) {
             return 0;
         }
-    }
-
-    public class ChurnCalculatorResult implements CalculatorResult<Map<String, Integer>> {
-
-        private final Map<String, Integer> results;
-
-        public ChurnCalculatorResult(Map<String, Integer> results) {
-            this.results = results;
-        }
-
-        @Override
-        public Map<String, Integer> getResult() {
-            return results;
-        }
-
     }
 
 }

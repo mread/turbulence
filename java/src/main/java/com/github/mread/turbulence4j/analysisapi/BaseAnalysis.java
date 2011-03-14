@@ -1,48 +1,38 @@
 package com.github.mread.turbulence4j.analysisapi;
 
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class BaseAnalysis implements Analysis {
 
-    private final Calculator<?>[] calculators;
-    private final Transformer<?>[] transformers;
-    private final Output[] outputs;
-    private final CalculatorResults calculatorResults;
-    private final TransformerResults transformerResults;
+    private List<Calculator<?>> calculators = new ArrayList<Calculator<?>>();
+    private List<Transformer<?>> transformers = new ArrayList<Transformer<?>>();
+    private List<Output> outputs = new ArrayList<Output>();
 
-    public BaseAnalysis(Calculator<?>[] calculators, Transformer<?>[] transformers, Output[] outputs) {
-        this.calculators = calculators;
-        this.transformers = transformers;
-        this.outputs = outputs;
-        calculatorResults = new CalculatorResults(calculators);
-        transformerResults = new TransformerResults(transformers);
+    protected void configureCalculators(Calculator<?>... calculators) {
+        this.calculators.addAll(asList(calculators));
+    }
+
+    protected void configureTransformers(Transformer<?>... transformers) {
+        this.transformers.addAll(asList(transformers));
+    }
+
+    protected void configureOutputs(Output... outputs) {
+        this.outputs.addAll(asList(outputs));
     }
 
     @Override
     public final void run() {
         for (Calculator<?> calculator : calculators) {
-            runCalculator(calculator);
+            calculator.calculate();
         }
         for (Transformer<?> transformer : transformers) {
-            runTransformer(transformer);
+            transformer.transform();
         }
         for (Output output : outputs) {
-            runOutput(output);
+            output.output();
         }
     }
-
-    @SuppressWarnings("unchecked")
-    private <T> void runCalculator(Calculator<T> calculator) {
-        calculatorResults.put((Class<? extends Calculator<T>>) calculator.getClass(),
-                calculator.run());
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> void runTransformer(Transformer<T> transformer) {
-        transformerResults.put((Class<? extends Transformer<T>>) transformer.getClass(),
-                transformer.run(calculatorResults));
-    }
-
-    private void runOutput(Output output) {
-        output.run(transformerResults);
-    }
-
 }

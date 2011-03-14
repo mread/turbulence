@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.analysisapi3;
+package com.github.mread.turbulence4j.analysisapi;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.github.mread.turbulence4j.analysisapi.Analysis;
+import com.github.mread.turbulence4j.analysisapi.AnalysisEngine;
+import com.github.mread.turbulence4j.analysisapi.AnalysisRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AnalysisEngineTest {
@@ -24,13 +28,13 @@ public class AnalysisEngineTest {
     public void canRunAnalyses() {
 
         AnalysisEngine engine = new AnalysisEngine(mockAnalysisRepository);
-        when(mockAnalysisRepository.findAll()).thenReturn(setContaining(mockAnalysis));
+        when(mockAnalysisRepository.findAll()).thenReturn(aSetContaining(mockAnalysis));
         engine.runAll();
 
         verify(mockAnalysis).run();
     }
 
-    private Set<Analysis> setContaining(Analysis analysis) {
+    private Set<Analysis> aSetContaining(Analysis analysis) {
         Set<Analysis> mockAnalysisInASet = new HashSet<Analysis>();
         mockAnalysisInASet.add(analysis);
         return mockAnalysisInASet;

@@ -3,24 +3,35 @@ package com.github.mread.turbulence4j.transformers;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.github.mread.turbulence4j.analysisapi.CalculatorResults;
+import com.github.mread.turbulence4j.analysisapi.Calculator;
 import com.github.mread.turbulence4j.analysisapi.Transformer;
-import com.github.mread.turbulence4j.analysisapi.TransformerResult;
-import com.github.mread.turbulence4j.calculators.ChurnCalculator;
-import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
 
 public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
 
-    @Override
-    public FileResultsMergeTransformerResult run(CalculatorResults calculatorResults) {
-        Map<String, Integer> churn = calculatorResults.get(ChurnCalculator.class).getResult();
-        Map<String, Integer> complexity = calculatorResults.get(ComplexityCalculator.class).getResult();
-        return new FileResultsMergeTransformerResult(transformData(churn, complexity));
+    private final Calculator<Map<String, Integer>> churnCalculator;
+    private final Calculator<Map<String, Integer>> complexityCalculator;
+
+    private Map<String, int[]> results = new TreeMap<String, int[]>();
+
+    public MergeMapsTransformer(Calculator<Map<String, Integer>> churnCalculator,
+            Calculator<Map<String, Integer>> complexityCalculator) {
+
+        this.churnCalculator = churnCalculator;
+        this.complexityCalculator = complexityCalculator;
     }
 
-    Map<String, int[]> transformData(Map<String, Integer> churn, Map<String, Integer> complexity) {
+    @Override
+    public void transform() {
+        transformData(churnCalculator.getResults(), complexityCalculator.getResults());
+    }
 
-        Map<String, int[]> results = new TreeMap<String, int[]>();
+    @Override
+    public Map<String, int[]> getResults() {
+        return results;
+    }
+
+    void transformData(Map<String, Integer> churn, Map<String, Integer> complexity) {
+
         for (String complexityEntryFileName : complexity.keySet()) {
             if (!churn.containsKey(complexityEntryFileName)) {
                 // no churn at all - not even zero - probably not in git yet
@@ -38,22 +49,6 @@ public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
                     existingValues[1] + complexityValue
             });
         }
-        return results;
-    }
-
-    public static class FileResultsMergeTransformerResult implements TransformerResult<Map<String, int[]>> {
-
-        private final Map<String, int[]> result;
-
-        public FileResultsMergeTransformerResult(Map<String, int[]> result) {
-            this.result = result;
-        }
-
-        @Override
-        public Map<String, int[]> getResult() {
-            return result;
-        }
-
     }
 
 }
