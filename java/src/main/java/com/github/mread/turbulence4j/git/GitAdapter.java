@@ -12,4 +12,8 @@ public class GitAdapter {
     public List<String> getLog(File directory) {
         return new GitLogCommand(directory).call();
     }
+
+    public List<String> getLogWithAuthor(File directory) {
+        return new GitLogWithAuthorCommand(directory).call();
+    }
 }

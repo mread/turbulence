@@ -21,13 +21,17 @@ public class MoveAggregator {
     private void processLogLine(String logLine) {
         logLine = ignoreTabs(logLine);
         if (isAMoveLine(logLine)) {
-            if (moves.containsKey(oldName(logLine))) {
-                moves.put(oldName(logLine), newName(logLine));
-            }
-            moves.put(newName(logLine), null);
+            handleMoveLine(logLine);
         } else {
             moves.put(logLine, null);
         }
+    }
+
+    private void handleMoveLine(String logLine) {
+        if (moves.containsKey(oldName(logLine))) {
+            moves.put(oldName(logLine), newName(logLine));
+        }
+        moves.put(newName(logLine), null);
     }
 
     private String ignoreTabs(String logLine) {
