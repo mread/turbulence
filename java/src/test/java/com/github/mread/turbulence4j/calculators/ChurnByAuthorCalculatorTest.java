@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator.AuthorFilenameKey;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 

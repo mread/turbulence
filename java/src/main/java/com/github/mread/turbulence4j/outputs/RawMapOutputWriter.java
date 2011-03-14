@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.analysisapi.Output;
-import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator.AuthorFilenameKey;
+import com.github.mread.turbulence4j.calculators.AuthorFilenameKey;
 import com.github.mread.turbulence4j.transformers.NoopMapTransformer;
 
 public class RawMapOutputWriter implements Output {

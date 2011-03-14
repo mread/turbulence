@@ -3,8 +3,8 @@ package com.github.mread.turbulence4j.transformers;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.analysisapi.Transformer;
+import com.github.mread.turbulence4j.calculators.AuthorFilenameKey;
 import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator;
-import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator.AuthorFilenameKey;
 
 public class NoopMapTransformer implements Transformer<Map<AuthorFilenameKey, Integer>> {
 

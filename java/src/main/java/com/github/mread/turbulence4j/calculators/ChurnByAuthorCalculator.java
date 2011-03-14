@@ -6,13 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-
 import com.github.mread.turbulence4j.analysisapi.Calculator;
-import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator.AuthorFilenameKey;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
@@ -53,11 +47,16 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
         Map<AuthorFilenameKey, Integer> results = new HashMap<AuthorFilenameKey, Integer>();
         for (String[] line : lines) {
             AuthorFilenameKey key = keyOf(line[0], line[3]);
-            int value = (results.get(key) == null ? 0 : results.get(key))
-                    + addsPlusDeletes(line[1], line[2]);
+            Integer existingValue = results.get(key);
+            int value = calculateNewValue(line, existingValue);
             results.put(key, value);
         }
         return results;
+    }
+
+    private int calculateNewValue(String[] line, Integer existingValue) {
+        return (existingValue == null ? 0 : existingValue)
+                + addsPlusDeletes(line[1], line[2]);
     }
 
     private int addsPlusDeletes(String addsString, String deletesString) {
@@ -72,49 +71,5 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
 
     static AuthorFilenameKey keyOf(String author, String filename) {
         return new AuthorFilenameKey(author, filename);
-    }
-
-    public static class AuthorFilenameKey {
-        private final String author;
-        private final String filename;
-
-        public AuthorFilenameKey(String author, String filename) {
-            this.author = author;
-            this.filename = filename;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public String getFilename() {
-            return filename;
-        }
-
-        @Override
-        public String toString() {
-            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(author).append(filename)
-                    .toString();
-        }
-
-        @Override
-        public int hashCode() {
-            return new HashCodeBuilder().append(author).append(filename).toHashCode();
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-
-            AuthorFilenameKey other = (AuthorFilenameKey) obj;
-
-            return new EqualsBuilder().append(author, other.author).append(filename, other.filename).isEquals();
-        }
-
     }
 }

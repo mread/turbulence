@@ -1,6 +1,6 @@
 package com.github.mread.turbulence4j.calculators;
 
-import static com.github.mread.turbulence4j.calculators.MoveAggregator.oldName;
+import static com.github.mread.turbulence4j.calculators.MoveUtils.extractOldNameFromLogLine;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -123,7 +123,7 @@ public class MoveAggregatorTest {
 
     @Test
     public void canDecypherOldName() {
-        assertThat(oldName("github/mread/{ => turbulence4j}/calculators/ChurnCalculator.java"),
+        assertThat(extractOldNameFromLogLine("github/mread/{ => turbulence4j}/calculators/ChurnCalculator.java"),
                 equalTo("github/mread/calculators/ChurnCalculator.java"));
     }
 }
