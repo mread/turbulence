@@ -8,7 +8,7 @@ import java.io.IOException;
 public class GitShowCommand extends BaseGitCommand<byte[]> {
 
     public GitShowCommand(File workingDirectory, String sha1, String targetFile) {
-        super(workingDirectory, "show " + sha1 + ":" + targetFile);
+        super(workingDirectory, "show -w " + sha1 + ":" + targetFile);
     }
 
     @Override
