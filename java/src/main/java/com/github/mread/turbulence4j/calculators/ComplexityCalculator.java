@@ -25,15 +25,21 @@ public class ComplexityCalculator implements Calculator<Map<String, Integer>> {
     public void calculate() {
         List<String> files = javaFileFinder.findAllJavaFiles();
         for (String file : files) {
-            Javancss javancss = new Javancss(new File(javaFileFinder.getBaseDir(), file));
-            List<?> functionMetrics = javancss.getFunctionMetrics();
-            FileValue result = new FileValue(file, 0);
-            for (Object object : functionMetrics) {
-                FunctionMetric functionMetric = (FunctionMetric) object;
-                result.value += functionMetric.ccn;
-            }
+            File targetFile = new File(javaFileFinder.getBaseDir(), file);
+            FileValue result = measureComplexity(file, targetFile);
             results.add(result);
         }
+    }
+
+    public FileValue measureComplexity(String filenameToUse, File targetFile) {
+        Javancss javancss = new Javancss(targetFile);
+        List<?> functionMetrics = javancss.getFunctionMetrics();
+        FileValue result = new FileValue(filenameToUse, 0);
+        for (Object object : functionMetrics) {
+            FunctionMetric functionMetric = (FunctionMetric) object;
+            result.value += functionMetric.ccn;
+        }
+        return result;
     }
 
     @Override

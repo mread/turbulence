@@ -9,7 +9,8 @@ import java.util.List;
 public class GitLogWithAuthorCommand extends BaseGitCommand<List<String>> {
 
     public GitLogWithAuthorCommand(File workingDirectory) {
-        super(workingDirectory, "log --all --ignore-all-space --numstat --format=Author:%aN --relative");
+        super(workingDirectory, "log --all --ignore-all-space --numstat --format=Author:%aN --relative " +
+                "--since=\"2 years ago\"");
     }
 
     @Override

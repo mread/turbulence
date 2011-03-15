@@ -5,7 +5,7 @@
     <title>Turbulence4J</title>
     <link rel="stylesheet" type="text/css" href="css/screen.css" />
 	<script type="text/javascript" language="javascript" src="js/jquery-1.5.1.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/ca-data.js"></script>
+    <script type="text/javascript" language="javascript" src="js/c2a-data.js"></script>
     <script type="text/javascript" language="javascript" src="js/highcharts.js"></script>
     <script>
 
@@ -17,15 +17,14 @@ $(document).ready(function() {
          defaultSeriesType: 'bar'
       },
       title: {
-         text: 'Churn by Author'
+         text: 'Complexity by Author'
       },
       xAxis: {
          categories: categories
       },
       yAxis: {
-         min: 0,
          title: {
-            text: 'Churn'
+            text: 'Complexity'
          }
       },
       tooltip: {

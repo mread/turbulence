@@ -23,6 +23,7 @@ public abstract class BaseGitCommand<T> implements GitCommand<T> {
     public BaseGitCommand(File workingDirectory, String gitCommandLine) {
         this.workingDirectory = workingDirectory;
         this.gitCommandLine = gitCommandLine;
+        //        System.out.println(gitCommandLine);
     }
 
     protected BaseGitCommand<T> runGit() {

@@ -4,7 +4,6 @@ import static ch.lambdaj.Lambda.by;
 import static ch.lambdaj.Lambda.filter;
 import static ch.lambdaj.Lambda.group;
 import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.index;
 import static ch.lambdaj.Lambda.on;
 import static org.hamcrest.Matchers.isIn;
 
