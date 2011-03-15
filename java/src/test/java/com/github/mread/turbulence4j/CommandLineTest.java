@@ -50,6 +50,7 @@ public class CommandLineTest {
 
     @Test
     public void runAgainstSpecificTarget() {
+        CommandLine.main(new String[] { "/work/workspaces/code-heatmap/junit" });
         CommandLine.main(new String[] { "." });
     }
 }

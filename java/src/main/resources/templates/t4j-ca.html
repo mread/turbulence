@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Turbulence4J</title>
+    <link rel="stylesheet" type="text/css" href="css/screen.css" />
+	<script type="text/javascript" language="javascript" src="js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/ca-data.js"></script>
+    <script type="text/javascript" language="javascript" src="js/highcharts.js"></script>
+    <script>
+
+var chart;    
+$(document).ready(function() {
+   chart = new Highcharts.Chart({
+      chart: {
+         renderTo: 'container',
+         defaultSeriesType: 'bar'
+      },
+      title: {
+         text: 'Churn by Author'
+      },
+      xAxis: {
+         categories: categories
+      },
+      yAxis: {
+         min: 0,
+         title: {
+            text: 'Churn'
+         }
+      },
+      tooltip: {
+         formatter: function() {
+            return ''+
+               this.x +': '+ this.y;
+         }
+      },
+      plotOptions: {
+         column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+         }
+      },
+      series: [ {name: 'author', data: values }]
+   });
+});
+    </script>    
+  </head>
+
+  <body>
+    <div id="menu">
+    	<a href="t4j-cc.html">Churn vs Complexity</a>
+    	<a href="t4j-ca.html">Churn by Author</a>
+    </div>
+	<div id="container" style="width: 100%"></div>
+  </body>
+</html>

@@ -14,7 +14,7 @@ import com.github.mread.turbulence4j.analysisapi.Transformer;
 
 public class JsonOutputWriter implements Output {
 
-    static final String DATASERIES_JS = "data.js";
+    static final String DATASERIES_JS = "cc-data.js";
     private final File destinationDirectory;
     private final Transformer<Map<String, int[]>> transformer;
 

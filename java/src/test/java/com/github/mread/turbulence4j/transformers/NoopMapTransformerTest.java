@@ -23,7 +23,8 @@ public class NoopMapTransformerTest {
         ChurnByAuthorCalculator churnCalculator = mock(ChurnByAuthorCalculator.class);
         when(churnCalculator.getResults()).thenReturn(DATA);
 
-        NoopMapTransformer noopMapTransformer = new NoopMapTransformer(churnCalculator);
+        NoopMapTransformer<AuthorFilenameKey, Integer> noopMapTransformer =
+                new NoopMapTransformer<AuthorFilenameKey, Integer>(churnCalculator);
         noopMapTransformer.transform();
 
         assertThat(noopMapTransformer.getResults(), equalTo(DATA));

@@ -33,7 +33,8 @@ public class TemplateManager {
     private FileFilter filter() {
         IOFileFilter htmlFiles = FileFilterUtils.suffixFileFilter(".html");
         IOFileFilter jsFiles = FileFilterUtils.suffixFileFilter(".js");
+        IOFileFilter cssFiles = FileFilterUtils.suffixFileFilter(".css");
 
-        return FileFilterUtils.or(htmlFiles, jsFiles, DirectoryFileFilter.DIRECTORY);
+        return FileFilterUtils.or(htmlFiles, jsFiles, cssFiles, DirectoryFileFilter.DIRECTORY);
     }
 }

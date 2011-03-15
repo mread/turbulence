@@ -13,9 +13,9 @@ public class RawMapOutputWriter implements Output {
 
     static final String RAW_OUTPUT_TXT = "raw-map-output.txt";
     private final File destinationDirectory;
-    private final NoopMapTransformer noopTransformer;
+    private final NoopMapTransformer<AuthorFilenameKey, Integer> noopTransformer;
 
-    public RawMapOutputWriter(File destinationDirectory, NoopMapTransformer noopTransformer) {
+    public RawMapOutputWriter(File destinationDirectory, NoopMapTransformer<AuthorFilenameKey, Integer> noopTransformer) {
         this.destinationDirectory = destinationDirectory;
         this.noopTransformer = noopTransformer;
     }

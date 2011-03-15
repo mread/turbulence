@@ -2,26 +2,25 @@ package com.github.mread.turbulence4j.transformers;
 
 import java.util.Map;
 
+import com.github.mread.turbulence4j.analysisapi.Calculator;
 import com.github.mread.turbulence4j.analysisapi.Transformer;
-import com.github.mread.turbulence4j.calculators.AuthorFilenameKey;
-import com.github.mread.turbulence4j.calculators.ChurnByAuthorCalculator;
 
-public class NoopMapTransformer implements Transformer<Map<AuthorFilenameKey, Integer>> {
+public class NoopMapTransformer<K, V> implements Transformer<Map<K, V>> {
 
-    private final ChurnByAuthorCalculator churnCalculator;
-    private Map<AuthorFilenameKey, Integer> results;
+    private final Calculator<Map<K, V>> mapCalculator;
+    private Map<K, V> results;
 
-    public NoopMapTransformer(ChurnByAuthorCalculator churnCalculator) {
-        this.churnCalculator = churnCalculator;
+    public NoopMapTransformer(Calculator<Map<K, V>> mapCalculator) {
+        this.mapCalculator = mapCalculator;
     }
 
     @Override
     public void transform() {
-        this.results = churnCalculator.getResults();
+        this.results = mapCalculator.getResults();
     }
 
     @Override
-    public Map<AuthorFilenameKey, Integer> getResults() {
+    public Map<K, V> getResults() {
         return results;
     }
 }

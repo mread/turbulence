@@ -2,6 +2,7 @@ package com.github.mread.turbulence4j;
 
 import java.io.File;
 
+import com.github.mread.turbulence4j.analysers.ChurnByAuthorAnalysis;
 import com.github.mread.turbulence4j.analysers.ChurnComplexityAnalysis;
 import com.github.mread.turbulence4j.analysisapi.AnalysisEngine;
 import com.github.mread.turbulence4j.analysisapi.AnalysisRepository;
@@ -44,7 +45,13 @@ public class Turbulence4j {
                 new JavaFileFinder(workingDirectory, "target"),
                 gitAdapter,
                 outputDirectory);
+        ChurnByAuthorAnalysis churnByAuthorAnalysis = new ChurnByAuthorAnalysis(
+                workingDirectory,
+                new JavaFileFinder(workingDirectory, "target"),
+                gitAdapter,
+                outputDirectory);
         analysisRepository.register(churnComplexityAnalysis);
+        analysisRepository.register(churnByAuthorAnalysis);
         analysisEngine = new AnalysisEngine(analysisRepository);
     }
 

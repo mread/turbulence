@@ -59,7 +59,8 @@ public class ChurnByAuthorCalculatorTest {
                 ));
         when(mockGitAdapter.getLogWithAuthor(WORKING_DIRECTORY)).thenReturn(asList(
                 "joe\t1\t1\ta/1.java",
-                "fred\t2\t2\ta/1.java"
+                "fred\t2\t2\ta/1.java",
+                "fred\t100\t100\ta/1.java"
                 ));
 
         calculator.calculate();
@@ -76,19 +77,36 @@ public class ChurnByAuthorCalculatorTest {
                 "joe\t1\t1\ta/1.java",
                 "fred\t2\t2\ta1.java");
 
-        List<String[]> entries = calculator.parseLines(logLines);
+        List<AuthorFileValue> entries = calculator.parseLines(logLines);
 
         assertThat(entries.size(), equalTo(2));
+        assertThat(entries.get(0).getAuthor(), equalTo("joe"));
+
+    }
+
+    @Test
+    public void canFilterOutFirstCommit() {
+        List<AuthorFileValue> input = asList(
+                new AuthorFileValue("joe", 2, "a/1.java"),
+                new AuthorFileValue("joe", 8, "a/1.java"),
+                new AuthorFileValue("john", 5, "b/2.java"),
+                new AuthorFileValue("fred", 4, "a/1.java"));
+
+        List<AuthorFileValue> output = calculator.filterOutFirstCommit(input);
+
+        assertThat(output.size(), equalTo(2));
+        assertThat(output.get(0), equalTo(new AuthorFileValue("joe", 2, "a/1.java")));
+        assertThat(output.get(1), equalTo(new AuthorFileValue("joe", 8, "a/1.java")));
 
     }
 
     @Test
     public void canGroupUpStructuredLogLines() {
 
-        List<String[]> input = asList(
-                new String[] { "joe", "1", "1", "a/1.java" },
-                new String[] { "joe", "4", "4", "a/1.java" },
-                new String[] { "fred", "2", "2", "a/1.java" });
+        List<AuthorFileValue> input = asList(
+                new AuthorFileValue("joe", 2, "a/1.java"),
+                new AuthorFileValue("joe", 8, "a/1.java"),
+                new AuthorFileValue("fred", 4, "a/1.java"));
 
         Map<AuthorFilenameKey, Integer> output = calculator.groupUp(input);
 

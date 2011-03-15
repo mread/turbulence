@@ -31,9 +31,9 @@ public class MoveAggregator {
 
     private void handleMoveLine(String logLine) {
         if (moves.containsKey(extractOldNameFromLogLine(logLine))) {
-            moves.put(MoveUtils.extractOldNameFromLogLine(logLine), extractNewNameFromLogLine(logLine));
+            moves.put(extractOldNameFromLogLine(logLine), extractNewNameFromLogLine(logLine));
         }
-        moves.put(MoveUtils.extractNewNameFromLogLine(logLine), null);
+        moves.put(extractNewNameFromLogLine(logLine), null);
     }
 
     private String ignoreTabs(String logLine) {
