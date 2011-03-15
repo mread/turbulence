@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-public class GitShowCommand extends BaseGitCommand<byte[]> {
+public class GitShowCommand extends BaseGitLogCommand<byte[]> {
 
     public GitShowCommand(File workingDirectory, String sha1, String targetFile) {
         super(workingDirectory, "show -w " + sha1 + ":" + targetFile);

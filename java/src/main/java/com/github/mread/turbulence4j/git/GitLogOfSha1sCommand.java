@@ -6,12 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitLogOfSha1sCommand extends BaseGitCommand<List<String>> {
+public class GitLogOfSha1sCommand extends BaseGitLogCommand<List<String>> {
 
     public GitLogOfSha1sCommand(File workingDirectory) {
         super(workingDirectory, "log --all --no-merges -w " +
-                "--format=\"%H|%P|%aN\" " +
-                "11.01..11.02");
+                "--format=\"%H|%P|%aN\"");
     }
 
     @Override

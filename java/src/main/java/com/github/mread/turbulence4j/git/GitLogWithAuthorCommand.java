@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitLogWithAuthorCommand extends BaseGitCommand<List<String>> {
+public class GitLogWithAuthorCommand extends BaseGitLogCommand<List<String>> {
 
     public GitLogWithAuthorCommand(File workingDirectory) {
-        super(workingDirectory, "log --all -w --numstat --format=Author:%aN --relative " +
-                "11.01..11.02");
+        super(workingDirectory, "log --all -w --numstat --format=Author:%aN --relative");
     }
 
     @Override

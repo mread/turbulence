@@ -16,20 +16,26 @@ public abstract class BaseGitCommand<T> implements GitCommand<T> {
 
     private final String gitCommandLine;
     private final File workingDirectory;
+    private final String range;
     private BufferedReader stdOut;
     private BufferedReader stdErr;
     private Process process;
 
-    public BaseGitCommand(File workingDirectory, String gitCommandLine) {
+    public BaseGitCommand(File workingDirectory, String gitCommandLine, String range) {
         this.workingDirectory = workingDirectory;
         this.gitCommandLine = gitCommandLine;
         //        System.out.println(gitCommandLine);
+        this.range = range;
+    }
+
+    public BaseGitCommand(File workingDirectory, String gitCommandLine) {
+        this(workingDirectory, gitCommandLine, "");
     }
 
     protected BaseGitCommand<T> runGit() {
         Runtime runtime = Runtime.getRuntime();
         try {
-            process = runtime.exec(GIT_PATH + gitCommandLine, null, workingDirectory);
+            process = runtime.exec(GIT_PATH + gitCommandLine + " " + range, null, workingDirectory);
             this.stdOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
             this.stdErr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         } catch (IOException e) {

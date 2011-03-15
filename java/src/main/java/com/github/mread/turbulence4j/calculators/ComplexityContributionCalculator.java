@@ -48,7 +48,7 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
         int commitProgress = 0;
         for (CommitParentAuthor commitParentAuthor : commits) {
             List<String> filesInACommit = filesInACommit(commitParentAuthor.getCommit());
-            reportProgress(commitProgress++, totalNumberOfCommits, filesInACommit.size());
+            reportProgress(++commitProgress, totalNumberOfCommits, filesInACommit.size());
             int beforeComplexity = 0;
             int afterComplexity = 0;
             for (String file : filesInACommit) {
