@@ -25,6 +25,7 @@ public class JsonChurnByAuthorOutputWriter implements Output {
     static final String DATASERIES_JS = "ca-data.js";
     private final File destinationDirectory;
     private final NoopMapTransformer<AuthorFilenameKey, Integer> transformer;
+    private String range = "";
 
     public JsonChurnByAuthorOutputWriter(File destinationDirectory,
             NoopMapTransformer<AuthorFilenameKey, Integer> transformer) {
@@ -59,6 +60,7 @@ public class JsonChurnByAuthorOutputWriter implements Output {
             FileWriter writer = new FileWriter(jsonOutput);
             writeVar(writer, "categories", categories);
             writeVar(writer, "values", values);
+            writer.append("var range = '" + range + "';\n");
             writer.close();
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -92,5 +94,10 @@ public class JsonChurnByAuthorOutputWriter implements Output {
             authorTotalChurn.put(authorFilename.getAuthor(), currentTotalChurn + churnValue);
         }
         return authorTotalChurn;
+    }
+
+    @Override
+    public void setRange(String range) {
+        this.range = range;
     }
 }

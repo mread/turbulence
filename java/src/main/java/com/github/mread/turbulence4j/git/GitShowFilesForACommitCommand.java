@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GitShowFilesForACommitCommand extends BaseGitLogCommand<List<String>> {
+public class GitShowFilesForACommitCommand extends BaseGitCommand<List<String>> {
 
     public GitShowFilesForACommitCommand(File workingDirectory, String sha1) {
-        super(workingDirectory, "show -w --name-only " +
+        super(workingDirectory, "show -w --no-merges --name-only " +
                 "--format=\"format:\" " + sha1);
     }
 

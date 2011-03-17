@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -107,7 +108,7 @@ public class ChurnCalculatorTest {
     @Test
     public void returnsChurnOnlyForFilesRequested() {
 
-        when(mockGitAdapter.getLog(any(File.class)))
+        when(mockGitAdapter.getLog(any(File.class), eq("")))
                 .thenReturn(asList(
                         "1\t2\ta.java",
                         "1\t2\tb.java",

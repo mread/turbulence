@@ -4,8 +4,6 @@ import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.sort;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +19,7 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
     private final JavaFileFinder javaFileFinder;
     private final GitAdapter gitAdapter;
     private List<AuthorValue> results;
+    private String range = "";
 
     public ComplexityContributionCalculator(File targetDirectory, JavaFileFinder javaFileFinder, GitAdapter gitAdapter) {
         this.targetDirectory = targetDirectory;
@@ -49,12 +48,17 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
         for (CommitParentAuthor commitParentAuthor : commits) {
             List<String> filesInACommit = filesInACommit(commitParentAuthor.getCommit());
             reportProgress(++commitProgress, totalNumberOfCommits, filesInACommit.size());
+            if (filesInACommit.size() > 100) {
+                System.out.println("Large commit: " + commitParentAuthor.getCommit());
+            }
             int beforeComplexity = 0;
             int afterComplexity = 0;
             for (String file : filesInACommit) {
                 reportMicroProgress();
-                beforeComplexity += measureComplexity(commitParentAuthor.getParent(), file).getValue();
-                afterComplexity += measureComplexity(commitParentAuthor.getCommit(), file).getValue();
+                if (file.endsWith(".java")) {
+                    beforeComplexity += measureComplexity(commitParentAuthor.getParent(), file).getValue();
+                    afterComplexity += measureComplexity(commitParentAuthor.getCommit(), file).getValue();
+                }
             }
             reportMicroProgressComplete();
             int netFilesetComplexity = afterComplexity - beforeComplexity;
@@ -75,7 +79,7 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
     }
 
     List<String> getSha1s() {
-        return gitAdapter.getLogOfSha1s(targetDirectory);
+        return gitAdapter.getLogOfSha1s(targetDirectory, range);
     }
 
     List<CommitParentAuthor> structureSha1s(List<String> input) {
@@ -94,21 +98,9 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
     }
 
     public FileValue measureComplexity(String sha1, String targetFilename) {
-
-        try {
-            GitAdapter gitAdapter = new GitAdapter();
-            byte[] showResults = gitAdapter.doShow(targetDirectory, sha1, targetFilename);
-            File tempFile = File.createTempFile("t4j", null);
-            tempFile.deleteOnExit();
-            FileOutputStream output = new FileOutputStream(tempFile);
-            output.write(showResults);
-            output.close();
-            File file = tempFile;
-            ComplexityCalculator complexityCalculator = new ComplexityCalculator(null);
-            return complexityCalculator.measureComplexity(targetFilename, file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        File file = gitAdapter.doShow(targetDirectory, sha1, targetFilename);
+        ComplexityCalculator complexityCalculator = new ComplexityCalculator(null);
+        return complexityCalculator.measureComplexity(targetFilename, file);
     }
 
     private void reportProgress(int number, int totalNumberOfCommits, int files) {
@@ -122,6 +114,11 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
 
     private void reportMicroProgressComplete() {
         System.out.println();
+    }
+
+    @Override
+    public void setRange(String range) {
+        this.range = range;
     }
 
 }

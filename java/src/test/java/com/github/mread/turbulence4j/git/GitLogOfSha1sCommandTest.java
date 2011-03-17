@@ -8,6 +8,6 @@ public class GitLogOfSha1sCommandTest {
 
     @Test
     public void run() {
-        new GitLogOfSha1sCommand(new File(".")).call();
+        new GitLogOfSha1sCommand(new File("."), "").call();
     }
 }

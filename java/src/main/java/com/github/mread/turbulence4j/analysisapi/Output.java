@@ -4,4 +4,6 @@ public interface Output {
 
     void output();
 
+    void setRange(String range);
+
 }

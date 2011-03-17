@@ -11,8 +11,8 @@ public abstract class BaseGitCommand<T> implements GitCommand<T> {
         T execute(BufferedReader reader);
     }
 
-    //    private static final String GIT_PATH = "/work/apps/git/bin/git ";
-    private static final String GIT_PATH = "git ";
+    private static final String GIT_PATH = "/work/apps/git/bin/git ";
+    //    private static final String GIT_PATH = "git ";
 
     private final String gitCommandLine;
     private final File workingDirectory;
@@ -24,7 +24,6 @@ public abstract class BaseGitCommand<T> implements GitCommand<T> {
     public BaseGitCommand(File workingDirectory, String gitCommandLine, String range) {
         this.workingDirectory = workingDirectory;
         this.gitCommandLine = gitCommandLine;
-        //        System.out.println(gitCommandLine);
         this.range = range;
     }
 
@@ -35,13 +34,19 @@ public abstract class BaseGitCommand<T> implements GitCommand<T> {
     protected BaseGitCommand<T> runGit() {
         Runtime runtime = Runtime.getRuntime();
         try {
-            process = runtime.exec(GIT_PATH + gitCommandLine + " " + range, null, workingDirectory);
+            String commandLine = constructCommand();
+            process = runtime.exec(commandLine, null, workingDirectory);
+            //            System.out.println(commandLine);
             this.stdOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
             this.stdErr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return this;
+    }
+
+    private String constructCommand() {
+        return GIT_PATH + gitCommandLine + " " + range;
     }
 
     private void closeStdOut() {

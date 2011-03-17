@@ -1,6 +1,5 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-import com.github.mread.turbulence4j.analysisapi.Calculator;
 
 public class CalculatorA implements Calculator<Integer> {
 
@@ -12,6 +11,11 @@ public class CalculatorA implements Calculator<Integer> {
     @Override
     public Integer getResults() {
         return 1;
+    }
+
+    @Override
+    public void setRange(String range) {
+
     }
 
 }

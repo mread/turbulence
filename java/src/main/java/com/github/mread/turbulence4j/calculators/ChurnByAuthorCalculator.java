@@ -25,6 +25,7 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
     private final JavaFileFinder fileFinder;
     private final GitAdapter gitAdapter;
     private Map<AuthorFilenameKey, Integer> results;
+    private String range = "";
 
     public ChurnByAuthorCalculator(File workingDirectory, JavaFileFinder fileFinder, GitAdapter gitAdapter) {
         this.workingDirectory = workingDirectory;
@@ -34,7 +35,7 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
 
     @Override
     public void calculate() {
-        results = groupUp(filterOutFirstCommit(parseLines(gitAdapter.getLogWithAuthor(workingDirectory))));
+        results = groupUp(filterOutFirstCommit(parseLines(gitAdapter.getLogWithAuthor(workingDirectory, range))));
     }
 
     @Override
@@ -91,6 +92,11 @@ public class ChurnByAuthorCalculator implements Calculator<Map<AuthorFilenameKey
 
     static AuthorFilenameKey keyOf(String author, String filename) {
         return new AuthorFilenameKey(author, filename);
+    }
+
+    @Override
+    public void setRange(String range) {
+        this.range = range;
     }
 
 }

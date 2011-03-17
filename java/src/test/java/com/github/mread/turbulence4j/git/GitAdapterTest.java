@@ -25,7 +25,7 @@ public class GitAdapterTest {
     @Test
     public void thisDirectoryProducesLog() throws InterruptedException {
         GitAdapter gitAdapter = new GitAdapter();
-        assertThat(gitAdapter.getLog(new File(".")).size(), greaterThan(1));
+        assertThat(gitAdapter.getLog(new File("."), "").size(), greaterThan(1));
     }
 
 }

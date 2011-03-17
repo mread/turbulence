@@ -4,8 +4,8 @@ import java.io.File;
 
 public abstract class BaseGitLogCommand<T> extends BaseGitCommand<T> {
 
-    public BaseGitLogCommand(File workingDirectory, String gitCommandLine) {
-        super(workingDirectory, gitCommandLine, "--since=\"3 months ago\"");
+    public BaseGitLogCommand(File workingDirectory, String gitCommandLine, String range) {
+        super(workingDirectory, gitCommandLine, range);
     }
 
 }

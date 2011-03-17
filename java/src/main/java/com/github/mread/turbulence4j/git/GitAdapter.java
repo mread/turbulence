@@ -9,19 +9,19 @@ public class GitAdapter {
         return new GitStatusCommand(directory).call();
     }
 
-    public List<String> getLog(File directory) {
-        return new GitLogCommand(directory).call();
+    public List<String> getLog(File directory, String range) {
+        return new GitLogCommand(directory, range).call();
     }
 
-    public List<String> getLogWithAuthor(File directory) {
-        return new GitLogWithAuthorCommand(directory).call();
+    public List<String> getLogWithAuthor(File directory, String range) {
+        return new GitLogWithAuthorCommand(directory, range).call();
     }
 
-    public List<String> getLogOfSha1s(File directory) {
-        return new GitLogOfSha1sCommand(directory).call();
+    public List<String> getLogOfSha1s(File directory, String range) {
+        return new GitLogOfSha1sCommand(directory, range).call();
     }
 
-    public byte[] doShow(File directory, String sha1, String targetFile) {
+    public File doShow(File directory, String sha1, String targetFile) {
         return new GitShowCommand(directory, sha1, targetFile).call();
     }
 

@@ -17,6 +17,7 @@ public class JsonOutputWriter implements Output {
     static final String DATASERIES_JS = "cc-data.js";
     private final File destinationDirectory;
     private final Transformer<Map<String, int[]>> transformer;
+    private String range = "";
 
     public JsonOutputWriter(File destinationDirectory, Transformer<Map<String, int[]>> transformer) {
         this.destinationDirectory = destinationDirectory;
@@ -67,10 +68,17 @@ public class JsonOutputWriter implements Output {
             FileWriter writer = new FileWriter(jsonOutput);
             writer.append("var directorySeries = ");
             root.write(writer);
+            writer.append(";\n");
+            writer.append("var range = '" + range + "';\n");
             writer.close();
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void setRange(String range) {
+        this.range = range;
     }
 
 }

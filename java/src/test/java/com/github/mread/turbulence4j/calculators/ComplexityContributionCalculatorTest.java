@@ -41,7 +41,7 @@ public class ComplexityContributionCalculatorTest {
     @Test
     public void getsAllTheCommits() {
         calculator.getSha1s();
-        verify(mockGitAdapter).getLogOfSha1s(new File("."));
+        verify(mockGitAdapter).getLogOfSha1s(new File("."), "");
     }
 
     @Test

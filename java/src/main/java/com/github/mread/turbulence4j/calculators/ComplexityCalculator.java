@@ -51,4 +51,9 @@ public class ComplexityCalculator implements Calculator<Map<String, Integer>> {
         return mappedResults;
     }
 
+    @Override
+    public void setRange(String range) {
+        // not interested in range
+    }
+
 }

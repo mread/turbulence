@@ -38,7 +38,7 @@ public class ChurnComplexityAnalysisTest {
         analysis.run();
 
         verify(mockJavaFileFinder, atLeastOnce()).findAllJavaFiles();
-        verify(mockGitAdapter).getLog(targetDirectory);
+        verify(mockGitAdapter).getLog(targetDirectory, "");
         assertThat(destinationDirectory.exists(), equalTo(true));
     }
 }

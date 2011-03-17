@@ -27,7 +27,7 @@ public class Turbulence4jTest {
 
     @Before
     public void setup() {
-        t4j = new Turbulence4j(new File("."), new File("target/"), mockGitAdapter, mockAnalysisEngine);
+        t4j = new Turbulence4j(new File("."), new File("target/"), mockGitAdapter, mockAnalysisEngine, "--all");
     }
 
     @Test

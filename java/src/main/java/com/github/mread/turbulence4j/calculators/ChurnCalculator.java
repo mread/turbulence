@@ -29,6 +29,7 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
 
     public int churn;
     private List<FileValue> results;
+    private String range = "";
 
     public ChurnCalculator(File targetDirectory, JavaFileFinder javaFileFinder, GitAdapter gitAdapter) {
         this.targetDirectory = targetDirectory;
@@ -38,7 +39,7 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
 
     @Override
     public void calculate() {
-        List<String> log = gitAdapter.getLog(targetDirectory);
+        List<String> log = gitAdapter.getLog(targetDirectory, range);
         results = excludingUninterestingFiles(groupUp(churnByLogLine(log)));
     }
 
@@ -91,6 +92,11 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
         } catch (NumberFormatException nfe) {
             return 0;
         }
+    }
+
+    @Override
+    public void setRange(String range) {
+        this.range = range;
     }
 
 }

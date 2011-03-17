@@ -6,4 +6,6 @@ public interface Calculator<R> {
 
     R getResults();
 
+    void setRange(String range);
+
 }

@@ -1,7 +1,5 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-import com.github.mread.turbulence4j.analysisapi.Output;
-import com.github.mread.turbulence4j.analysisapi.Transformer;
 
 public class OutputA implements Output {
 
@@ -11,6 +9,11 @@ public class OutputA implements Output {
 
     @Override
     public void output() {
+
+    }
+
+    @Override
+    public void setRange(String range) {
 
     }
 

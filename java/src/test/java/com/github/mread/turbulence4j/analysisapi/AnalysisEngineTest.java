@@ -11,10 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.turbulence4j.analysisapi.Analysis;
-import com.github.mread.turbulence4j.analysisapi.AnalysisEngine;
-import com.github.mread.turbulence4j.analysisapi.AnalysisRepository;
-
 @RunWith(MockitoJUnitRunner.class)
 public class AnalysisEngineTest {
 
@@ -31,6 +27,17 @@ public class AnalysisEngineTest {
         when(mockAnalysisRepository.findAll()).thenReturn(aSetContaining(mockAnalysis));
         engine.runAll();
 
+        verify(mockAnalysis).run();
+    }
+
+    @Test
+    public void canRunAnalysesWithARange() {
+
+        AnalysisEngine engine = new AnalysisEngine(mockAnalysisRepository).forRange("branchA..branchB");
+        when(mockAnalysisRepository.findAll()).thenReturn(aSetContaining(mockAnalysis));
+        engine.runAll();
+
+        verify(mockAnalysis).setRange("branchA..branchB");
         verify(mockAnalysis).run();
     }
 

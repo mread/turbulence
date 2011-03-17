@@ -8,6 +8,6 @@ public class GitLogWithAuthorCommandTest {
 
     @Test
     public void run() {
-        new GitLogWithAuthorCommand(new File(".")).call();
+        new GitLogWithAuthorCommand(new File("."), "").call();
     }
 }

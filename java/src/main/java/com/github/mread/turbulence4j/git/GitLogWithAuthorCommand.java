@@ -8,8 +8,10 @@ import java.util.List;
 
 public class GitLogWithAuthorCommand extends BaseGitLogCommand<List<String>> {
 
-    public GitLogWithAuthorCommand(File workingDirectory) {
-        super(workingDirectory, "log --all -w --numstat --format=Author:%aN --relative");
+    public GitLogWithAuthorCommand(File workingDirectory, String range) {
+        super(workingDirectory,
+                "log -w --numstat --no-merges --format=Author:%aN --relative",
+                range);
     }
 
     @Override

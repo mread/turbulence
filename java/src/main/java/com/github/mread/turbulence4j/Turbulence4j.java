@@ -15,18 +15,20 @@ public class Turbulence4j {
     private final File workingDirectory;
     private final File outputDirectory;
     private final GitAdapter gitAdapter;
+    private final String range;
     private AnalysisEngine analysisEngine;
 
-    public Turbulence4j(File workingDirectory, File outputDirectory, GitAdapter gitAdapter) {
-        this(workingDirectory, outputDirectory, gitAdapter, null);
+    public Turbulence4j(File workingDirectory, File outputDirectory, GitAdapter gitAdapter, String range) {
+        this(workingDirectory, outputDirectory, gitAdapter, null, range);
     }
 
     Turbulence4j(File workingDirectory, File outputDirectory, GitAdapter gitAdapter,
-            AnalysisEngine analysisEngine) {
+            AnalysisEngine analysisEngine, String range) {
         this.workingDirectory = workingDirectory;
         this.outputDirectory = outputDirectory;
         this.gitAdapter = gitAdapter;
         this.analysisEngine = analysisEngine;
+        this.range = range;
     }
 
     public void execute() {
@@ -59,7 +61,7 @@ public class Turbulence4j {
         analysisRepository.register(churnComplexityAnalysis);
         analysisRepository.register(churnByAuthorAnalysis);
         analysisRepository.register(complexityByAuthorAnalysis);
-        analysisEngine = new AnalysisEngine(analysisRepository);
+        analysisEngine = new AnalysisEngine(analysisRepository).forRange(range);
     }
 
     boolean isGitRepository() {

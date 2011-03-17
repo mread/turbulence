@@ -42,4 +42,9 @@ public class RawMapOutputWriter implements Output {
         fileOutputStream.close();
     }
 
+    @Override
+    public void setRange(String range) {
+        // not interested in range
+    }
+
 }
