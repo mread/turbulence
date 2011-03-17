@@ -13,22 +13,26 @@ public class CommandLine {
 
     public static void main(String[] args) {
         if (args.length == 0) {
-            new CommandLine(".").execute();
+            new CommandLine(".", "--since=\"1 week ago\"").execute();
         } else if (args.length != 2) {
             System.err.println("Must supply target directory and range");
             System.exit(1);
         } else {
-            new CommandLine(args[0]).execute();
+            new CommandLine(args[0], args[1]).execute();
         }
     }
 
-    public CommandLine(String workingDirectoryPath) {
-        this(new File(workingDirectoryPath), new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME), "-100");
+    public CommandLine(String workingDirectoryPath, String range) {
+        this(new File(workingDirectoryPath), new File(workingDirectoryPath, OUTPUT_DIRECTORY_NAME), range);
     }
 
     private CommandLine(File workingDirectory, File outputDirectory, String range) {
         this(new TemplateManager(outputDirectory),
-                new Turbulence4j(workingDirectory, outputDirectory, new GitAdapter(), range));
+                new Turbulence4j(
+                        workingDirectory,
+                        outputDirectory,
+                        new GitAdapter(),
+                        range));
     }
 
     CommandLine(TemplateManager templateManager, Turbulence4j turbulence4j) {
