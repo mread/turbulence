@@ -24,7 +24,7 @@ public class CommandLineTest {
     private TemplateManager mockTemplateManager;
 
     @Test
-    @Ignore("takes too long")
+    @Ignore("takes too long and duplicated by the specific target test below")
     public void mainMethodShouldProcessArgs() {
         File expectedOutputDirectory = new File(EXAMPLE_TARGET_DIR, CommandLine.OUTPUT_DIRECTORY_NAME);
         expectedOutputDirectory.delete();
@@ -52,7 +52,7 @@ public class CommandLineTest {
 
     @Test
     public void runAgainstSpecificTarget() {
-        CommandLine.main(new String[] { "/work/workspaces/Frame-git4/Frame", "-100" });
+        CommandLine.main(new String[] { "/work/workspaces/Frame-git4/Frame", "R0701-IL..R0705-IL" });
         //        CommandLine.main(new String[] { "." });
     }
 }
