@@ -8,8 +8,8 @@ VERSION_NUMBER = "0.0.1-SNAPSHOT"
 GROUP = "com.github.mread.turbulence4j"
 COPYRIGHT = ""
 
-# Specify Maven 2.0 remote repositories here, like this:
 repositories.remote << "http://repo1.maven.org/maven2/"
+repositories.remote << "http://maven.thebuzzmedia.com"
 
 desc "Turbulence4J"
 
@@ -24,7 +24,10 @@ define "turbulence4j" do
                transitive('com.googlecode.lambdaj:lambdaj:jar:2.3.1'),
                'org.json:json:jar:20090211',
                'commons-io:commons-io:jar:2.0.1',
-               'commons-lang:commons-lang:jar:2.6'
+               'commons-lang:commons-lang:jar:2.6',
+               transitive('uk.org.sappho.code.heatmap:code-heatmap-engine:jar:0.1.0-SNAPSHOT'),
+               'com.thebuzzmedia:sjxp:jar:2.2',
+               'log4j:log4j:jar:1.2.16'
   
   test.compile.with 'junit:junit:jar:4.8.2',
   					'org.hamcrest:hamcrest-all:jar:1.1',
