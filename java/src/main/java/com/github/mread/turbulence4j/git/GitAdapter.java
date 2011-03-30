@@ -21,6 +21,10 @@ public class GitAdapter {
         return new GitLogOfSha1sCommand(directory, range).call();
     }
 
+    public List<String> getLogWithCommentsAndDirectories(File directory, String range) {
+        return new GitLogWithCommentsAndDirstatCommand(directory, range).call();
+    }
+
     public File doShow(File directory, String sha1, String targetFile) {
         return new GitShowCommand(directory, sha1, targetFile).call();
     }

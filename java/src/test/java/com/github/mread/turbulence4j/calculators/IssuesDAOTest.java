@@ -1,5 +1,9 @@
 package com.github.mread.turbulence4j.calculators;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +43,7 @@ public class IssuesDAOTest {
         issuesDAO.createIssue();
         issuesDAO.persistIssue();
         exception.expect(RuntimeException.class);
-        issuesDAO.setType("this should cause an error");
+        issuesDAO.setType("this should cause an error as there's no issue to set type on");
     }
 
     @Test
@@ -47,5 +51,17 @@ public class IssuesDAOTest {
         issuesDAO.createIssue();
         exception.expect(RuntimeException.class);
         issuesDAO.createIssue();
+    }
+
+    @Test
+    public void canRetrieveIssueByKey() {
+        issuesDAO.createIssue();
+        issuesDAO.setKey("ABC-123");
+        issuesDAO.persistIssue();
+
+        Issue issue = issuesDAO.findIssueByKey("ABC-123");
+        assertThat(issue, notNullValue());
+        assertThat(issue.getKey(), equalTo("ABC-123"));
+
     }
 }

@@ -59,9 +59,11 @@ public class DataParser {
     }
 
     private final InputStream inputStream;
+    private final IssuesDAO issuesDAO;
 
-    public DataParser(InputStream inputStream) {
+    public DataParser(InputStream inputStream, IssuesDAO issuesDAO) {
         this.inputStream = inputStream;
+        this.issuesDAO = issuesDAO;
     }
 
     public void parse() throws XmlPullParserException, IOException {
@@ -71,7 +73,7 @@ public class DataParser {
                 new IssueKeyRule(),
                 new IssueTypeRule(),
                 new ReleaseRule());
-        xmlParser.parse(inputStream, new IssuesDAO());
+        xmlParser.parse(inputStream, issuesDAO);
 
     }
 }
