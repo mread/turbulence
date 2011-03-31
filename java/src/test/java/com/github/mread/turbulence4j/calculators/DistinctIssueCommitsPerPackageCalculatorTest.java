@@ -60,13 +60,17 @@ public class DistinctIssueCommitsPerPackageCalculatorTest {
     }
 
     @Test
-    public void parsesPackageNameFromDirstatOutput() {
+    public void parsesPackageNameFromDirstatOutputWithDepth() {
         assertThat(
-                calculator.extractPackageName("   9.4% java/src/main/java/com/github/mread/turbulence4j/calculators/"),
+                calculator.extractPackageName(
+                        "   9.4% java/src/main/java/com/github/mread/turbulence4j/calculators/"),
                 equalTo("com.github.mread.turbulence4j.calculators"));
         assertThat(
                 calculator.extractPackageName("70.00% src/main/java/a/b/2.java"),
                 equalTo("a.b"));
+        assertThat(
+                calculator.extractPackageName("4.1% FrameCore/src/main/java/"),
+                equalTo(""));
     }
 
     @Test

@@ -7,6 +7,7 @@
 	<script type="text/javascript" language="javascript" src="js/jquery-1.5.1.min.js"></script>
     <script type="text/javascript" language="javascript" src="js/ibp-data.js"></script>
     <script type="text/javascript" language="javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" language="javascript" src="js/exporting.js"></script>
     <script>
 
 var chart;    
@@ -16,11 +17,12 @@ $(document).ready(function() {
          renderTo: 'container',
          defaultSeriesType: 'bar'
       },
+      colors: ['green', 'red'],
       title: {
-         text: 'Issue By Package (' + range + ')'
+         text: 'Issues By Package (' + range + ')'
       },
       xAxis: {
-         categories: categories
+         categories: packages
       },
       yAxis: {
          min: 0,
@@ -40,7 +42,8 @@ $(document).ready(function() {
             borderWidth: 0
          }
       },
-      series: [ {name: 'issues', data: values }]
+      series: [ {name: 'changes', data: changes },
+                {name: 'defects', data: defects }]
    });
 });
     </script>    
@@ -48,8 +51,8 @@ $(document).ready(function() {
 
   <body>
     <div id="menu">
-    	<a href="t4j-ibp.html">Issues by Package</a>
+    	<a href="t4j-ibp.html">Total Issues by Package</a>
     </div>
-	<div id="container" style="width: 100%"></div>
+	<div id="container" style="width: 100%; height: 800px"></div>
   </body>
 </html>

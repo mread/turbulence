@@ -1,8 +1,6 @@
 package com.github.mread.turbulence4j.calculators;
 
-import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.selectDistinct;
-import static ch.lambdaj.Lambda.sort;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class DistinctIssueCommitsPerPackageCalculator implements Calculator<Coll
     public void calculate() {
         List<String> log = gitAdapter.getLogWithCommentsAndDirectories(targetDirectory, range);
         List<IssuePackage> processedRawLog = processRawLog(log);
-        this.results = sort(issuesForPackageCommits(processedRawLog), on(IssuePackage.class).getPackageName());
+        this.results = issuesForPackageCommits(processedRawLog);
     }
 
     @Override
@@ -90,8 +88,15 @@ public class DistinctIssueCommitsPerPackageCalculator implements Calculator<Coll
         if (startOfPackagePart == SRC_MAIN_JAVA.length() - 1) {
             return null;
         }
-        String packageFragment = line.substring(startOfPackagePart, line.lastIndexOf("/"));
+        int endOfPackagePart = line.lastIndexOf("/");
+        if (endOfPackagePart < startOfPackagePart)
+            endOfPackagePart = startOfPackagePart;
+        if (startOfPackagePart < 0 || endOfPackagePart < 0
+                || startOfPackagePart > line.length() || endOfPackagePart > line.length()
+                || endOfPackagePart < startOfPackagePart) {
+            throw new RuntimeException("Failed to extract package name from: " + line);
+        }
+        String packageFragment = line.substring(startOfPackagePart, endOfPackagePart);
         return packageFragment.replace("/", ".");
     }
-
 }

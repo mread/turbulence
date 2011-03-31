@@ -25,4 +25,12 @@ public class Issue {
         releases.add(release);
     }
 
+    public boolean isChange() {
+        return type.equals("change");
+    }
+
+    public boolean isDefect() {
+        return type.equals("defect");
+    }
+
 }
