@@ -1,7 +1,7 @@
 package com.github.mread.turbulence4j.analysers;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.analysisapi.BaseAnalysis;
@@ -34,9 +34,9 @@ public class PackagePainRatioAnalysis extends BaseAnalysis {
 
         CountPackageMentionsTransformer countPackageMentionsTransformer = new CountPackageMentionsTransformer(
                 distinctIssueCommitsPerPackageCalculator, issueTypeCalculator);
-        countPackageMentionsTransformer.setPackageDepth(6);
+        countPackageMentionsTransformer.setPackageDepth(-1);
         countPackageMentionsTransformer.setTopN(30);
-        countPackageMentionsTransformer.setChangesThreshold(3);
+        countPackageMentionsTransformer.setChangesThreshold(-1);
         countPackageMentionsTransformer.setTransformations(getPackageTransformations());
 
         Output issuesByPackage = new JsonIssuesByPackageOutputWriter(new File(destinationDirectory, "js/"),
@@ -49,10 +49,22 @@ public class PackagePainRatioAnalysis extends BaseAnalysis {
     }
 
     private Map<String, String> getPackageTransformations() {
-        HashMap<String, String> tx = new HashMap<String, String>();
-        tx.put("com.catlin.integration.expressdeclarations", "com.catlin.expressdeclarations");
-        tx.put("com.catlin.model.expressdeclarations", "com.catlin.expressdeclarations");
-        tx.put("com.catlin.ui.expressdeclarations", "com.catlin.expressdeclarations");
+        Map<String, String> tx = new LinkedHashMap<String, String>();
+        tx.put(".*classification.*", "CLASSIFICATION");
+        tx.put(".*genericsystemfeatures.*", "CLASSIFICATION");
+        tx.put(".*insuranceledger.*", "INSURANCELEDGER");
+        tx.put(".*deductions.*", "DEDUCTIONS");
+        tx.put(".*tax.*", "TAX");
+        tx.put(".*processclaimbordereau.*", "CLAIMBORDEREAU");
+        tx.put(".*premium.*", "PREMIUM");
+        tx.put(".*claim.*", "CLAIM");
+        tx.put(".*p2p.*", "P2P");
+        tx.put(".*\\.expressdeclarations\\..*", "EXPRESSDECLARATIONS");
+        tx.put(".*risk.*", "RISK");
+        tx.put(".*party.*", "PARTY");
+        tx.put(".*communications.*", "P2P");
+        tx.put(".*bordereau.*", "BORDEREAU");
+        tx.put(".*workflow.*", "WORKFLOW");
         return tx;
     }
 

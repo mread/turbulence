@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ch.lambdaj.group.Group;
 
@@ -32,7 +34,6 @@ public class CountPackageMentionsTransformer implements Transformer<List<Package
     private int changesThreshold = 1;
     private List<PackageChangesDefects> results;
     private Map<String, String> transformations = new HashMap<String, String>();
-    private int packageDepth2;
 
     public CountPackageMentionsTransformer(
             DistinctIssueCommitsPerPackageCalculator distinctIssueCommitsPerPackageCalculator,
@@ -61,6 +62,12 @@ public class CountPackageMentionsTransformer implements Transformer<List<Package
                 Issue issue = issueTypeCalculator.getResults().get(itemInPackage.getIssueKey());
                 if (issue == null) {
                     System.err.println("Can't find issue: " + itemInPackage.getIssueKey());
+                    continue;
+                }
+                if (!issue.getKey().startsWith("FRM")
+                                        && !issue.getKey().startsWith("TEST")
+                                        && !issue.getKey().startsWith("CHA")) {
+                    System.err.println("Excluding issue: " + issue.getKey());
                     continue;
                 }
                 if (issue.isChange()) {
@@ -110,7 +117,13 @@ public class CountPackageMentionsTransformer implements Transformer<List<Package
     public String transformPackageName(String packageName) {
         String newPackageName = packageName;
         for (String pattern : transformations.keySet()) {
-            newPackageName = newPackageName.replaceFirst(pattern, transformations.get(pattern));
+            Pattern patternCompiled = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = patternCompiled.matcher(packageName);
+            if (matcher.matches()) {
+                newPackageName = matcher.replaceFirst(transformations.get(pattern));
+                System.out.println(packageName + " -> " + newPackageName);
+                break;
+            }
         }
         return newPackageName;
     }

@@ -4,8 +4,6 @@ import static java.lang.Math.max;
 
 public class PackageChangesDefects {
 
-    private static final double ACCEPTABLE_PPR = 1.0d;
-
     private final String packageName;
     private int changes;
     private int defects;
@@ -41,7 +39,9 @@ public class PackageChangesDefects {
     }
 
     public double getSortAscendingValue() {
-        return 0d - calculatePPR();
+        // reverse
+        //        return (calculatePPR() * 10000) - changes;
+        return 0d - excessCost() - calculatePPR();
     }
 
     public double calculatePPR() {
@@ -52,6 +52,7 @@ public class PackageChangesDefects {
         return ((double) defects) / changes;
     }
 
+    // assumes acceptable PPR of 1.0
     public double excessCost() {
         return max((defects - changes) * 1500, 0);
     }
