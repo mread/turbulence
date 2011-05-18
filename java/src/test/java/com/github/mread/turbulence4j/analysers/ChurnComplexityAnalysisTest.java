@@ -33,6 +33,7 @@ public class ChurnComplexityAnalysisTest {
                 mockJavaFileFinder,
                 mockGitAdapter,
                 destinationDirectory);
+        analysis.setRange("");
 
         analysis.configure();
         analysis.run();

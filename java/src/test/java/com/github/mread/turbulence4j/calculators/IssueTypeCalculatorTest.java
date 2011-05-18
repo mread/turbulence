@@ -8,12 +8,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlpull.v1.XmlPullParserException;
 
 public class IssueTypeCalculatorTest {
 
     @Test
+    @Ignore("fails without sappho data")
     public void readsSapphoData() throws IOException, XmlPullParserException {
 
         File dataFile = new File("raw-data-all-frame-2010-12-14.zip");

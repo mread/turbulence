@@ -65,8 +65,8 @@ public class CountPackageMentionsTransformer implements Transformer<List<Package
                     continue;
                 }
                 if (!issue.getKey().startsWith("FRM")
-                                        && !issue.getKey().startsWith("TEST")
-                                        && !issue.getKey().startsWith("CHA")) {
+                        && !issue.getKey().startsWith("TEST")
+                        && !issue.getKey().startsWith("CHA")) {
                     System.err.println("Excluding issue: " + issue.getKey());
                     continue;
                 }
@@ -114,12 +114,12 @@ public class CountPackageMentionsTransformer implements Transformer<List<Package
         this.transformations = transformations;
     }
 
-    public String transformPackageName(String packageName) {
+    String transformPackageName(String packageName) {
         String newPackageName = packageName;
         for (String pattern : transformations.keySet()) {
             Pattern patternCompiled = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
             Matcher matcher = patternCompiled.matcher(packageName);
-            if (matcher.matches()) {
+            if (matcher.find()) {
                 newPackageName = matcher.replaceFirst(transformations.get(pattern));
                 System.out.println(packageName + " -> " + newPackageName);
                 break;
