@@ -24,7 +24,7 @@ public class Turbulence4j {
     }
 
     Turbulence4j(File workingDirectory, File outputDirectory, GitAdapter gitAdapter,
-            AnalysisEngine analysisEngine, String range) {
+                 AnalysisEngine analysisEngine, String range) {
         this.workingDirectory = workingDirectory;
         this.outputDirectory = outputDirectory;
         this.gitAdapter = gitAdapter;
@@ -63,10 +63,10 @@ public class Turbulence4j {
                 gitAdapter,
                 workingDirectory,
                 outputDirectory);
-        //        analysisRepository.register(churnComplexityAnalysis);
-        //        analysisRepository.register(churnByAuthorAnalysis);
-        //        analysisRepository.register(complexityByAuthorAnalysis);
-        analysisRepository.register(packagePainRatioAnalysis);
+        analysisRepository.register(churnComplexityAnalysis);
+        analysisRepository.register(churnByAuthorAnalysis);
+        analysisRepository.register(complexityByAuthorAnalysis);
+//        analysisRepository.register(packagePainRatioAnalysis);
         analysisEngine = new AnalysisEngine(analysisRepository).forRange(range);
     }
 
