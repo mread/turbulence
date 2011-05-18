@@ -52,7 +52,7 @@ public class CommandLineTest {
 
     @Test
     public void runAgainstSpecificTarget() {
-        CommandLine.main(new String[] { "/work/workspaces/Frame-git4/Frame", "R0701-IL..R0705-IL" });
+        CommandLine.main(new String[] { ".", "" });
         //        CommandLine.main(new String[] { "." });
     }
 }
