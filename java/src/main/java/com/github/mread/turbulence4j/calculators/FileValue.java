@@ -3,7 +3,7 @@ package com.github.mread.turbulence4j.calculators;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-class FileValue implements Comparable<FileValue> {
+public class FileValue implements Comparable<FileValue> {
 
     final String filename;
     int value;
@@ -19,6 +19,10 @@ class FileValue implements Comparable<FileValue> {
 
     public int getValue() {
         return value;
+    }
+
+    public int getNegativeValue() {
+        return 0 - value;
     }
 
     @Override
