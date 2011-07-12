@@ -5,6 +5,10 @@ import java.util.List;
 
 public class GitAdapter {
 
+    public void getGitVersion(File directory) {
+        new GitVersionCommand(directory).call();
+    }
+
     public boolean isRepo(File directory) {
         return new GitStatusCommand(directory).call();
     }
@@ -32,5 +36,6 @@ public class GitAdapter {
     public List<String> getFilesForACommit(File directory, String sha1) {
         return new GitShowFilesForACommitCommand(directory, sha1).call();
     }
+
 
 }

@@ -10,16 +10,16 @@ public class GitLogOfSha1sCommand extends BaseGitLogCommand<List<String>> {
 
     public GitLogOfSha1sCommand(File workingDirectory, String range) {
         super(workingDirectory, "log --no-merges -w " +
-                "--format=\"%H|%P|%aN\"",
+                "--pretty=format:%H|%P|%aN",
                 range);
     }
 
     @Override
     public List<String> call() {
-        return runGit().withStdOutProcessor(noop());
+        return runGit().withStdOutProcessor(getSha1s());
     }
 
-    private Callback<List<String>> noop() {
+    private Callback<List<String>> getSha1s() {
         return new Callback<List<String>>() {
             @Override
             public List<String> execute(BufferedReader reader) {

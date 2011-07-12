@@ -6,6 +6,13 @@
 	<artifactId>turbulence4j</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Turbulence4j</name>
+
+	<repositories>	
+		<repository>
+			<id>The Buzz Media Maven Repository</id>
+			<url>http://maven.thebuzzmedia.com</url>
+		</repository>
+	</repositories>
 	
 	<dependencies>
 		<dependency>
@@ -53,10 +60,19 @@
 			<artifactId>mockito-core</artifactId>
 			<version>1.8.5</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>uk.org.sappho.code.heatmap</groupId>
 			<artifactId>code-heatmap-engine</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+-->
+		<dependency>
+			<groupId>com.thebuzzmedia</groupId>
+			<artifactId>sjxp</artifactId>
+			<version>2.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>xpp3</groupId>
