@@ -1,6 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'sonar'
+apply plugin: 'eclipse'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -52,4 +53,8 @@ sonar.dependsOn(test, cobertura)
 task dumpSonar(dependsOn :sonar) << {
     println "dumping sonar project properties"
     sonar.projectProperties.each { item -> println "property: ${item}" }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-milestone-4-20110610162713+0200'
 }
