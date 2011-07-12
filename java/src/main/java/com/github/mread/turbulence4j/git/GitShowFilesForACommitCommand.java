@@ -10,7 +10,7 @@ public class GitShowFilesForACommitCommand extends BaseGitCommand<List<String>> 
 
     public GitShowFilesForACommitCommand(File workingDirectory, String sha1) {
         super(workingDirectory, "show -w --no-merges --name-only " +
-                "--format=\"format:\" " + sha1);
+                "--pretty=format: " + sha1);
     }
 
     @Override

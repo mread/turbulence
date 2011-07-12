@@ -29,6 +29,7 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
 
     @Override
     public void calculate() {
+        gitAdapter.getGitVersion(targetDirectory);
         results = convertToSortedList(iterateCommitsGroupingComplexityByAuthor(structureSha1s(getSha1s())));
     }
 
@@ -50,6 +51,7 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
             reportProgress(++commitProgress, totalNumberOfCommits, filesInACommit.size());
             if (filesInACommit.size() > 100) {
                 System.out.println("Large commit: " + commitParentAuthor.getCommit());
+                continue;
             }
             int beforeComplexity = 0;
             int afterComplexity = 0;
@@ -62,7 +64,7 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
             }
             reportMicroProgressComplete();
             int netFilesetComplexity = afterComplexity - beforeComplexity;
-            if (netFilesetComplexity != 0) {
+            if (netFilesetComplexity != 0 && meetsNetComplexityThreshold(netFilesetComplexity)) {
                 Integer runningTotalForAuthor = output.get(commitParentAuthor.getAuthor());
                 if (runningTotalForAuthor == null) {
                     runningTotalForAuthor = 0;
@@ -71,6 +73,10 @@ public class ComplexityContributionCalculator implements Calculator<List<AuthorV
             }
         }
         return output;
+    }
+
+    private boolean meetsNetComplexityThreshold(int netFilesetComplexity) {
+        return Math.abs(netFilesetComplexity) < 100;
     }
 
     @Override

@@ -16,6 +16,7 @@ public class GitLogCommand extends BaseGitLogCommand<List<String>> {
 
     @Override
     public List<String> call() {
+        // return runGit().withStdErrProcessor(trimEmptyLinesFromLog());
         return runGit().withStdOutProcessor(trimEmptyLinesFromLog());
     }
 
@@ -28,6 +29,7 @@ public class GitLogCommand extends BaseGitLogCommand<List<String>> {
                 try {
                     while ((line = reader.readLine()) != null) {
                         if (!line.isEmpty()) {
+                            // System.out.println(line);
                             result.add(line);
                         }
                     }
