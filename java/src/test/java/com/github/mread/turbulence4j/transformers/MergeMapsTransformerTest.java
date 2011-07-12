@@ -30,7 +30,7 @@ public class MergeMapsTransformerTest {
     }
 
     @Test
-    public void transformsRawCalculatorInputIntoMap() throws IOException {
+    public void transformsRawCalculatorInputsIntoMap() throws IOException {
 
         MergeMapsTransformer transformer = new MergeMapsTransformer(null, null);
         transformer.transformData(map1, map2);

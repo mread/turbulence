@@ -1,0 +1,55 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'sonar'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+repositories {
+//    mavenCentral();
+    mavenCentral urls: ['http://repo1.maven.org/maven2', 'http://maven.thebuzzmedia.com']
+}
+
+dependencies {
+    compile group: 'jdepend', name: 'jdepend', version: '2.9.1'
+    compile group: 'org.codehaus.javancss', name: 'javancss', version: '32.53'
+    compile group: 'com.googlecode.lambdaj', name: 'lambdaj', version: '2.3.1'
+    compile group: 'org.json', name: 'json', version: '20090211'
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    compile group: 'com.thebuzzmedia', name: 'sjxp', version: '2.2'
+    compile group: 'xpp3', name: 'xpp3', version: '1.1.4c'
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
+//    compile group: 'uk.org.sappho.code.heatmap', name: 'code-heatmap-engine', version: '0.1.0-SNAPSHOT'
+
+    testCompile group: 'junit', name: 'junit', version: '4.8.2'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.1'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '1.8.5'
+}
+
+sonar {
+    globalProperty "sonar.jdbc.url", "jdbc:derby://localhost:1527/sonar;create=true"
+    globalProperty "sonar.jdbc.driverClassName", "org.apache.derby.jdbc.ClientDriver"
+    //    globalProperty "sonar.jdbc.username", "myusername"
+    //    globalProperty "sonar.jdbc.password", "mypassword"
+
+    projectProperty "sonar.java.source", project.sourceCompatibility as String
+    projectProperty "sonar.java.target", project.targetCompatibility as String
+    projectProperty "sonar.dynamicAnalysis", "reuseReports"
+    projectProperty "sonar.surefire.reportsPath", project.test.testResultsDir as String
+    projectProperty "sonar.cobertura.reportPath", "build/reports/cobertura/coverage.xml"
+
+}
+
+buildscript {
+    // using a variable to make wiki look cleaner
+    def githubBase = 'https://github.com/valkolovos/gradle_cobertura/raw/master/ivy'
+    apply from: "${githubBase}/gradle_cobertura/gradle_cobertura/1.0-rc4/coberturainit.gradle"
+}
+
+sonar.dependsOn(test, cobertura)
+
+task dumpSonar(dependsOn :sonar) << {
+    println "dumping sonar project properties"
+    sonar.projectProperties.each { item -> println "property: ${item}" }
+}

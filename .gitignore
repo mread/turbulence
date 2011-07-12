@@ -15,3 +15,6 @@ java/.classpath
 java/.project
 java/war/WEB-INF/
 java/war/t4j/
+java/build
+java/.gradle
+java/out
