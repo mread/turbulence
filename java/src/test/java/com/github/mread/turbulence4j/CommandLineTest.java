@@ -52,7 +52,7 @@ public class CommandLineTest {
 
     @Test
     public void runAgainstSpecificTarget() {
-        CommandLine.main(new String[] { ".", "" });
-        //        CommandLine.main(new String[] { "." });
+//        CommandLine.main(new String[] { ".", "" });
+        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "--since=1.months.ago" });
     }
 }

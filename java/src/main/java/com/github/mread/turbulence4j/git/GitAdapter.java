@@ -37,5 +37,9 @@ public class GitAdapter {
         return new GitShowFilesForACommitCommand(directory, sha1).call();
     }
 
+    public List<String> getCommitChurn(File directory, String sha1) {
+        return new GitShowCommitChurnCommand(directory, sha1).call();
+    }
+
 
 }

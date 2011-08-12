@@ -23,4 +23,10 @@ public class CommitParentAuthor {
     public String getAuthor() {
         return author;
     }
+    
+    @Override
+    public String toString() {
+    	return "CommitParentAuthor: " + author + ", commit: " + commit + ", parent: " + parent;
+    }
+    
 }

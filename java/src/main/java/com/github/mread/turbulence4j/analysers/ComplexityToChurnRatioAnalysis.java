@@ -4,19 +4,19 @@ import java.io.File;
 
 import com.github.mread.turbulence4j.analysisapi.BaseAnalysis;
 import com.github.mread.turbulence4j.calculators.complexitycontribution.ComplexityContributionCalculator;
-import com.github.mread.turbulence4j.calculators.complexitycontribution.ComplexityContributionProcessor;
+import com.github.mread.turbulence4j.calculators.complexitycontribution.ComplexityToChurnRatioProcessor;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
-import com.github.mread.turbulence4j.outputs.JsonComplexityByAuthorOutputWriter;
+import com.github.mread.turbulence4j.outputs.JsonComplexityToChurnRatioOutputWriter;
 
-public class ComplexityByAuthorAnalysis extends BaseAnalysis {
+public class ComplexityToChurnRatioAnalysis extends BaseAnalysis {
 
     private final File targetDirectory;
     private final JavaFileFinder javaFileFinder;
     private final GitAdapter gitAdapter;
     private final File destinationDirectory;
 
-    public ComplexityByAuthorAnalysis(File targetDirectory,
+    public ComplexityToChurnRatioAnalysis(File targetDirectory,
             JavaFileFinder javaFileFinder,
             GitAdapter gitAdapter,
             File destinationDirectory) {
@@ -33,9 +33,9 @@ public class ComplexityByAuthorAnalysis extends BaseAnalysis {
         ComplexityContributionCalculator complexityContributionCalculator = new ComplexityContributionCalculator(
                 targetDirectory,
                 gitAdapter,
-                new ComplexityContributionProcessor(gitAdapter, targetDirectory, javaFileFinder));
+                new ComplexityToChurnRatioProcessor(gitAdapter, targetDirectory, javaFileFinder));
 
-        JsonComplexityByAuthorOutputWriter jsonOutput = new JsonComplexityByAuthorOutputWriter(
+        JsonComplexityToChurnRatioOutputWriter jsonOutput = new JsonComplexityToChurnRatioOutputWriter(
                 new File(destinationDirectory, "js/"),
                 complexityContributionCalculator);
 

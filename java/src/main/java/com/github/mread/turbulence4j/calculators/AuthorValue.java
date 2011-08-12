@@ -3,9 +3,9 @@ package com.github.mread.turbulence4j.calculators;
 public class AuthorValue {
 
     private final String author;
-    private final Integer value;
+    private final Long value;
 
-    public AuthorValue(String author, Integer value) {
+    public AuthorValue(String author, Long value) {
         this.author = author;
         this.value = value;
     }
@@ -14,7 +14,7 @@ public class AuthorValue {
         return author;
     }
 
-    public Integer getValue() {
+    public Long getValue() {
         return value;
     }
 

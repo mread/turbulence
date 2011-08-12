@@ -5,7 +5,7 @@
     <title>Turbulence4J</title>
     <link rel="stylesheet" type="text/css" href="css/screen.css" />
 	<script type="text/javascript" language="javascript" src="js/jquery-1.5.1.min.js"></script>
-    <script type="text/javascript" language="javascript" src="js/ca-data.js"></script>
+    <script type="text/javascript" language="javascript" src="js/c2cr-data.js"></script>
     <script type="text/javascript" language="javascript" src="js/highcharts.js"></script>
     <script type="text/javascript" language="javascript" src="js/exporting.js"></script>
     <script>
@@ -15,18 +15,17 @@ $(document).ready(function() {
    chart = new Highcharts.Chart({
       chart: {
          renderTo: 'container',
-         defaultSeriesType: 'bar'
+         defaultSeriesType: 'column'
       },
       title: {
-         text: 'Churn by Author (' + range + ')'
+         text: 'Complexity to Churn Ratio (' + range + ')'
       },
       xAxis: {
          categories: categories
       },
       yAxis: {
-         min: 0,
          title: {
-            text: 'Churn'
+            text: 'Number of commits'
          }
       },
       tooltip: {
@@ -41,7 +40,7 @@ $(document).ready(function() {
             borderWidth: 0
          }
       },
-      series: [ {name: 'author', data: values }]
+      series: [ {name: 'count', data: values }]
    });
 });
     </script>    
@@ -54,6 +53,6 @@ $(document).ready(function() {
     	<a href="t4j-c2a.html">Complexity by Author</a>
     	<a href="t4j-c2cr.html">Complexity to Churn Ratio</a>
     </div>
-	<div id="container" style="width: 100%; height:600px"></div>
+	<div id="container" style="width: 100%; height: 600px"></div>
   </body>
 </html>

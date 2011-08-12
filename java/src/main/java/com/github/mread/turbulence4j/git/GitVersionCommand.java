@@ -3,10 +3,6 @@ package com.github.mread.turbulence4j.git;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.github.mread.turbulence4j.git.BaseGitCommand.Callback;
 
 public class GitVersionCommand extends BaseGitCommand<Void> {
 

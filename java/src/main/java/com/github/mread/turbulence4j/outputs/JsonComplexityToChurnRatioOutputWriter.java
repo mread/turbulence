@@ -12,14 +12,14 @@ import com.github.mread.turbulence4j.analysisapi.Output;
 import com.github.mread.turbulence4j.calculators.AuthorValue;
 import com.github.mread.turbulence4j.calculators.complexitycontribution.ComplexityContributionCalculator;
 
-public class JsonComplexityByAuthorOutputWriter implements Output {
+public class JsonComplexityToChurnRatioOutputWriter implements Output {
 
-    static final String DATASERIES_JS = "c2a-data.js";
+    static final String DATASERIES_JS = "c2cr-data.js";
     private final File destinationDirectory;
     private final ComplexityContributionCalculator complexityContributionCalculator;
     private String range;
 
-    public JsonComplexityByAuthorOutputWriter(File destinationDirectory,
+    public JsonComplexityToChurnRatioOutputWriter(File destinationDirectory,
             ComplexityContributionCalculator complexityContributionCalculator) {
         this.destinationDirectory = destinationDirectory;
         this.complexityContributionCalculator = complexityContributionCalculator;

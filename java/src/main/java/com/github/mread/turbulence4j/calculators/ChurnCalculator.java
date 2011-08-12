@@ -52,7 +52,7 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
         return mappedResults;
     }
 
-    List<FileValue> excludingUninterestingFiles(List<FileValue> groupUp) {
+    public List<FileValue> excludingUninterestingFiles(List<FileValue> groupUp) {
         List<String> fileNames = javaFileFinder.findAllJavaFiles();
         return filter(having(on(FileValue.class).getFilename(), isIn(fileNames)), groupUp);
     }
@@ -73,7 +73,7 @@ public class ChurnCalculator implements Calculator<Map<String, Integer>> {
         return results;
     }
 
-    List<FileValue> churnByLogLine(List<String> input) {
+    public List<FileValue> churnByLogLine(List<String> input) {
         MoveAggregator moveAggregator = new MoveAggregator(input);
         List<FileValue> result = new ArrayList<FileValue>();
         for (String line : input) {
