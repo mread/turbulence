@@ -32,6 +32,7 @@ public class ComplexityContributionProcessor extends CommonProcessor {
                 continue;
             }
             long netFilesetComplexity = calculateNetComplexityDelta(commitParentAuthor, filesInACommit);
+            System.out.println(commitParentAuthor.getAuthor() + " - " + commitParentAuthor.getCommit() + " - " + netFilesetComplexity);
 
             if (netFilesetComplexity != 0 && meetsNetComplexityThreshold(netFilesetComplexity)) {
 

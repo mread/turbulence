@@ -35,7 +35,7 @@ public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
         for (String complexityEntryFileName : complexity.keySet()) {
             if (!churn.containsKey(complexityEntryFileName)) {
                 // no churn at all - not even zero - probably not in git yet
-                System.err.println("No churn result for: " + complexityEntryFileName);
+//                System.err.println("No churn result for: " + complexityEntryFileName);
                 continue;
             }
             int churnValue = churn.get(complexityEntryFileName);
