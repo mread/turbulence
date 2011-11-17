@@ -49,21 +49,16 @@ public class Turbulence4j {
         AnalysisRepository analysisRepository = analysisRepositoryProvider.get();
         analysisRepository.setWorkingDirectory(workingDirectory);
         analysisRepository.setFileFinder(new JavaFileFinder(workingDirectory, "target"));
-        ChurnComplexityAnalysis churnComplexityAnalysis = new ChurnComplexityAnalysis(gitAdapter, outputDirectory);
-        ChurnByAuthorAnalysis churnByAuthorAnalysis = new ChurnByAuthorAnalysis(gitAdapter, outputDirectory);
-        ComplexityByAuthorAnalysis complexityByAuthorAnalysis = new ComplexityByAuthorAnalysis(gitAdapter,
-            outputDirectory);
-        ComplexityToChurnRatioAnalysis complexityToChurnRatioAnalysis =
-                new ComplexityToChurnRatioAnalysis(gitAdapter, outputDirectory);
+
         // PackagePainRatioAnalysis packagePainRatioAnalysis = new
         // PackagePainRatioAnalysis(
         // gitAdapter,
         // workingDirectory,
         // outputDirectory);
-        analysisRepository.register(churnComplexityAnalysis);
-        analysisRepository.register(churnByAuthorAnalysis);
-        analysisRepository.register(complexityByAuthorAnalysis);
-        analysisRepository.register(complexityToChurnRatioAnalysis);
+        analysisRepository.register(new ChurnComplexityAnalysis(gitAdapter, outputDirectory));
+        analysisRepository.register(new ChurnByAuthorAnalysis(gitAdapter, outputDirectory));
+        analysisRepository.register(new ComplexityByAuthorAnalysis(gitAdapter, outputDirectory));
+        analysisRepository.register(new ComplexityToChurnRatioAnalysis(gitAdapter, outputDirectory));
         // analysisRepository.register(packagePainRatioAnalysis);
         analysisEngine = new AnalysisEngine(analysisRepository).forRange(range);
     }

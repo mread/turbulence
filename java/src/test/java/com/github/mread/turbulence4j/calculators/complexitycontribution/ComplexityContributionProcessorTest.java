@@ -1,18 +1,13 @@
 package com.github.mread.turbulence4j.calculators.complexitycontribution;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.github.mread.turbulence4j.calculators.AuthorValue;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
+import com.github.mread.turbulence4j.git.GitAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +15,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.github.mread.turbulence4j.calculators.AuthorValue;
-import com.github.mread.turbulence4j.files.JavaFileFinder;
-import com.github.mread.turbulence4j.git.GitAdapter;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.when;
+
+import static java.util.Arrays.asList;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComplexityContributionProcessorTest {
@@ -39,7 +37,7 @@ public class ComplexityContributionProcessorTest {
     }
     
     @Test
-    public void shouldMeasureDifferenceInComplexityBetweenTwoCommits() throws FileNotFoundException, IOException {
+    public void shouldMeasureDifferenceInComplexityBetweenTwoCommits() {
 
         String targetFile = "java/src/main/java/com/github/mread/turbulence4j/calculators/ChurnCalculator.java";
         String before = "d355d1dd991c825ea72bd91045ebf65c638a13e2";
