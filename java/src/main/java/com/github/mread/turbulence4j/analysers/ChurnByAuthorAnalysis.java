@@ -13,32 +13,24 @@ import com.github.mread.turbulence4j.transformers.NoopMapTransformer;
 
 public class ChurnByAuthorAnalysis extends BaseAnalysis {
 
-    private final File targetDirectory;
-    private final JavaFileFinder javaFileFinder;
     private final GitAdapter gitAdapter;
     private final File destinationDirectory;
 
-    public ChurnByAuthorAnalysis(File targetDirectory,
-            JavaFileFinder javaFileFinder,
-            GitAdapter gitAdapter,
-            File destinationDirectory) {
+    public ChurnByAuthorAnalysis(GitAdapter gitAdapter, File destinationDirectory) {
 
-        this.targetDirectory = targetDirectory;
-        this.javaFileFinder = javaFileFinder;
         this.gitAdapter = gitAdapter;
         this.destinationDirectory = destinationDirectory;
 
     }
 
     @Override
-    public void configure() {
-        ChurnByAuthorCalculator churnCalculator = new ChurnByAuthorCalculator(targetDirectory, javaFileFinder,
-                gitAdapter);
+    public void configure(File targetDirectory, JavaFileFinder fileFinder) {
+        ChurnByAuthorCalculator churnCalculator = new ChurnByAuthorCalculator(targetDirectory, fileFinder, gitAdapter);
         NoopMapTransformer<AuthorFilenameKey, Integer> noopTransformer = new NoopMapTransformer<AuthorFilenameKey, Integer>(
-                churnCalculator);
+            churnCalculator);
         JsonChurnByAuthorOutputWriter jsonOutputWriter = new JsonChurnByAuthorOutputWriter(
-                new File(destinationDirectory, "js/"),
-                noopTransformer);
+            new File(destinationDirectory, "js/"),
+            noopTransformer);
         RawMapOutputWriter rawMapOutputWriter = new RawMapOutputWriter(destinationDirectory, noopTransformer);
 
         configureCalculators(churnCalculator);

@@ -2,7 +2,9 @@ package com.github.mread.turbulence4j;
 
 import java.io.File;
 
+import com.github.mread.turbulence4j.analysisapi.AnalysisRepository;
 import com.github.mread.turbulence4j.git.GitAdapter;
+import com.google.inject.Provider;
 
 public class CommandLine {
 
@@ -32,7 +34,17 @@ public class CommandLine {
                         workingDirectory,
                         outputDirectory,
                         new GitAdapter(),
+                        createAnalysisRepositoryProvider(),
                         range));
+    }
+
+    private static Provider<AnalysisRepository> createAnalysisRepositoryProvider() {
+        return new Provider<AnalysisRepository>() {
+            @Override
+            public AnalysisRepository get() {
+                return new AnalysisRepository();
+            }
+        };
     }
 
     CommandLine(TemplateManager templateManager, Turbulence4j turbulence4j) {

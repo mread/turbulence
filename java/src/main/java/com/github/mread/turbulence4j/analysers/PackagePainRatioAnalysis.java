@@ -8,6 +8,7 @@ import com.github.mread.turbulence4j.analysisapi.BaseAnalysis;
 import com.github.mread.turbulence4j.analysisapi.Output;
 import com.github.mread.turbulence4j.calculators.DistinctIssueCommitsPerPackageCalculator;
 import com.github.mread.turbulence4j.calculators.IssueTypeCalculator;
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 import com.github.mread.turbulence4j.outputs.JsonIssuesByPackageOutputWriter;
 import com.github.mread.turbulence4j.transformers.CountPackageMentionsTransformer;
@@ -25,7 +26,7 @@ public class PackagePainRatioAnalysis extends BaseAnalysis {
     }
 
     @Override
-    public void configure() {
+    public void configure(File workingDirectory, JavaFileFinder fileFinder) {
 
         DistinctIssueCommitsPerPackageCalculator distinctIssueCommitsPerPackageCalculator =
                 new DistinctIssueCommitsPerPackageCalculator(gitAdapter, targetDirectory);
@@ -33,14 +34,14 @@ public class PackagePainRatioAnalysis extends BaseAnalysis {
         IssueTypeCalculator issueTypeCalculator = new IssueTypeCalculator(new File("raw-data-all-frame-2010-12-14.zip"));
 
         CountPackageMentionsTransformer countPackageMentionsTransformer = new CountPackageMentionsTransformer(
-                distinctIssueCommitsPerPackageCalculator, issueTypeCalculator);
+            distinctIssueCommitsPerPackageCalculator, issueTypeCalculator);
         countPackageMentionsTransformer.setPackageDepth(-1);
         countPackageMentionsTransformer.setTopN(30);
         countPackageMentionsTransformer.setChangesThreshold(-1);
         countPackageMentionsTransformer.setTransformations(getPackageTransformations());
 
         Output issuesByPackage = new JsonIssuesByPackageOutputWriter(new File(destinationDirectory, "js/"),
-                countPackageMentionsTransformer);
+            countPackageMentionsTransformer);
 
         configureCalculators(distinctIssueCommitsPerPackageCalculator, issueTypeCalculator);
         configureTransformers(countPackageMentionsTransformer);

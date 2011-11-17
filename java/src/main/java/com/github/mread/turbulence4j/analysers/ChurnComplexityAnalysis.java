@@ -13,31 +13,25 @@ import com.github.mread.turbulence4j.transformers.MergeMapsTransformer;
 
 public class ChurnComplexityAnalysis extends BaseAnalysis {
 
-    private final File targetDirectory;
-    private final JavaFileFinder javaFileFinder;
     private final GitAdapter gitAdapter;
     private final File destinationDirectory;
 
-    public ChurnComplexityAnalysis(File targetDirectory,
-            JavaFileFinder javaFileFinder,
-            GitAdapter gitAdapter,
+    public ChurnComplexityAnalysis(GitAdapter gitAdapter,
             File destinationDirectory) {
 
-        this.targetDirectory = targetDirectory;
-        this.javaFileFinder = javaFileFinder;
         this.gitAdapter = gitAdapter;
         this.destinationDirectory = destinationDirectory;
 
     }
 
     @Override
-    public void configure() {
-        ChurnCalculator churnCalculator = new ChurnCalculator(targetDirectory, javaFileFinder, gitAdapter);
-        ComplexityCalculator complexityCalculator = new ComplexityCalculator(javaFileFinder);
+    public void configure(File targetDirectory, JavaFileFinder fileFinder) {
+        ChurnCalculator churnCalculator = new ChurnCalculator(targetDirectory, fileFinder, gitAdapter);
+        ComplexityCalculator complexityCalculator = new ComplexityCalculator(fileFinder);
         MergeMapsTransformer mergeMapsTransformer = new MergeMapsTransformer(churnCalculator, complexityCalculator);
         JsonOutputWriter jsonOutputWriter = new JsonOutputWriter(
-                new File(destinationDirectory, "js/"),
-                mergeMapsTransformer);
+            new File(destinationDirectory, "js/"),
+            mergeMapsTransformer);
         RawOutputWriter rawOutputWriter = new RawOutputWriter(destinationDirectory, mergeMapsTransformer);
 
         configureCalculators(churnCalculator, complexityCalculator);

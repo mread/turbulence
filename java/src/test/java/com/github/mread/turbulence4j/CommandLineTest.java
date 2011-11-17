@@ -1,9 +1,5 @@
 package com.github.mread.turbulence4j;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
-
 import java.io.File;
 
 import org.junit.Ignore;
@@ -11,6 +7,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CommandLineTest {
@@ -53,6 +53,7 @@ public class CommandLineTest {
     @Test
     public void runAgainstSpecificTarget() {
 //        CommandLine.main(new String[] { ".", "" });
-        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "--since=1.months.ago" });
+//        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "--since=1.day.ago" });
+        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "-5" });
     }
 }

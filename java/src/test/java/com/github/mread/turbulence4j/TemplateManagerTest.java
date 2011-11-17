@@ -1,13 +1,12 @@
 package com.github.mread.turbulence4j;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.junit.Assert.assertThat;
-
 import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class TemplateManagerTest {
 
@@ -25,6 +24,6 @@ public class TemplateManagerTest {
         templateManager.execute();
 
         assertThat(outputDirectory.exists(), equalTo(true));
-        assertThat(outputDirectory.listFiles(), hasItemInArray(new File(outputDirectory, "t4j.html")));
+        assertThat(outputDirectory.listFiles(), hasItemInArray(new File(outputDirectory, "t4j-ca.html")));
     }
 }

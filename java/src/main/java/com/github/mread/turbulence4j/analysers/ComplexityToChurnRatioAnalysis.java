@@ -11,33 +11,26 @@ import com.github.mread.turbulence4j.outputs.JsonComplexityToChurnRatioOutputWri
 
 public class ComplexityToChurnRatioAnalysis extends BaseAnalysis {
 
-    private final File targetDirectory;
-    private final JavaFileFinder javaFileFinder;
     private final GitAdapter gitAdapter;
     private final File destinationDirectory;
 
-    public ComplexityToChurnRatioAnalysis(File targetDirectory,
-            JavaFileFinder javaFileFinder,
-            GitAdapter gitAdapter,
+    public ComplexityToChurnRatioAnalysis(GitAdapter gitAdapter,
             File destinationDirectory) {
-
-        this.targetDirectory = targetDirectory;
-        this.javaFileFinder = javaFileFinder;
         this.gitAdapter = gitAdapter;
         this.destinationDirectory = destinationDirectory;
 
     }
 
     @Override
-    public void configure() {
+    public void configure(File targetDirectory, JavaFileFinder fileFinder) {
         ComplexityContributionCalculator complexityContributionCalculator = new ComplexityContributionCalculator(
-                targetDirectory,
-                gitAdapter,
-                new ComplexityToChurnRatioProcessor(gitAdapter, targetDirectory, javaFileFinder));
+            targetDirectory,
+            gitAdapter,
+            new ComplexityToChurnRatioProcessor(gitAdapter, targetDirectory, fileFinder));
 
         JsonComplexityToChurnRatioOutputWriter jsonOutput = new JsonComplexityToChurnRatioOutputWriter(
-                new File(destinationDirectory, "js/"),
-                complexityContributionCalculator);
+            new File(destinationDirectory, "js/"),
+            complexityContributionCalculator);
 
         configureCalculators(complexityContributionCalculator);
         configureOutputs(jsonOutput);

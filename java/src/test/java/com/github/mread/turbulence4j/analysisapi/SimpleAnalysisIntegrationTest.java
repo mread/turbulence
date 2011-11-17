@@ -1,12 +1,16 @@
 package com.github.mread.turbulence4j.analysisapi;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import java.io.File;
+
+import com.github.mread.turbulence4j.files.JavaFileFinder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleAnalysisIntegrationTest {
@@ -16,7 +20,7 @@ public class SimpleAnalysisIntegrationTest {
     @Before
     public void configure() {
         analysis = new SimpleAnalysis();
-        analysis.configure();
+        analysis.configure(new File("."), new JavaFileFinder(new File(".")));
     }
 
     @Test

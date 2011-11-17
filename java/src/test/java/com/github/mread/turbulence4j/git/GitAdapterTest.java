@@ -1,19 +1,18 @@
 package com.github.mread.turbulence4j.git;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.Assert.assertThat;
-
 import java.io.File;
 
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class GitAdapterTest {
 
     @Test
     public void tmpDirectoryIsNotARepo() {
         GitAdapter gitAdapter = new GitAdapter();
-        assertThat(gitAdapter.isRepo(new File("/temp")), equalTo(false));
+        assertThat(gitAdapter.isRepo(new File(System.getProperty("java.io.tmpdir"))), equalTo(false));
     }
 
     @Test
