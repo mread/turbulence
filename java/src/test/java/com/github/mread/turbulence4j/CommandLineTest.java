@@ -54,6 +54,6 @@ public class CommandLineTest {
     public void runAgainstSpecificTarget() {
 //        CommandLine.main(new String[] { ".", "" });
 //        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "--since=1.day.ago" });
-        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "-5" });
+        CommandLine.main(new String[] { "/home/readm/work/git-checkouts/dev/src/java", "--since=1.week.ago" });
     }
 }
