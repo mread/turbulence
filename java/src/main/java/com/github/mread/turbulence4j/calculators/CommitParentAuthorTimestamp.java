@@ -1,15 +1,17 @@
 package com.github.mread.turbulence4j.calculators;
 
-public class CommitParentAuthor {
+public class CommitParentAuthorTimestamp {
 
     private final String commit;
     private final String parent;
     private final String author;
+    private final long timestamp;
 
-    public CommitParentAuthor(String commit, String parent, String author) {
+    public CommitParentAuthorTimestamp(String commit, String parent, String author, long timestamp) {
         this.commit = commit;
         this.parent = parent;
         this.author = author;
+        this.timestamp = timestamp;
     }
 
     public String getCommit() {
@@ -24,9 +26,14 @@ public class CommitParentAuthor {
         return author;
     }
     
+    public long getTimestamp() {
+        return timestamp;
+    }
+    
     @Override
     public String toString() {
-    	return "CommitParentAuthor: " + author + ", commit: " + commit + ", parent: " + parent;
+    	return "CommitParentAuthor: " + author + ", commit: " + commit + 
+    	        ", parent: " + parent + ", timestamp: " + timestamp;
     }
     
 }

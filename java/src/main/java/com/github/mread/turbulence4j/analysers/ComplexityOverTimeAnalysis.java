@@ -3,6 +3,7 @@ package com.github.mread.turbulence4j.analysers;
 import java.io.File;
 
 import com.github.mread.turbulence4j.analysisapi.BaseAnalysis;
+import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
 import com.github.mread.turbulence4j.calculators.complexityovertime.CodeComplexityAtEachCommitCalculator;
 import com.github.mread.turbulence4j.calculators.complexityovertime.JsonCodeComplexityAtEachCommitOutputWriter;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
@@ -20,10 +21,12 @@ public class ComplexityOverTimeAnalysis extends BaseAnalysis {
 
     @Override
     public void configure(File targetDirectory, JavaFileFinder fileFinder) {
-        
-        CodeComplexityAtEachCommitCalculator codeComplexityAtEachCommitCalculator = new CodeComplexityAtEachCommitCalculator(
-            targetDirectory,
-            gitAdapter);
+
+        CodeComplexityAtEachCommitCalculator codeComplexityAtEachCommitCalculator =
+                new CodeComplexityAtEachCommitCalculator(
+                    new ComplexityCalculator(fileFinder),
+                    targetDirectory,
+                    gitAdapter);
 
         JsonCodeComplexityAtEachCommitOutputWriter jsonOutput = new JsonCodeComplexityAtEachCommitOutputWriter(
             new File(destinationDirectory, "js/"),

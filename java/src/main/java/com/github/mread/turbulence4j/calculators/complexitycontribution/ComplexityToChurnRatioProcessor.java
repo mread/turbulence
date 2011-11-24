@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mread.turbulence4j.calculators.AuthorValue;
-import com.github.mread.turbulence4j.calculators.CommitParentAuthor;
+import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
@@ -18,12 +18,12 @@ public class ComplexityToChurnRatioProcessor extends CommonProcessor {
         super(gitAdapter, targetDirectory, javaFileFinder);
     }
 
-    public List<AuthorValue> process(List<CommitParentAuthor> commits) {
+    public List<AuthorValue> process(List<CommitParentAuthorTimestamp> commits) {
         int totalNumberOfCommits = commits.size();
         int commitProgress = 0;
         List<Integer> complexities = new ArrayList<Integer>(totalNumberOfCommits);
         List<Double> ratios = new ArrayList<Double>(totalNumberOfCommits);
-        for (CommitParentAuthor commit : commits) {
+        for (CommitParentAuthorTimestamp commit : commits) {
             List<String> modifiedFiles = filesInACommit(commit.getCommit());
             reportProgress(++commitProgress, totalNumberOfCommits, modifiedFiles.size());
             if (modifiedFiles.size() > 200) {

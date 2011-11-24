@@ -7,6 +7,7 @@ public class FileValue implements Comparable<FileValue> {
 
     final String filename;
     int value;
+    int value2;
 
     public FileValue(String filename, int value) {
         this.filename = filename;
@@ -19,6 +20,10 @@ public class FileValue implements Comparable<FileValue> {
 
     public int getValue() {
         return value;
+    }
+
+    public int getValue2() {
+        return value2;
     }
 
     public int getNegativeValue() {

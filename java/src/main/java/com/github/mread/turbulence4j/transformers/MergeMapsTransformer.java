@@ -5,16 +5,17 @@ import java.util.TreeMap;
 
 import com.github.mread.turbulence4j.analysisapi.Calculator;
 import com.github.mread.turbulence4j.analysisapi.Transformer;
+import com.github.mread.turbulence4j.calculators.ComplexityAndNcss;
 
 public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
 
     private final Calculator<Map<String, Integer>> churnCalculator;
-    private final Calculator<Map<String, Integer>> complexityCalculator;
+    private final Calculator<Map<String, ComplexityAndNcss>> complexityCalculator;
 
     private Map<String, int[]> results = new TreeMap<String, int[]>();
 
     public MergeMapsTransformer(Calculator<Map<String, Integer>> churnCalculator,
-            Calculator<Map<String, Integer>> complexityCalculator) {
+            Calculator<Map<String, ComplexityAndNcss>> complexityCalculator) {
 
         this.churnCalculator = churnCalculator;
         this.complexityCalculator = complexityCalculator;
@@ -30,7 +31,7 @@ public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
         return results;
     }
 
-    void transformData(Map<String, Integer> churn, Map<String, Integer> complexity) {
+    void transformData(Map<String, Integer> churn, Map<String, ComplexityAndNcss> complexity) {
 
         for (String complexityEntryFileName : complexity.keySet()) {
             if (!churn.containsKey(complexityEntryFileName)) {
@@ -39,7 +40,7 @@ public class MergeMapsTransformer implements Transformer<Map<String, int[]>> {
                 continue;
             }
             int churnValue = churn.get(complexityEntryFileName);
-            int complexityValue = complexity.get(complexityEntryFileName);
+            int complexityValue = complexity.get(complexityEntryFileName).getComplexity();
             int[] existingValues = results.get(complexityEntryFileName);
             if (existingValues == null) {
                 existingValues = new int[] { 0, 0 };

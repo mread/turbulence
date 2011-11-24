@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.calculators.AuthorValue;
-import com.github.mread.turbulence4j.calculators.CommitParentAuthor;
+import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
@@ -20,30 +20,30 @@ public class ComplexityContributionProcessor extends CommonProcessor {
         super(gitAdapter, targetDirectory, javaFileFinder);
     }
 
-    public List<AuthorValue> process(List<CommitParentAuthor> commits) {
+    public List<AuthorValue> process(List<CommitParentAuthorTimestamp> commits) {
         int totalNumberOfCommits = commits.size();
         int commitProgress = 0;
         Map<String, Long> output = new HashMap<String, Long>();
-        for (CommitParentAuthor commitParentAuthor : commits) {
-            List<String> filesInACommit = filesInACommit(commitParentAuthor.getCommit());
+        for (CommitParentAuthorTimestamp commitParentAuthorTimestamp : commits) {
+            List<String> filesInACommit = filesInACommit(commitParentAuthorTimestamp.getCommit());
             reportProgress(++commitProgress, totalNumberOfCommits, filesInACommit.size());
             if (filesInACommit.size() > 200) {
-                System.out.println("Ignoring large commit: " + commitParentAuthor.getCommit());
+                System.out.println("Ignoring large commit: " + commitParentAuthorTimestamp.getCommit());
                 continue;
             }
-            long netFilesetComplexity = calculateNetComplexityDelta(commitParentAuthor, filesInACommit);
-            System.out.println(commitParentAuthor.getAuthor() + " - " + commitParentAuthor.getCommit() + " - " + netFilesetComplexity);
+            long netFilesetComplexity = calculateNetComplexityDelta(commitParentAuthorTimestamp, filesInACommit);
+            System.out.println(commitParentAuthorTimestamp.getAuthor() + " - " + commitParentAuthorTimestamp.getCommit() + " - " + netFilesetComplexity);
 
             if (netFilesetComplexity != 0 && meetsNetComplexityThreshold(netFilesetComplexity)) {
 
-                Long runningTotalForAuthor = output.get(commitParentAuthor.getAuthor());
+                Long runningTotalForAuthor = output.get(commitParentAuthorTimestamp.getAuthor());
                 if (runningTotalForAuthor == null) {
                     runningTotalForAuthor = 0L;
                 }
 
-                output.put(commitParentAuthor.getAuthor(), runningTotalForAuthor + netFilesetComplexity);
+                output.put(commitParentAuthorTimestamp.getAuthor(), runningTotalForAuthor + netFilesetComplexity);
                 if (netFilesetComplexity > 20) {
-                    System.out.println(netFilesetComplexity + " - " + commitParentAuthor);
+                    System.out.println(netFilesetComplexity + " - " + commitParentAuthorTimestamp);
                 }
             }
         }

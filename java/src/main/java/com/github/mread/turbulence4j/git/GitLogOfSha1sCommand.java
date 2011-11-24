@@ -9,8 +9,8 @@ import java.util.List;
 public class GitLogOfSha1sCommand extends BaseGitLogCommand<List<String>> {
 
     public GitLogOfSha1sCommand(File workingDirectory, String range) {
-        super(workingDirectory, "log --no-merges -w " +
-                "--pretty=format:%H|%P|%aN",
+        super(workingDirectory, "log --no-merges -w --all " +
+                "--pretty=format:%H|%P|%aN|%at",
                 range);
     }
 
