@@ -35,7 +35,7 @@ public class CodeComplexityAtEachCommitCalculator implements Calculator<List<Com
     @Override
     public void calculate() {
         List<CommitParentAuthorTimestamp> commits = gitAdapter.parseSha1s(getAllCommitsInRange());
-        int analyseEvery = Math.max(commits.size() / 50, 1);
+        int analyseEvery = Math.max(commits.size() / 10, 1);
         System.out.println("Analysing every " + analyseEvery + " commits approximately");
         try {
             results = new ArrayList<CommitTimeWithComplexityAndNcss>();

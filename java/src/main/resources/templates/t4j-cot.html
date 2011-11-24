@@ -24,7 +24,8 @@ $(document).ready(function() {
          type: 'datetime'
 	  },
       yAxis: [ { title: { text: 'Complexity' } },
-      		   { title: { text: 'Ncss' }, opposite: true }
+      		   { title: { text: 'Ncss' }, opposite: true },
+      		   { title: { text: 'Ratio' }, opposite: true }
              ],
       tooltip: {
          formatter: function() {
@@ -39,7 +40,8 @@ $(document).ready(function() {
          }
       },
       series: [ {name: 'complexity', data: complexities, yAxis: 0 },
-      			{name: 'ncss', data: ncss, yAxis: 1 }
+      			{name: 'ncss', data: ncss, yAxis: 1 },
+      			{name: 'ratio', data: ratios, yAxis: 2 }
       		  ]
    });
 });
@@ -47,12 +49,6 @@ $(document).ready(function() {
   </head>
 
   <body>
-    <div id="menu">
-    	<a href="t4j-cc.html">Churn vs Complexity</a>
-    	<a href="t4j-ca.html">Churn by Author</a>
-    	<a href="t4j-c2a.html">Complexity by Author</a>
-    	<a href="t4j-c2cr.html">Complexity to Churn Ratio</a>
-    </div>
 	<div id="container" style="width: 100%; height:600px"></div>
   </body>
 </html>

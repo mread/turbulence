@@ -32,22 +32,33 @@ public class JsonCodeComplexityAtEachCommitOutputWriter implements Output {
 
             JSONArray complexities = new JSONArray();
             JSONArray ncss = new JSONArray();
+            JSONArray ratios = new JSONArray();
 
             for (CommitTimeWithComplexityAndNcss entry : calculator.getResults()) {
+                long timestampMillis = entry.getTimestamp() * 1000;
+
                 JSONArray complexityEntry = new JSONArray();
-                complexityEntry.put(entry.getTimestamp() * 1000);
+                complexityEntry.put(timestampMillis);
                 complexityEntry.put(entry.getComplexity());
                 complexities.put(complexityEntry);
 
                 JSONArray ncssEntry = new JSONArray();
-                ncssEntry.put(entry.getTimestamp() * 1000);
+                ncssEntry.put(timestampMillis);
                 ncssEntry.put(entry.getNcss());
                 ncss.put(ncssEntry);
+
+                if (entry.getNcss() > 0) {
+                    JSONArray ratioEntry = new JSONArray();
+                    ratioEntry.put(timestampMillis);
+                    ratioEntry.put(((double) entry.getComplexity()) / entry.getNcss());
+                    ratios.put(ratioEntry);
+                }
             }
 
             FileWriter writer = new FileWriter(jsonOutput);
             writeVar(writer, "complexities", complexities);
             writeVar(writer, "ncss", ncss);
+            writeVar(writer, "ratios", ratios);
             writer.append("var range = '" + range + "';\n");
             writer.close();
         } catch (IOException e) {
