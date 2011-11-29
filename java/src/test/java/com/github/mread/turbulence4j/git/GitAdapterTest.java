@@ -3,7 +3,6 @@ package com.github.mread.turbulence4j.git;
 import java.io.File;
 import java.util.List;
 
-import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 
 import org.junit.Test;
 
@@ -27,7 +26,7 @@ public class GitAdapterTest {
     }
 
     @Test
-    public void thisDirectoryProducesLog() throws InterruptedException {
+    public void thisDirectoryProducesLog() {
         GitAdapter gitAdapter = new GitAdapter();
         assertThat(gitAdapter.getLog(new File("."), "").size(), greaterThan(1));
     }

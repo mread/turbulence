@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 
 public class GitAdapter {
 

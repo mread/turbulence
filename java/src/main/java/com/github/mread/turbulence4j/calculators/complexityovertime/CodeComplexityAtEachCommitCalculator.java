@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.analysisapi.Calculator;
-import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.calculators.ComplexityAndNcss;
 import com.github.mread.turbulence4j.calculators.ComplexityCalculator;
+import com.github.mread.turbulence4j.git.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class CodeComplexityAtEachCommitCalculator implements Calculator<List<CommitTimeWithComplexityAndNcss>> {
@@ -35,7 +35,7 @@ public class CodeComplexityAtEachCommitCalculator implements Calculator<List<Com
     @Override
     public void calculate() {
         List<CommitParentAuthorTimestamp> commits = gitAdapter.parseSha1s(getAllCommitsInRange());
-        int analyseEvery = Math.max(commits.size() / 10, 1);
+        int analyseEvery = Math.max(commits.size() / 20, 1);
         System.out.println("Analysing every " + analyseEvery + " commits approximately");
         try {
             results = new ArrayList<CommitTimeWithComplexityAndNcss>();

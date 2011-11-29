@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.javancss;
+package com.github.mread.turbulence4j.spikes;
 
 import java.io.File;
 import java.util.List;

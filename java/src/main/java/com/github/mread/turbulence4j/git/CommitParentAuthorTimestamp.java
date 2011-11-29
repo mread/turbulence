@@ -1,4 +1,4 @@
-package com.github.mread.turbulence4j.calculators;
+package com.github.mread.turbulence4j.git;
 
 public class CommitParentAuthorTimestamp {
 

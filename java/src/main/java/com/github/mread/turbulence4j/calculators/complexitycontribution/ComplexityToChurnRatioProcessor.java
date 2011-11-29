@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.mread.turbulence4j.calculators.AuthorValue;
-import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
+import com.github.mread.turbulence4j.git.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class ComplexityToChurnRatioProcessor extends CommonProcessor {

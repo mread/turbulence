@@ -24,8 +24,8 @@ $(document).ready(function() {
          type: 'datetime'
 	  },
       yAxis: [ { title: { text: 'Complexity' } },
-      		   { title: { text: 'Ncss' }, opposite: true },
-      		   { title: { text: 'Ratio' }, opposite: true }
+      		   { title: { text: 'Ncss' } },
+      		   { title: { text: 'Ratio' }, opposite: true, min: 0, max: 1 }
              ],
       tooltip: {
          formatter: function() {

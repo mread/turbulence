@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mread.turbulence4j.calculators.AuthorValue;
-import com.github.mread.turbulence4j.calculators.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
+import com.github.mread.turbulence4j.git.CommitParentAuthorTimestamp;
 import com.github.mread.turbulence4j.git.GitAdapter;
 
 public class ComplexityContributionProcessor extends CommonProcessor {
