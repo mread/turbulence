@@ -37,10 +37,10 @@ public class ComplexityCalculator implements Calculator<Map<String, ComplexityAn
         Javancss javancss = new Javancss(targetFile);
         List<?> functionMetrics = javancss.getFunctionMetrics();
         FileValue result = new FileValue(filenameToUse, 0);
+        result.value2 = javancss.getNcss();
         for (Object object : functionMetrics) {
             FunctionMetric functionMetric = (FunctionMetric) object;
             result.value += functionMetric.ccn;
-            result.value2 += functionMetric.ncss;
         }
         return result;
     }
