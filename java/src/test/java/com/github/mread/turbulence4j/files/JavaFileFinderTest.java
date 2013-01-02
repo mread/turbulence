@@ -1,15 +1,13 @@
 package com.github.mread.turbulence4j.files;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class JavaFileFinderTest {
 

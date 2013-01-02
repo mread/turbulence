@@ -5,12 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+import com.github.mread.turbulence4j.analysisapi.Output;
+import com.github.mread.turbulence4j.analysisapi.Transformer;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.github.mread.turbulence4j.analysisapi.Output;
-import com.github.mread.turbulence4j.analysisapi.Transformer;
 
 public class JsonOutputWriter implements Output {
 
@@ -49,10 +49,10 @@ public class JsonOutputWriter implements Output {
                 row.put("filename", file);
                 row.put("x", richData.get(file)[0]);
                 row.put("y", richData.get(file)[1]);
-                if (file.contains("src/main")) {
-                    src.put(row);
-                } else if (file.contains("src/test")) {
+                if (file.contains("acceptance/")) {
                     test.put(row);
+                } else if (file.contains("java/")) {
+                    src.put(row);
                 } else {
                     other.put(row);
                 }
@@ -62,8 +62,8 @@ public class JsonOutputWriter implements Output {
             if (other.length() > 0) {
                 root.put("other", other);
             }
-            root.put("src/test/java", test);
-            root.put("src/main/java", src);
+            root.put("src/acceptance", test);
+            root.put("src/java", src);
 
             FileWriter writer = new FileWriter(jsonOutput);
             writer.append("var directorySeries = ");

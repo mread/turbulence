@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javancss.FunctionMetric;
-import javancss.Javancss;
-
 import com.github.mread.turbulence4j.analysisapi.Calculator;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
+
+
+import javancss.FunctionMetric;
+import javancss.Javancss;
 
 public class ComplexityCalculator implements Calculator<Map<String, ComplexityAndNcss>> {
 
@@ -40,6 +41,10 @@ public class ComplexityCalculator implements Calculator<Map<String, ComplexityAn
         result.value2 = javancss.getNcss();
         for (Object object : functionMetrics) {
             FunctionMetric functionMetric = (FunctionMetric) object;
+            if (functionMetric.name.contains(".equals(") || functionMetric.name.contains(".hashCode()")) {
+//                System.out.println("ignoring: " + functionMetric.name);
+                continue;
+            }
             result.value += functionMetric.ccn;
         }
         return result;
