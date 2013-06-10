@@ -41,6 +41,7 @@ public class JsonOutputWriter implements Output {
         JSONObject root = new JSONObject();
         JSONArray src = new JSONArray();
         JSONArray test = new JSONArray();
+        JSONArray acceptance = new JSONArray();
         JSONArray other = new JSONArray();
 
         try {
@@ -49,7 +50,10 @@ public class JsonOutputWriter implements Output {
                 row.put("filename", file);
                 row.put("x", richData.get(file)[0]);
                 row.put("y", richData.get(file)[1]);
+                System.out.println(file);
                 if (file.contains("acceptance/")) {
+                    acceptance.put(row);
+                } else if (file.contains("test/")) {
                     test.put(row);
                 } else if (file.contains("java/")) {
                     src.put(row);
@@ -62,7 +66,8 @@ public class JsonOutputWriter implements Output {
             if (other.length() > 0) {
                 root.put("other", other);
             }
-            root.put("src/acceptance", test);
+            root.put("src/acceptance", acceptance);
+            root.put("src/test", test);
             root.put("src/java", src);
 
             FileWriter writer = new FileWriter(jsonOutput);

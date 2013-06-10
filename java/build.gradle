@@ -10,7 +10,7 @@ targetCompatibility = 1.6
 
 repositories {
 //    mavenCentral();
-    mavenCentral urls: ['http://repo1.maven.org/maven2', 'http://maven.thebuzzmedia.com']
+    mavenCentral artifactUrls: ['http://repo1.maven.org/maven2', 'http://maven.thebuzzmedia.com']
 }
 
 dependencies {

@@ -1,16 +1,13 @@
 package com.github.mread.turbulence4j;
 
-import com.github.mread.turbulence4j.analysers.ChurnByAuthorAnalysis;
-import com.github.mread.turbulence4j.analysers.ChurnComplexityAnalysis;
-import com.github.mread.turbulence4j.analysers.ComplexityByAuthorAnalysis;
-import com.github.mread.turbulence4j.analysers.ComplexityToChurnRatioAnalysis;
+import java.io.File;
+
+import com.github.mread.turbulence4j.analysers.ComplexityOverTimeAnalysis;
 import com.github.mread.turbulence4j.analysisapi.AnalysisEngine;
 import com.github.mread.turbulence4j.analysisapi.AnalysisRepository;
 import com.github.mread.turbulence4j.files.JavaFileFinder;
 import com.github.mread.turbulence4j.git.GitAdapter;
 import com.google.inject.Provider;
-
-import java.io.File;
 
 public class Turbulence4j {
     private final File workingDirectory;
@@ -55,11 +52,11 @@ public class Turbulence4j {
         // gitAdapter,
         // workingDirectory,
         // outputDirectory);
-//        analysisRepository.register(new ComplexityOverTimeAnalysis(gitAdapter, outputDirectory));
-        analysisRepository.register(new ChurnComplexityAnalysis(gitAdapter, outputDirectory));
-        analysisRepository.register(new ChurnByAuthorAnalysis(gitAdapter, outputDirectory));
-        analysisRepository.register(new ComplexityByAuthorAnalysis(gitAdapter, outputDirectory));
-        analysisRepository.register(new ComplexityToChurnRatioAnalysis(gitAdapter, outputDirectory));
+        analysisRepository.register(new ComplexityOverTimeAnalysis(gitAdapter, outputDirectory));
+//        analysisRepository.register(new ChurnComplexityAnalysis(gitAdapter, outputDirectory));
+//        analysisRepository.register(new ChurnByAuthorAnalysis(gitAdapter, outputDirectory));
+//        analysisRepository.register(new ComplexityByAuthorAnalysis(gitAdapter, outputDirectory));
+//        analysisRepository.register(new ComplexityToChurnRatioAnalysis(gitAdapter, outputDirectory));
         // analysisRepository.register(packagePainRatioAnalysis);
         analysisEngine = new AnalysisEngine(analysisRepository).forRange(range);
     }

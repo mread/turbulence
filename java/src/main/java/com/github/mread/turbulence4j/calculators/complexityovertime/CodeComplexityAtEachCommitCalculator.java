@@ -45,7 +45,7 @@ public class CodeComplexityAtEachCommitCalculator implements Calculator<List<Com
                 }
             }
         } finally {
-            gitAdapter.checkout(targetDirectory, "ORIG_HEAD");
+            gitAdapter.checkout(targetDirectory, "t4j-start");
         }
     }
 
